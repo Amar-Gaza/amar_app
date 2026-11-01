@@ -1,0 +1,651 @@
+{
+  "@@locale": "en",
+  "splashTagline": "Building trust, and keeping it.",
+  "onboardingTitle": "Trusted home services, made easy",
+  "onboardingSubtitle": "From cleaning and maintenance to plumbing, electrical and more.",
+  "onboardingStart": "Get started",
+  "phoneTitle": "Welcome to Amar",
+  "phoneSubtitle": "Enter your mobile number and we will send you a code to verify it.",
+  "phoneHint": "59 123 4567",
+  "phoneSend": "Send verification code",
+  "otpTitle": "Enter the verification code",
+  "otpResend": "Resend code",
+  "otpChangePhone": "Change number",
+  "otpVerify": "Verify and continue",
+  "otpExpiredTitle": "The code has expired",
+  "otpExpiredHint": "Request a new code to continue and sign in securely.",
+  "profileTitle": "What should we call you?",
+  "profileSubtitle": "Help us personalize your Amar experience.",
+  "profileNameLabel": "Name",
+  "profileNameHint": "Type your name",
+  "profileContinue": "Save and get started",
+  "homeGreetingGuest": "Welcome",
+  "homeCategoriesTitle": "What do you need today?",
+  "homeCategoriesSubtitle": "Trusted home services",
+  "homeLogout": "Sign out",
+  "commonRetry": "Retry",
+  "commonCancel": "Cancel",
+  "commonConfirm": "Confirm",
+  "commonLoading": "Please wait a moment",
+  "commonOfflineTitle": "Cannot reach the service",
+  "commonOfflineHint": "Check your internet connection and try again",
+  "commonGenericError": "An unexpected error occurred",
+  "logoutDialogMessage": "Do you want to sign out of your account?",
+  "validationPhoneInvalid": "The phone number is invalid",
+  "validationNameInvalid": "The name must be at least 2 characters",
+  "validationOtpIncomplete": "Enter the full code",
+  "brandName": "Amar",
+  "splashFooter": "Amar · Everything your home needs",
+  "configLoadingTitle": "Preparing your experience",
+  "configLoadingMessage": "Loading app settings and available services...",
+  "configStepVersion": "Checking the app version",
+  "configStepSettings": "Loading Amar settings",
+  "configStepModules": "Preparing modules and services",
+  "languageToggle": "ع",
+  "languageArabic": "العربية",
+  "languageEnglish": "English",
+  "phoneLabel": "Mobile number",
+  "phoneHelper": "Enter your number without the country code",
+  "consentPrefix": "By continuing, you agree to the ",
+  "consentTerms": "Terms & Conditions",
+  "consentAnd": " and ",
+  "consentPrivacy": "Privacy Policy",
+  "otpScreenTitle": "Verify your number",
+  "otpResendWithin": "Resend in",
+  "otpTryAgain": "Try again",
+  "otpSendNew": "Send a new code",
+  "otpUseDifferentNumber": "Use a different number",
+  "otpInvalidTitle": "Incorrect code",
+  "otpInvalidMessage": "Check the code and try again. You have a limited number of attempts.",
+  "otpInvalidBannerTitle": "Verification failed",
+  "authLoadingTitle": "Signing you in",
+  "authLoadingMessage": "Checking the code and preparing your account...",
+  "authLoadingStep": "Verifying identity",
+  "authLoadingKeepOpen": "Please keep the app open",
+  "profileScreenTitle": "Complete your profile",
+  "profileStepLabel": "Last step",
+  "profileLanguageLabel": "App language",
+  "navHome": "Home",
+  "navOrders": "My orders",
+  "navNotifications": "Notifications",
+  "navAccount": "Account",
+  "homeSearchHint": "What service are you looking for?",
+  "homeVendorsTitle": "Suggested providers",
+  "homeVendorsSubtitle": "Picked for you",
+  "homeProductsTitle": "Popular products",
+  "homeProductsSubtitle": "Most ordered",
+  "homeEmptyTitle": "No services available yet",
+  "homeEmptyMessage": "Services will appear here as soon as they are available.",
+  "vendorOpenNow": "Open now",
+  "vendorClosedNow": "Closed",
+  "ordersEmptyTitle": "No orders yet",
+  "ordersEmptyMessage": "Start exploring Amar services and your orders will show up here.",
+  "ordersExplore": "Explore services",
+  "notificationsEmptyTitle": "No notifications",
+  "notificationsEmptyMessage": "Order updates and new offers will appear here.",
+  "commonRefresh": "Refresh",
+  "commonErrorTitle": "Something went wrong",
+  "commonContactSupport": "Contact support",
+  "stateOfflineTitle": "You are offline",
+  "stateOfflineMessage": "Check your internet connection and try again.",
+  "stateOfflineFootnote": "We will reload the latest content once you are back online.",
+  "stateOfflineBanner": "No internet connection",
+  "stateUnavailableTitle": "Service unavailable",
+  "stateUnavailableMessage": "We could not complete your request. Please try again shortly.",
+  "stateErrorTitle": "One moment",
+  "stateSupportReference": "Support reference",
+  "stateLoadingContent": "Loading content",
+  "orderCode": "Order #{code}",
+  "@orderCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "orderItemsCount": "{count} items",
+  "@orderItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ordersScopeActive": "Active",
+  "ordersScopeCompleted": "Completed",
+  "ordersScopeCancelled": "Cancelled",
+  "notificationsReadAll": "Mark all as read",
+  "homeActiveOrderTitle": "Your current order",
+  "commonViewAll": "View all",
+  "cartTitle": "Cart",
+  "cartAdd": "Add to cart",
+  "cartAddCount": "Add {count} to cart",
+  "@cartAddCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartAdded": "Added to cart",
+  "cartOtherVendorMessage": "Your cart has items from another store. Clear it and start with this product?",
+  "searchTitle": "Search",
+  "searchHint": "Search for a product or service",
+  "searchIdleTitle": "What are you looking for?",
+  "searchIdleMessage": "Type a product or service name, then search.",
+  "searchResultsTitle": "Search results",
+  "resultsCount": "{count} results",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchEmptyTitle": "No results found",
+  "searchEmptyMessage": "Try a shorter word or browse the categories.",
+  "searchBrowseCategories": "Browse categories",
+  "searchClear": "Clear search",
+  "categoriesTitle": "All categories",
+  "categoriesSearchHint": "Search categories",
+  "categoriesEmpty": "No matching categories",
+  "categoryProductsCount": "{count} products",
+  "@categoryProductsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorsTitle": "Stores",
+  "vendorsEmpty": "No stores available yet",
+  "vendorRating": "{average} ({count})",
+  "@vendorRating": {
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorRatingsCount": "{count} ratings",
+  "@vendorRatingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorDistance": "{km} km",
+  "@vendorDistance": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "vendorDistanceLabel": "from you",
+  "vendorPrepMinutes": "Ready in {minutes} min",
+  "@vendorPrepMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorMinutesShort": "{minutes} min",
+  "@vendorMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorPrepLabel": "Prep time",
+  "vendorAddress": "Address",
+  "vendorAddressUnknown": "The store has not added an address yet",
+  "vendorTabProducts": "Products",
+  "vendorTabHours": "Hours",
+  "vendorTabAbout": "About",
+  "vendorNoDescription": "This store has no description yet.",
+  "vendorHoursTitle": "Opening hours",
+  "vendorHoursUnknown": "The store has not set its hours.",
+  "vendorDayClosed": "Closed",
+  "vendorToday": "Today",
+  "vendorOpenTitle": "The store is open",
+  "vendorClosedTitle": "The store is closed",
+  "vendorClosedHint": "Check the opening hours below.",
+  "productsSearchHint": "Search products",
+  "productsCount": "{count} products",
+  "@productsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "productsEmpty": "No products here yet",
+  "productAvailable": "In stock",
+  "productUnavailable": "Unavailable",
+  "productUnavailableNow": "Currently unavailable",
+  "productVendor": "Store",
+  "productCategory": "Category",
+  "productIndicativePrice": "Indicative price, confirmed by the server",
+  "productPriceAfterInspection": "Final price after inspection",
+  "productOptionsTitle": "Product options",
+  "productOptionsHint": "Choose the required specifications",
+  "productOutOfStockTitle": "Out of stock",
+  "productOutOfStockMessage": "It can be added once it is back in stock.",
+  "productAlternatives": "Explore alternatives",
+  "productOptionsScreenTitle": "Choose options",
+  "productBasePrice": "Base price: {price}",
+  "@productBasePrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "optionSingle": "Choose one",
+  "optionMulti": "Choose any",
+  "optionRequired": "Required",
+  "optionOptional": "Optional",
+  "optionExtraPrice": "+{price}",
+  "@optionExtraPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "optionsContinue": "Continue to quantity",
+  "quantityTitle": "Quantity",
+  "quantityLabel": "Quantity",
+  "quantityServerPriced": "Repriced by the server",
+  "quantityStock": "In stock: {count}",
+  "@quantityStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityStockHint": "You cannot exceed the available stock.",
+  "quantityPriceNote": "Prices are indicative; the server calculates the final price at quote time.",
+  "commonContinue": "Continue",
+  "checkoutStepCart": "Cart",
+  "checkoutStepDelivery": "Delivery",
+  "checkoutStepQuote": "Quote",
+  "checkoutStepConfirm": "Confirm",
+  "checkoutPayment": "Payment method",
+  "paymentCashOnDelivery": "Cash on delivery",
+  "cartEmptyTitle": "Your cart is empty",
+  "cartEmptyMessage": "Add products from the stores and they will appear here.",
+  "cartVendorFallback": "Store",
+  "cartLinesCount": "{count} items in the cart",
+  "@cartLinesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartClear": "Clear cart",
+  "cartRemove": "Remove",
+  "cartNoOptions": "No options",
+  "cartPriceByServer": "Price confirmed by the quote",
+  "cartQty": "Qty: {qty}",
+  "@cartQty": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "cartTotalNote": "No confirmed total before the quote. The server prices every line and option.",
+  "cartTotalLabel": "Total",
+  "cartTotalLater": "Calculated next",
+  "deliveryTitle": "Pickup and delivery",
+  "deliveryPickup": "Pickup",
+  "deliveryAddress": "Delivery address",
+  "deliveryChooseAddress": "Choose address",
+  "deliveryTime": "Delivery time",
+  "deliveryRequestQuote": "Get a quote",
+  "scheduleNow": "Now",
+  "schedulePick": "Pick a time",
+  "detailsTitle": "Additional details",
+  "detailsHint": "Optional note and attachments",
+  "detailsAttachedCount": "{count} attachments",
+  "@detailsAttachedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsNote": "General note",
+  "detailsNoteHint": "Optional, up to 1000 characters",
+  "attachTitle": "Attachments",
+  "attachPick": "Choose a photo to upload",
+  "attachLimits": "Up to {max} files, 10MB each",
+  "@attachLimits": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "attachCamera": "Take a photo",
+  "attachGallery": "From gallery",
+  "attachUploading": "Uploading files...",
+  "uploadDone": "Uploaded",
+  "addressPickerTitle": "Choose delivery address",
+  "addressAddNew": "Add a new address",
+  "addressInsideZone": "Inside the service area",
+  "addressUse": "Use this address",
+  "addressNewTitle": "Add address",
+  "addressLocating": "Finding your location...",
+  "addressLocated": "Location found",
+  "addressUseMyLocation": "Use my current location",
+  "addressLabel": "Address name",
+  "addressLabelHint": "e.g. Home",
+  "addressLabelRequired": "Enter a name for the address",
+  "addressDetails": "More details",
+  "addressDetailsHint": "Street, building, floor...",
+  "addressMakeDefault": "Set as default",
+  "addressZoneNote": "Addresses outside the service area are rejected by the server.",
+  "addressSave": "Save address",
+  "locationServiceOff": "Location services are off. Turn them on and try again.",
+  "locationDenied": "We need location permission to set the address.",
+  "locationDeniedForever": "Location permission is blocked. Enable it in settings.",
+  "locationOpenSettings": "Open settings",
+  "couponTitle": "Discount coupon",
+  "couponHint": "Add a coupon if you have one",
+  "couponHero": "Your discount starts here",
+  "couponCodeLabel": "Coupon code",
+  "couponCodeHint": "AMAR30",
+  "couponCheck": "Check",
+  "couponCheckNote": "Checking only confirms the code; the final discount shows in the quote.",
+  "couponInvalidTitle": "Invalid coupon",
+  "couponValidTitle": "Coupon is valid",
+  "couponValidMessage": "The code is sent with the quote so the server applies the final discount.",
+  "couponValue": "Value",
+  "couponMaxDiscount": "Max discount",
+  "couponMinTotal": "Minimum order",
+  "couponUsesLeft": "Uses left",
+  "couponExpires": "Expires",
+  "couponApply": "Apply coupon",
+  "couponRemove": "Remove coupon {code}",
+  "@couponRemove": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "quoteTitle": "Quote",
+  "quoteValidFor": "Quote valid for {time}",
+  "@quoteValidFor": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quoteValidHint": "After it expires you need a new quote.",
+  "quoteDetailsTitle": "Price details",
+  "quoteItemsTotal": "Items total",
+  "quoteDeliveryFee": "Delivery fee",
+  "quoteDiscount": "Discount",
+  "quoteTotal": "Total",
+  "quoteDistance": "Distance",
+  "quoteReview": "Review order",
+  "quoteExpiredTitle": "The quote has expired",
+  "quoteUsedTitle": "The quote was already used",
+  "quoteExpiredMessage": "Prices change; request a new quote to continue.",
+  "quoteRefresh": "Get a new quote",
+  "quoteBackToCart": "Go back",
+  "reviewTitle": "Review order",
+  "reviewProducts": "Products",
+  "reviewDeliveryPayment": "Delivery and payment",
+  "reviewConfirm": "Confirm order · {total}",
+  "@reviewConfirm": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "placeFailedTitle": "Could not create the order",
+  "placingTitle": "Creating your order",
+  "placingMessage": "Keep the app open. Retrying will not create a duplicate.",
+  "successCaption": "Order created",
+  "successTitle": "Your order is in good hands",
+  "successMessage": "Follow its status from My orders.",
+  "successOrderNumber": "Order number",
+  "successStatus": "Status",
+  "successDeliverTo": "Deliver to",
+  "successTrack": "Track order",
+  "successBackHome": "Back to home",
+  "orderStepOf": "Step {step} of {total}",
+  "@orderStepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "orderRoute": "Route",
+  "orderPickup": "Pickup",
+  "orderDropoff": "Drop-off",
+  "orderPlaceUnknown": "Not set",
+  "orderDirections": "Directions",
+  "orderDetailsTitle": "Order details",
+  "orderTimelineTitle": "Order history",
+  "orderDeliveryCode": "Delivery code",
+  "orderCancelledTitle": "Order cancelled",
+  "offerPendingTitle": "A price offer is waiting for you",
+  "offerPendingMessage": "Review the items, then approve or reject.",
+  "offerView": "View offer",
+  "cancelOrder": "Cancel order",
+  "receiptTitle": "Receipt",
+  "shareTitle": "Share tracking link",
+  "rateTitle": "Rate order",
+  "trackingDriverRating": "★ {rating}",
+  "@trackingDriverRating": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelHint": "Choose a reason. This cannot be undone.",
+  "cancelNote": "Note",
+  "cancelSubmit": "Confirm cancellation",
+  "cancelConfirm": "Are you sure you want to cancel this order?",
+  "offerClosed": "This offer is no longer open.",
+  "offerItemUnavailable": "Unavailable",
+  "offerApprove": "Approve",
+  "offerReject": "Reject offer",
+  "offerApproveConfirm": "Approve this offer? Your order will proceed.",
+  "offerRejectConfirm": "Reject offer",
+  "offerRejectReason": "Reason (optional)",
+  "offerSubstitute": "Substitute: {name} · {price}",
+  "@offerSubstitute": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "offerExpires": "Offer ends {time}",
+  "@offerExpires": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingEmptyTitle": "No tracking yet",
+  "trackingEmptyMessage": "Tracking starts once a driver picks up your order.",
+  "trackingNoLocation": "The driver has not shared a location yet",
+  "trackingOpenMap": "Open in maps",
+  "trackingNoDriver": "No driver assigned yet.",
+  "trackingNextUpdate": "Next update",
+  "trackingEta": "Arriving in about {minutes} min",
+  "@trackingEta": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "trackingSeconds": "{seconds}s",
+  "@trackingSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "receiptDate": "Date",
+  "receiptDriver": "Driver",
+  "rateDriver": "How was the delivery?",
+  "rateStore": "Rate the store (optional)",
+  "rateComment": "Comment",
+  "rateCommentHint": "Share your thoughts (optional)",
+  "rateSubmit": "Submit rating",
+  "shareIntroTitle": "Share your order tracking",
+  "shareIntroMessage": "Create a temporary link anyone can open to follow the order.",
+  "shareCreate": "Create link",
+  "shareCopy": "Copy link",
+  "shareCopied": "Link copied",
+  "shareRevoke": "Revoke link",
+  "shareExpires": "Link expires {time}",
+  "@shareExpires": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "publicTrackingTitle": "Track an order",
+  "publicTrackingLabel": "Tracking link or code",
+  "publicTrackingHint": "https://…/track/…",
+  "publicTrackingOpen": "Track",
+  "publicTrackingEta": "ETA",
+  "publicTrackingUpdated": "Last update",
+  "addressEditTitle": "Edit address",
+  "accountEditProfile": "Profile",
+  "accountEditProfileHint": "Name, photo and language",
+  "accountAddresses": "Saved addresses",
+  "accountTerms": "Terms & privacy",
+  "accountDelete": "Delete account",
+  "accountDeleteConfirm": "Your account and data will be deleted permanently. Are you sure?",
+  "vendorApplyTitle": "Join as a store",
+  "vendorApplyHint": "Apply to list your store",
+  "supportTitle": "Help & support",
+  "commonSave": "Save",
+  "addressesEmpty": "No saved addresses",
+  "addressDefault": "Default",
+  "addressDeleteConfirm": "Delete this address?",
+  "vendorApplyIntro": "Tell us about your store and the Amar team will contact you.",
+  "vendorApplyBusiness": "Store name",
+  "vendorApplyBusinessHint": "e.g. Hope Store",
+  "vendorApplyContact": "Contact name",
+  "vendorApplyLocation": "Attach my current location",
+  "vendorApplySubmit": "Submit application",
+  "vendorApplySentTitle": "Application sent",
+  "vendorApplySentMessage": "We will review it and get back to you soon.",
+  "commonRequired": "This field is required",
+  "supportCall": "Call support",
+  "supportOrderIssue": "Problem with an order",
+  "supportOrderIssueHint": "Open the order from My orders and contact the driver or support",
+  "driverLoginTitle": "Driver sign in",
+  "driverLoginSubtitle": "Use your phone and the password from your manager.",
+  "driverPassword": "Password",
+  "driverPasswordHint": "Enter your password",
+  "driverLoginSubmit": "Sign in",
+  "driverIAmCustomer": "Not a driver? Customer sign in",
+  "driverEntry": "Are you a driver? Sign in here",
+  "driverCollect": "To collect",
+  "driverEarning": "Your earning",
+  "driverLocationSending": "Sending your location...",
+  "driverLocationOk": "Your location is being shared",
+  "driverLocationPermission": "Location permission is required",
+  "driverLocationPermissionHint": "Tap to allow or open settings",
+  "driverLocationFailed": "Could not send location, tap to retry",
+  "driverLocationLast": "Last sent: {time}",
+  "@driverLocationLast": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "driverNavOrders": "Jobs",
+  "driverNavWallet": "Earnings",
+  "driverGreeting": "Hello",
+  "driverOnline": "Online",
+  "driverOffline": "Offline",
+  "driverOnlineHint": "You are receiving jobs",
+  "driverOfflineHint": "Start your day when ready",
+  "driverGoOnline": "Go online",
+  "driverGoOffline": "Go offline",
+  "driverCurrentTask": "Current job",
+  "driverNoTask": "No current job.",
+  "driverTodaySummary": "Summary for today",
+  "driverTodayOrders": "Jobs today",
+  "driverTodayEarnings": "Earned today",
+  "driverAvailable": "Available",
+  "driverHistory": "History",
+  "driverNoAvailable": "No jobs available right now",
+  "driverNoHistory": "No past jobs",
+  "driverOrderTitle": "Job details",
+  "driverReject": "Reject",
+  "driverRejectConfirm": "Reject this job?",
+  "driverAlreadyTaken": "Another driver took this job",
+  "driverCustomer": "Customer",
+  "driverDeliveredTitle": "Delivered",
+  "driverDeliveredMessage": "{amount} was added to your earnings.",
+  "@driverDeliveredMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "driverActionConfirm": "Confirm: {action}?",
+  "@driverActionConfirm": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "driverProofPhoto": "Proof photo",
+  "driverDeliveryCode": "Delivery code",
+  "driverDeliveryCodeHint": "Ask the customer for it",
+  "driverCashTitle": "Cash on hand",
+  "driverCashLimit": "Limit",
+  "driverCashRemaining": "Remaining",
+  "driverUnsettled": "Unsettled jobs",
+  "driverCashLimitReached": "Limit reached. Hand over the cash to receive new jobs.",
+  "driverSettlements": "Settlements",
+  "driverNoSettlements": "No settlements yet.",
+  "driverPeriodDay": "Today",
+  "driverPeriodWeek": "Week",
+  "driverPeriodMonth": "Month",
+  "driverEarnings": "Earnings",
+  "driverEarningsHistory": "Earnings history",
+  "driverProfileHint": "Language, vehicle and photo",
+  "driverVehicle": "Vehicle type"
+}

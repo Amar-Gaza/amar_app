@@ -1,0 +1,32 @@
+abstract final class AppDefaults {
+  static const String dialCode = '+970';
+  static const String defaultLocale = 'ar';
+  static const String deviceName = 'amar-mobile';
+  static const int phoneMaxDigits = 12;
+  static const String brandGlyph = 'ع';
+  static const String brandLatin = 'AMAR';
+  static const String otpTimerPlaceholder = '00:00';
+  static const int homeStripLimit = 10;
+  static const int pageSize = 20;
+  static const String uploadPurposeAttachment = 'order_attachment';
+  static const int maxAttachments = 10;
+  static const int addressLabelMax = 60;
+  static const int addressDetailsMax = 500;
+  static const int orderNoteMax = 1000;
+  static const int couponMax = 40;
+  static const int scheduleDaysAhead = 7;
+  static const int imageQuality = 80;
+  static const int pollFallbackSeconds = 10;
+  static const int maxStars = 5;
+  static const int rateCommentMax = 500;
+  static const String pricedStatus = 'priced';
+  static const int driverLocationSeconds = 15;
+  static const int driverLocationBuffer = 100;
+  static const String deliveryProofPurpose = 'delivery_proof';
+  static const String transitionPurpose = 'transition_proof';
+  static const String passwordMin = '6';
+  static const int activeOrderPreview = 1;
+  static const double profileStepProgress = 0.8;
+  static const String languageArabic = 'ar';
+  static const String languageEnglish = 'en';
+}

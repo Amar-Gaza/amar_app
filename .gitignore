@@ -1,0 +1,16 @@
+.dart_tool/
+build/
+.flutter-plugins*
+env/*.json
+!env/*.example.json
+.env
+*.jks
+*.keystore
+key.properties
+*.p12
+*.mobileprovision
+google-services.json
+GoogleService-Info.plist
+*service-account*.json
+*.postman_environment.json
+environment.*.json

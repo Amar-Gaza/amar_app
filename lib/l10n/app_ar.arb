@@ -1,0 +1,919 @@
+{
+  "@@locale": "ar",
+  "statusAwaitingPricing": "بانتظار التسعير",
+  "@statusAwaitingPricing": {
+    "description": "Order status \"awaiting_pricing\""
+  },
+  "statusPriced": "تم التسعير",
+  "@statusPriced": {
+    "description": "Order status \"priced\""
+  },
+  "statusAwaitingVendor": "بانتظار المتجر",
+  "@statusAwaitingVendor": {
+    "description": "Order status \"awaiting_vendor\""
+  },
+  "statusPreparing": "قيد التحضير",
+  "@statusPreparing": {
+    "description": "Order status \"preparing\""
+  },
+  "statusPending": "بانتظار سائق",
+  "@statusPending": {
+    "description": "Order status \"pending\""
+  },
+  "statusAccepted": "تم القبول",
+  "@statusAccepted": {
+    "description": "Order status \"accepted\""
+  },
+  "statusPickedUp": "تم الاستلام",
+  "@statusPickedUp": {
+    "description": "Order status \"picked_up\""
+  },
+  "statusOnTheWay": "في الطريق",
+  "@statusOnTheWay": {
+    "description": "Order status \"on_the_way\""
+  },
+  "statusArrived": "السائق وصل",
+  "@statusArrived": {
+    "description": "Order status \"arrived\""
+  },
+  "statusDelivered": "تم التوصيل",
+  "@statusDelivered": {
+    "description": "Order status \"delivered\""
+  },
+  "statusCancelled": "ملغي",
+  "@statusCancelled": {
+    "description": "Order status \"cancelled\""
+  },
+  "actionAwaitingVendorToPreparingVendor": "قبول الطلب",
+  "@actionAwaitingVendorToPreparingVendor": {
+    "description": "Button for awaiting_vendor → preparing (vendor)"
+  },
+  "actionAwaitingPricingToPricedAdmin": "أرسل العرض",
+  "@actionAwaitingPricingToPricedAdmin": {
+    "description": "Button for awaiting_pricing → priced (admin)"
+  },
+  "actionPreparingToPendingVendor": "جاهز للاستلام",
+  "@actionPreparingToPendingVendor": {
+    "description": "Button for preparing → pending (vendor)"
+  },
+  "actionPendingToAcceptedDriver": "اقبل الطلب",
+  "@actionPendingToAcceptedDriver": {
+    "description": "Button for pending → accepted (driver)"
+  },
+  "actionAcceptedToPickedUpDriver": "استلمت الطلب",
+  "@actionAcceptedToPickedUpDriver": {
+    "description": "Button for accepted → picked_up (driver)"
+  },
+  "confirmAcceptedToPickedUpDriver": "متأكد إنك استلمت الطلب؟",
+  "@confirmAcceptedToPickedUpDriver": {
+    "description": "Confirmation before accepted → picked_up"
+  },
+  "actionPickedUpToOnTheWayDriver": "انطلقت للزبون",
+  "@actionPickedUpToOnTheWayDriver": {
+    "description": "Button for picked_up → on_the_way (driver)"
+  },
+  "actionOnTheWayToArrivedDriver": "وصلت",
+  "@actionOnTheWayToArrivedDriver": {
+    "description": "Button for on_the_way → arrived (driver)"
+  },
+  "actionArrivedToDeliveredDriver": "تم التسليم",
+  "@actionArrivedToDeliveredDriver": {
+    "description": "Button for arrived → delivered (driver)"
+  },
+  "confirmArrivedToDeliveredDriver": "تأكد من استلام الزبون للطلب",
+  "@confirmArrivedToDeliveredDriver": {
+    "description": "Confirmation before arrived → delivered"
+  },
+  "actionPendingToCancelledUser": "إلغاء الطلب",
+  "@actionPendingToCancelledUser": {
+    "description": "Button for pending → cancelled (user)"
+  },
+  "actionAwaitingVendorToCancelledUser": "إلغاء الطلب",
+  "@actionAwaitingVendorToCancelledUser": {
+    "description": "Button for awaiting_vendor → cancelled (user)"
+  },
+  "actionPreparingToCancelledUser": "إلغاء الطلب",
+  "@actionPreparingToCancelledUser": {
+    "description": "Button for preparing → cancelled (user)"
+  },
+  "actionAwaitingPricingToCancelledUser": "إلغاء الطلب",
+  "@actionAwaitingPricingToCancelledUser": {
+    "description": "Button for awaiting_pricing → cancelled (user)"
+  },
+  "actionAcceptedToCancelledUser": "إلغاء الطلب",
+  "@actionAcceptedToCancelledUser": {
+    "description": "Button for accepted → cancelled (user)"
+  },
+  "actionAwaitingVendorToCancelledVendor": "رفض الطلب",
+  "@actionAwaitingVendorToCancelledVendor": {
+    "description": "Button for awaiting_vendor → cancelled (vendor)"
+  },
+  "actionAwaitingPricingToCancelledVendor": "رفض الطلب",
+  "@actionAwaitingPricingToCancelledVendor": {
+    "description": "Button for awaiting_pricing → cancelled (vendor)"
+  },
+  "actionPricedToCancelledVendor": "رفض الطلب",
+  "@actionPricedToCancelledVendor": {
+    "description": "Button for priced → cancelled (vendor)"
+  },
+  "actionPricedToCancelledUser": "رفض العرض",
+  "@actionPricedToCancelledUser": {
+    "description": "Button for priced → cancelled (user)"
+  },
+  "cancelReasonUserChangedMind": "غيّرت رأيي",
+  "@cancelReasonUserChangedMind": {
+    "description": "Cancel reason \"changed_mind\" (user)"
+  },
+  "cancelReasonUserWrongAddress": "العنوان غير صحيح",
+  "@cancelReasonUserWrongAddress": {
+    "description": "Cancel reason \"wrong_address\" (user)"
+  },
+  "cancelReasonUserTooSlow": "الانتظار طويل",
+  "@cancelReasonUserTooSlow": {
+    "description": "Cancel reason \"too_slow\" (user)"
+  },
+  "cancelReasonUserOther": "سبب آخر",
+  "@cancelReasonUserOther": {
+    "description": "Cancel reason \"other\" (user)"
+  },
+  "cancelReasonAdminCustomerRequest": "بطلب من الزبون",
+  "@cancelReasonAdminCustomerRequest": {
+    "description": "Cancel reason \"customer_request\" (admin)"
+  },
+  "cancelReasonAdminNoDriver": "لا يوجد سائق متاح",
+  "@cancelReasonAdminNoDriver": {
+    "description": "Cancel reason \"no_driver\" (admin)"
+  },
+  "cancelReasonAdminOther": "سبب آخر",
+  "@cancelReasonAdminOther": {
+    "description": "Cancel reason \"other\" (admin)"
+  },
+  "errorMissingProjectKey": "الترويسة X-Project-Key مطلوبة",
+  "@errorMissingProjectKey": {
+    "description": "Message for the API error code \"missing_project_key\""
+  },
+  "errorInvalidProjectKey": "مفتاح المشروع غير صالح أو تم إلغاؤه",
+  "@errorInvalidProjectKey": {
+    "description": "Message for the API error code \"invalid_project_key\""
+  },
+  "errorUnauthenticated": "سجّل الدخول للمتابعة",
+  "@errorUnauthenticated": {
+    "description": "Message for the API error code \"unauthenticated\""
+  },
+  "errorOtpInvalid": "رمز التحقق غير صحيح",
+  "@errorOtpInvalid": {
+    "description": "Message for the API error code \"otp_invalid\""
+  },
+  "errorOtpExpired": "انتهت صلاحية رمز التحقق",
+  "@errorOtpExpired": {
+    "description": "Message for the API error code \"otp_expired\""
+  },
+  "errorForbidden": "غير مسموح لك بتنفيذ هذا الإجراء",
+  "@errorForbidden": {
+    "description": "Message for the API error code \"forbidden\""
+  },
+  "errorModuleDisabled": "هذه الميزة غير مفعّلة في هذا المشروع",
+  "@errorModuleDisabled": {
+    "description": "Message for the API error code \"module_disabled\""
+  },
+  "errorProjectFrozen": "هذا المشروع مجمّد",
+  "@errorProjectFrozen": {
+    "description": "Message for the API error code \"project_frozen\""
+  },
+  "errorProjectInactive": "هذا المشروع غير مفعّل بعد",
+  "@errorProjectInactive": {
+    "description": "Message for the API error code \"project_inactive\""
+  },
+  "errorUserBlocked": "تم حظر هذا الحساب",
+  "@errorUserBlocked": {
+    "description": "Message for the API error code \"user_blocked\""
+  },
+  "errorNotFound": "العنصر المطلوب غير موجود",
+  "@errorNotFound": {
+    "description": "Message for the API error code \"not_found\""
+  },
+  "errorMethodNotAllowed": "طريقة الطلب هذه غير مسموحة هنا",
+  "@errorMethodNotAllowed": {
+    "description": "Message for the API error code \"method_not_allowed\""
+  },
+  "errorAlreadyTaken": "سبقك أحد آخر إلى هذا الطلب",
+  "@errorAlreadyTaken": {
+    "description": "Message for the API error code \"already_taken\""
+  },
+  "errorConflict": "الطلب يتعارض مع الحالة الحالية",
+  "@errorConflict": {
+    "description": "Message for the API error code \"conflict\""
+  },
+  "errorBidClosed": "تم إغلاق العروض على هذا الطلب",
+  "@errorBidClosed": {
+    "description": "Message for the API error code \"bid_closed\""
+  },
+  "errorIdempotencyMismatch": "مفتاح Idempotency-Key مستخدم سابقًا مع طلب مختلف",
+  "@errorIdempotencyMismatch": {
+    "description": "Message for the API error code \"idempotency_mismatch\""
+  },
+  "errorQuoteExpired": "انتهت صلاحية عرض السعر، اطلب عرضًا جديدًا",
+  "@errorQuoteExpired": {
+    "description": "Message for the API error code \"quote_expired\""
+  },
+  "errorQuoteUsed": "تم استخدام عرض السعر هذا مسبقًا",
+  "@errorQuoteUsed": {
+    "description": "Message for the API error code \"quote_used\""
+  },
+  "errorValidationFailed": "بعض الحقول غير صحيحة",
+  "@errorValidationFailed": {
+    "description": "Message for the API error code \"validation_failed\""
+  },
+  "errorInvalidTransition": "لا يمكن تغيير الحالة بهذا الشكل الآن",
+  "@errorInvalidTransition": {
+    "description": "Message for the API error code \"invalid_transition\""
+  },
+  "errorOutOfZone": "هذا الموقع خارج منطقة الخدمة",
+  "@errorOutOfZone": {
+    "description": "Message for the API error code \"out_of_zone\""
+  },
+  "errorOutOfStock": "الكمية المتوفرة غير كافية",
+  "@errorOutOfStock": {
+    "description": "Message for the API error code \"out_of_stock\""
+  },
+  "errorSlotFull": "موعد التوصيل هذا ممتلئ",
+  "@errorSlotFull": {
+    "description": "Message for the API error code \"slot_full\""
+  },
+  "errorCashLimitReached": "وصلت للحد الأعلى للنقد، قم بالتسوية أولًا",
+  "@errorCashLimitReached": {
+    "description": "Message for the API error code \"cash_limit_reached\""
+  },
+  "errorVendorClosed": "المتجر مغلق حاليًا",
+  "@errorVendorClosed": {
+    "description": "Message for the API error code \"vendor_closed\""
+  },
+  "errorAppUpdateRequired": "حدّث التطبيق للمتابعة",
+  "@errorAppUpdateRequired": {
+    "description": "Message for the API error code \"app_update_required\""
+  },
+  "errorTooManyRequests": "طلبات كثيرة جدًا، تمهّل قليلًا",
+  "@errorTooManyRequests": {
+    "description": "Message for the API error code \"too_many_requests\""
+  },
+  "errorServerError": "حدث خطأ من جهتنا",
+  "@errorServerError": {
+    "description": "Message for the API error code \"server_error\""
+  },
+  "errorMaintenance": "الخدمة تحت الصيانة",
+  "@errorMaintenance": {
+    "description": "Message for the API error code \"maintenance\""
+  },
+  "errorChaosInjected": "عطل مؤقت (وضع الفوضى)، أعد المحاولة",
+  "@errorChaosInjected": {
+    "description": "Message for the API error code \"chaos_injected\""
+  },
+  "splashTagline": "نبني الثقة، ونصونها.",
+  "onboardingTitle": "خدمات منزلية موثوقة بكل سهولة",
+  "onboardingSubtitle": "من التنظيف والصيانة إلى خدمات السباكة والكهرباء وأكثر.",
+  "onboardingStart": "ابدأ الآن",
+  "phoneTitle": "أهلاً بك في عَمار",
+  "phoneSubtitle": "أدخل رقم جوالك وسنرسل لك رمزاً للتحقق من هويتك.",
+  "phoneHint": "59 123 4567",
+  "phoneSend": "إرسال رمز التحقق",
+  "otpTitle": "أدخل رمز التحقق",
+  "otpResend": "إعادة إرسال الرمز",
+  "otpChangePhone": "تغيير الرقم",
+  "otpVerify": "تحقق ومتابعة",
+  "otpExpiredTitle": "انتهت صلاحية الرمز",
+  "otpExpiredHint": "اطلب رمزاً جديداً للمتابعة وتسجيل الدخول بأمان.",
+  "profileTitle": "كيف نناديك؟",
+  "profileSubtitle": "ساعدنا في تخصيص تجربتك داخل عَمار.",
+  "profileNameLabel": "الاسم",
+  "profileNameHint": "اكتب اسمك",
+  "profileContinue": "حفظ وبدء الاستخدام",
+  "homeGreetingGuest": "مرحباً بك",
+  "homeCategoriesTitle": "ماذا تحتاج اليوم؟",
+  "homeCategoriesSubtitle": "خدمات منزلية موثوقة",
+  "homeLogout": "تسجيل الخروج",
+  "commonRetry": "إعادة المحاولة",
+  "commonCancel": "إلغاء",
+  "commonConfirm": "تأكيد",
+  "commonLoading": "يرجى الانتظار لحظة",
+  "commonOfflineTitle": "تعذر الاتصال بالخدمة",
+  "commonOfflineHint": "تأكد من اتصالك بالإنترنت ثم حاول مرة أخرى",
+  "commonGenericError": "حدث خطأ غير متوقع",
+  "logoutDialogMessage": "هل تريد تسجيل الخروج من حسابك؟",
+  "validationPhoneInvalid": "رقم الجوال غير صحيح",
+  "validationNameInvalid": "الاسم يجب أن يكون حرفين على الأقل",
+  "validationOtpIncomplete": "أدخل الرمز كاملاً",
+  "brandName": "عَمار",
+  "splashFooter": "عَمار · كل ما يحتاجه بيتك",
+  "configLoadingTitle": "نجهّز تجربتك",
+  "configLoadingMessage": "جارٍ تحميل إعدادات التطبيق والخدمات المتاحة...",
+  "configStepVersion": "التحقق من نسخة التطبيق",
+  "configStepSettings": "تحميل إعدادات عَمار",
+  "configStepModules": "تجهيز الوحدات والخدمات",
+  "languageToggle": "EN",
+  "languageArabic": "العربية",
+  "languageEnglish": "English",
+  "phoneLabel": "رقم الجوال",
+  "phoneHelper": "أدخل رقمك بدون رمز الدولة",
+  "consentPrefix": "بمتابعتك، أنت توافق على ",
+  "consentTerms": "الشروط والأحكام",
+  "consentAnd": " و",
+  "consentPrivacy": "سياسة الخصوصية",
+  "otpScreenTitle": "التحقق من الجوال",
+  "otpResendWithin": "إعادة الإرسال خلال",
+  "otpTryAgain": "حاول مرة أخرى",
+  "otpSendNew": "إرسال رمز جديد",
+  "otpUseDifferentNumber": "استخدام رقم مختلف",
+  "otpInvalidTitle": "الرمز غير صحيح",
+  "otpInvalidMessage": "تحقق من الرمز وحاول مرة أخرى، لديك عدد محدود من المحاولات.",
+  "otpInvalidBannerTitle": "تعذّر التحقق",
+  "authLoadingTitle": "جارٍ تسجيل الدخول",
+  "authLoadingMessage": "نتحقق من الرمز ونجهّز حسابك بأمان...",
+  "authLoadingStep": "التحقق من الهوية",
+  "authLoadingKeepOpen": "يرجى عدم إغلاق التطبيق",
+  "profileScreenTitle": "أكمل ملفك",
+  "profileStepLabel": "خطوة أخيرة",
+  "profileLanguageLabel": "لغة التطبيق",
+  "navHome": "الرئيسية",
+  "navOrders": "طلباتي",
+  "navNotifications": "الإشعارات",
+  "navAccount": "حسابي",
+  "homeSearchHint": "ما الخدمة التي تبحث عنها؟",
+  "homeVendorsTitle": "مزوّدون مقترحون",
+  "homeVendorsSubtitle": "مختارون بعناية لك",
+  "homeProductsTitle": "منتجات شائعة",
+  "homeProductsSubtitle": "الأكثر طلباً",
+  "homeEmptyTitle": "لا توجد خدمات متاحة حالياً",
+  "homeEmptyMessage": "سنعرض الخدمات هنا فور توفرها.",
+  "vendorOpenNow": "مفتوح الآن",
+  "vendorClosedNow": "مغلق حالياً",
+  "ordersEmptyTitle": "لا توجد طلبات بعد",
+  "ordersEmptyMessage": "ابدأ باستكشاف خدمات عَمار، وستجد طلباتك هنا.",
+  "ordersExplore": "استكشف الخدمات",
+  "notificationsEmptyTitle": "لا توجد إشعارات",
+  "notificationsEmptyMessage": "ستظهر هنا تحديثات طلباتك والعروض الجديدة.",
+  "commonRefresh": "تحديث الصفحة",
+  "commonErrorTitle": "تعذّر إتمام الطلب",
+  "commonContactSupport": "تواصل مع الدعم",
+  "stateOfflineTitle": "أنت غير متصل",
+  "stateOfflineMessage": "تحقق من اتصالك بالإنترنت ثم حاول مرة أخرى.",
+  "stateOfflineFootnote": "سنعيد تحميل آخر محتوى متاح بعد عودة الاتصال.",
+  "stateOfflineBanner": "لا يوجد اتصال بالإنترنت",
+  "stateUnavailableTitle": "الخدمة غير متاحة حالياً",
+  "stateUnavailableMessage": "لم نتمكن من إكمال طلبك. حاول مرة أخرى بعد قليل.",
+  "stateErrorTitle": "لحظة واحدة",
+  "stateSupportReference": "مرجع الدعم",
+  "stateLoadingContent": "جارٍ تحميل المحتوى",
+  "orderCode": "طلب #{code}",
+  "@orderCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "orderItemsCount": "{count} عناصر",
+  "@orderItemsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ordersScopeActive": "النشطة",
+  "ordersScopeCompleted": "المكتملة",
+  "ordersScopeCancelled": "الملغاة",
+  "notificationsReadAll": "تحديد الكل كمقروء",
+  "homeActiveOrderTitle": "طلبك الحالي",
+  "commonViewAll": "عرض الكل",
+  "cartTitle": "السلة",
+  "cartAdd": "إضافة للسلة",
+  "cartAddCount": "إضافة {count} للسلة",
+  "@cartAddCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartAdded": "تمت الإضافة إلى السلة",
+  "cartOtherVendorMessage": "سلتك فيها منتجات من متجر آخر. هل تريد تفريغها والبدء بهذا المنتج؟",
+  "searchTitle": "البحث",
+  "searchHint": "ابحث عن منتج أو خدمة",
+  "searchIdleTitle": "عن ماذا تبحث؟",
+  "searchIdleMessage": "اكتب اسم المنتج أو الخدمة ثم اضغط بحث.",
+  "searchResultsTitle": "نتائج البحث",
+  "resultsCount": "{count} نتيجة",
+  "@resultsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchEmptyTitle": "لم نجد نتائج",
+  "searchEmptyMessage": "جرّب كلمة أقصر أو تصفّح التصنيفات المتاحة.",
+  "searchBrowseCategories": "تصفّح التصنيفات",
+  "searchClear": "مسح البحث",
+  "categoriesTitle": "كل التصنيفات",
+  "categoriesSearchHint": "ابحث داخل التصنيفات",
+  "categoriesEmpty": "لا توجد تصنيفات مطابقة",
+  "categoryProductsCount": "{count} منتجاً",
+  "@categoryProductsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorsTitle": "المتاجر",
+  "vendorsEmpty": "لا توجد متاجر متاحة حالياً",
+  "vendorRating": "{average} ({count})",
+  "@vendorRating": {
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorRatingsCount": "{count} تقييم",
+  "@vendorRatingsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorDistance": "{km} كم",
+  "@vendorDistance": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "vendorDistanceLabel": "عن موقعك",
+  "vendorPrepMinutes": "التحضير خلال {minutes} دقيقة",
+  "@vendorPrepMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorMinutesShort": "{minutes} د",
+  "@vendorMinutesShort": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "vendorPrepLabel": "وقت التحضير",
+  "vendorAddress": "العنوان",
+  "vendorAddressUnknown": "لم يضف المتجر عنواناً بعد",
+  "vendorTabProducts": "المنتجات",
+  "vendorTabHours": "أوقات العمل",
+  "vendorTabAbout": "عن المتجر",
+  "vendorNoDescription": "لا يوجد وصف لهذا المتجر بعد.",
+  "vendorHoursTitle": "أوقات العمل",
+  "vendorHoursUnknown": "لم يحدد المتجر أوقات العمل.",
+  "vendorDayClosed": "مغلق",
+  "vendorToday": "اليوم",
+  "vendorOpenTitle": "المتجر مفتوح الآن",
+  "vendorClosedTitle": "المتجر مغلق الآن",
+  "vendorClosedHint": "راجع أوقات العمل لمعرفة موعد الفتح.",
+  "productsSearchHint": "ابحث داخل المنتجات",
+  "productsCount": "{count} منتجاً",
+  "@productsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "productsEmpty": "لا توجد منتجات هنا بعد",
+  "productAvailable": "متوفر",
+  "productUnavailable": "غير متوفر",
+  "productUnavailableNow": "غير متوفر حالياً",
+  "productVendor": "المتجر",
+  "productCategory": "الفئة",
+  "productIndicativePrice": "السعر المبدئي، يعتمده الخادم عند التسعير",
+  "productPriceAfterInspection": "السعر النهائي بعد المعاينة",
+  "productOptionsTitle": "خيارات المنتج",
+  "productOptionsHint": "حدد المواصفات المطلوبة",
+  "productOutOfStockTitle": "نفد المخزون",
+  "productOutOfStockMessage": "لا يمكن إضافته للسلة حتى يصبح متوفراً.",
+  "productAlternatives": "استكشف منتجات بديلة",
+  "productOptionsScreenTitle": "اختر المواصفات",
+  "productBasePrice": "السعر الأساسي: {price}",
+  "@productBasePrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "optionSingle": "اختيار واحد",
+  "optionMulti": "اختيارات متعددة",
+  "optionRequired": "مطلوب",
+  "optionOptional": "اختياري",
+  "optionExtraPrice": "+{price}",
+  "@optionExtraPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "optionsContinue": "متابعة لاختيار الكمية",
+  "quantityTitle": "الكمية",
+  "quantityLabel": "الكمية",
+  "quantityServerPriced": "يُعاد التسعير من الخادم",
+  "quantityStock": "المتوفر: {count}",
+  "@quantityStock": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "quantityStockHint": "لا يمكن تجاوز الكمية المتوفرة.",
+  "quantityPriceNote": "الأسعار تقديرية، والخادم يحسب السعر النهائي عند طلب التسعيرة.",
+  "commonContinue": "متابعة",
+  "checkoutStepCart": "السلة",
+  "checkoutStepDelivery": "التوصيل",
+  "checkoutStepQuote": "التسعيرة",
+  "checkoutStepConfirm": "التأكيد",
+  "checkoutPayment": "طريقة الدفع",
+  "paymentCashOnDelivery": "الدفع عند الاستلام",
+  "cartEmptyTitle": "سلتك فارغة",
+  "cartEmptyMessage": "أضف منتجات من المتاجر وستظهر هنا.",
+  "cartVendorFallback": "المتجر",
+  "cartLinesCount": "{count} عناصر في السلة",
+  "@cartLinesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartClear": "تفريغ السلة",
+  "cartRemove": "حذف",
+  "cartNoOptions": "بدون خيارات",
+  "cartPriceByServer": "السعر يعتمد من التسعيرة",
+  "cartQty": "الكمية: {qty}",
+  "@cartQty": {
+    "placeholders": {
+      "qty": {
+        "type": "int"
+      }
+    }
+  },
+  "cartTotalNote": "لا نعرض إجمالياً معتمداً قبل طلب التسعيرة. الخادم يسعّر كل سطر وخياراته.",
+  "cartTotalLabel": "الإجمالي",
+  "cartTotalLater": "يُحسب في الخطوة التالية",
+  "deliveryTitle": "الاستلام والتوصيل",
+  "deliveryPickup": "الاستلام",
+  "deliveryAddress": "عنوان التوصيل",
+  "deliveryChooseAddress": "اختر العنوان",
+  "deliveryTime": "موعد التوصيل",
+  "deliveryRequestQuote": "طلب التسعيرة",
+  "scheduleNow": "الآن",
+  "schedulePick": "تحديد موعد",
+  "detailsTitle": "تفاصيل إضافية",
+  "detailsHint": "ملاحظة ومرفقات اختيارية",
+  "detailsAttachedCount": "{count} مرفقات",
+  "@detailsAttachedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "detailsNote": "ملاحظة عامة",
+  "detailsNoteHint": "اختياري، حتى 1000 حرف",
+  "attachTitle": "المرفقات",
+  "attachPick": "اختر صورة للرفع",
+  "attachLimits": "حتى {max} ملفات، الحد الأقصى 10MB للملف",
+  "@attachLimits": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "attachCamera": "التقاط صورة",
+  "attachGallery": "من المعرض",
+  "attachUploading": "جارٍ رفع الملفات...",
+  "uploadDone": "تم الرفع",
+  "addressPickerTitle": "اختر عنوان التوصيل",
+  "addressAddNew": "إضافة عنوان جديد",
+  "addressInsideZone": "داخل منطقة الخدمة",
+  "addressUse": "استخدام هذا العنوان",
+  "addressNewTitle": "إضافة عنوان",
+  "addressLocating": "نحدد موقعك...",
+  "addressLocated": "تم تحديد موقعك",
+  "addressUseMyLocation": "استخدام موقعي الحالي",
+  "addressLabel": "اسم العنوان",
+  "addressLabelHint": "مثال: المنزل",
+  "addressLabelRequired": "اكتب اسماً للعنوان",
+  "addressDetails": "تفاصيل إضافية",
+  "addressDetailsHint": "الشارع، المبنى، الطابق...",
+  "addressMakeDefault": "تعيين كعنوان افتراضي",
+  "addressZoneNote": "إذا كانت النقطة خارج منطقة الخدمة سيرفض الخادم حفظ العنوان.",
+  "addressSave": "حفظ العنوان",
+  "locationServiceOff": "خدمة الموقع متوقفة. فعّلها ثم حاول مجدداً.",
+  "locationDenied": "نحتاج إذن الموقع لتحديد العنوان.",
+  "locationDeniedForever": "إذن الموقع مرفوض. فعّله من الإعدادات.",
+  "locationOpenSettings": "فتح الإعدادات",
+  "couponTitle": "كوبون الخصم",
+  "couponHint": "أضف كوبوناً إن وجد",
+  "couponHero": "خصمك يبدأ هنا",
+  "couponCodeLabel": "رمز الكوبون",
+  "couponCodeHint": "AMAR30",
+  "couponCheck": "تحقق",
+  "couponCheckNote": "التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في التسعيرة.",
+  "couponInvalidTitle": "الكوبون غير صالح",
+  "couponValidTitle": "الكوبون صالح",
+  "couponValidMessage": "سيُرسل الرمز مع طلب التسعيرة ليحسب الخادم الخصم النهائي.",
+  "couponValue": "القيمة",
+  "couponMaxDiscount": "أقصى خصم",
+  "couponMinTotal": "الحد الأدنى للطلب",
+  "couponUsesLeft": "الاستخدامات المتبقية",
+  "couponExpires": "ينتهي في",
+  "couponApply": "تطبيق الكوبون",
+  "couponRemove": "إزالة الكوبون {code}",
+  "@couponRemove": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "quoteTitle": "التسعيرة",
+  "quoteValidFor": "التسعيرة صالحة لمدة {time}",
+  "@quoteValidFor": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "quoteValidHint": "بعد انتهاء المدة يلزم طلب تسعيرة جديدة.",
+  "quoteDetailsTitle": "تفاصيل التسعيرة",
+  "quoteItemsTotal": "إجمالي المنتجات",
+  "quoteDeliveryFee": "رسوم التوصيل",
+  "quoteDiscount": "الخصم",
+  "quoteTotal": "الإجمالي النهائي",
+  "quoteDistance": "المسافة",
+  "quoteReview": "مراجعة الطلب",
+  "quoteExpiredTitle": "انتهت صلاحية التسعيرة",
+  "quoteUsedTitle": "التسعيرة مستخدمة مسبقاً",
+  "quoteExpiredMessage": "الأسعار تتغير، اطلب تسعيرة جديدة للمتابعة.",
+  "quoteRefresh": "طلب تسعيرة جديدة",
+  "quoteBackToCart": "العودة",
+  "reviewTitle": "مراجعة الطلب",
+  "reviewProducts": "المنتجات",
+  "reviewDeliveryPayment": "التوصيل والدفع",
+  "reviewConfirm": "تأكيد الطلب · {total}",
+  "@reviewConfirm": {
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "placeFailedTitle": "تعذّر إنشاء الطلب",
+  "placingTitle": "جارٍ إنشاء طلبك",
+  "placingMessage": "لا تغلق التطبيق. لن يتكرر الطلب حتى لو أعدت المحاولة.",
+  "successCaption": "تم إنشاء الطلب",
+  "successTitle": "طلبك في أيدٍ أمينة",
+  "successMessage": "يمكنك متابعة الحالة والتحديثات من صفحة طلباتي.",
+  "successOrderNumber": "رقم الطلب",
+  "successStatus": "الحالة",
+  "successDeliverTo": "التوصيل إلى",
+  "successTrack": "تتبع الطلب",
+  "successBackHome": "العودة للرئيسية",
+  "orderStepOf": "المرحلة {step} من {total}",
+  "@orderStepOf": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "orderRoute": "المسار",
+  "orderPickup": "الاستلام",
+  "orderDropoff": "التوصيل",
+  "orderPlaceUnknown": "غير محدد",
+  "orderDirections": "الاتجاهات",
+  "orderDetailsTitle": "تفاصيل الطلب",
+  "orderTimelineTitle": "سجل الطلب",
+  "orderDeliveryCode": "رمز التسليم",
+  "orderCancelledTitle": "تم إلغاء الطلب",
+  "offerPendingTitle": "لديك عرض سعر بانتظار موافقتك",
+  "offerPendingMessage": "راجع البنود ووافق أو ارفض العرض.",
+  "offerView": "عرض السعر",
+  "cancelOrder": "إلغاء الطلب",
+  "receiptTitle": "الإيصال",
+  "shareTitle": "مشاركة رابط التتبع",
+  "rateTitle": "تقييم الطلب",
+  "trackingDriverRating": "★ {rating}",
+  "@trackingDriverRating": {
+    "placeholders": {
+      "rating": {
+        "type": "String"
+      }
+    }
+  },
+  "cancelHint": "اختر سبب الإلغاء. لا يمكن التراجع بعد التأكيد.",
+  "cancelNote": "ملاحظة",
+  "cancelSubmit": "تأكيد الإلغاء",
+  "cancelConfirm": "هل أنت متأكد من إلغاء هذا الطلب؟",
+  "offerClosed": "تم التعامل مع هذا العرض.",
+  "offerItemUnavailable": "غير متوفر",
+  "offerApprove": "الموافقة",
+  "offerReject": "رفض العرض",
+  "offerApproveConfirm": "هل توافق على هذا العرض؟ سيبدأ تنفيذ الطلب.",
+  "offerRejectConfirm": "رفض العرض",
+  "offerRejectReason": "سبب الرفض (اختياري)",
+  "offerSubstitute": "بديل: {name} · {price}",
+  "@offerSubstitute": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "offerExpires": "ينتهي العرض {time}",
+  "@offerExpires": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "trackingEmptyTitle": "لا يوجد تتبع بعد",
+  "trackingEmptyMessage": "سيظهر التتبع عندما يستلم السائق طلبك.",
+  "trackingNoLocation": "لم يشارك السائق موقعه بعد",
+  "trackingOpenMap": "فتح في الخرائط",
+  "trackingNoDriver": "لم يتم تعيين سائق بعد.",
+  "trackingNextUpdate": "التحديث التالي",
+  "trackingEta": "الوصول المتوقع خلال {minutes} دقيقة",
+  "@trackingEta": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "trackingSeconds": "{seconds} ث",
+  "@trackingSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "receiptDate": "التاريخ",
+  "receiptDriver": "السائق",
+  "rateDriver": "كيف كانت تجربة التوصيل؟",
+  "rateStore": "تقييم المتجر (اختياري)",
+  "rateComment": "تعليق",
+  "rateCommentHint": "شاركنا رأيك (اختياري)",
+  "rateSubmit": "إرسال التقييم",
+  "shareIntroTitle": "شارك تتبع طلبك",
+  "shareIntroMessage": "أنشئ رابطاً مؤقتاً يتيح لأي شخص متابعة حالة الطلب دون تسجيل دخول.",
+  "shareCreate": "إنشاء رابط",
+  "shareCopy": "نسخ الرابط",
+  "shareCopied": "تم نسخ الرابط",
+  "shareRevoke": "إلغاء الرابط",
+  "shareExpires": "ينتهي الرابط {time}",
+  "@shareExpires": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "publicTrackingTitle": "تتبع طلب",
+  "publicTrackingLabel": "رابط أو رمز التتبع",
+  "publicTrackingHint": "https://…/track/…",
+  "publicTrackingOpen": "تتبع",
+  "publicTrackingEta": "الوصول المتوقع",
+  "publicTrackingUpdated": "آخر تحديث",
+  "addressEditTitle": "تعديل العنوان",
+  "accountEditProfile": "الملف الشخصي",
+  "accountEditProfileHint": "الاسم، الصورة، واللغة",
+  "accountAddresses": "العناوين المحفوظة",
+  "accountTerms": "الشروط وسياسة الخصوصية",
+  "accountDelete": "حذف الحساب",
+  "accountDeleteConfirm": "سيتم حذف حسابك وبياناتك نهائياً. هل أنت متأكد؟",
+  "vendorApplyTitle": "انضم كمتجر",
+  "vendorApplyHint": "قدّم طلب انضمام لمتجرك",
+  "supportTitle": "المساعدة والدعم",
+  "commonSave": "حفظ",
+  "addressesEmpty": "لا توجد عناوين محفوظة",
+  "addressDefault": "افتراضي",
+  "addressDeleteConfirm": "هل تريد حذف هذا العنوان؟",
+  "vendorApplyIntro": "عرّفنا بمتجرك وسيتواصل معك فريق عَمار لمراجعة الطلب.",
+  "vendorApplyBusiness": "اسم المتجر",
+  "vendorApplyBusinessHint": "مثال: متجر الأمل",
+  "vendorApplyContact": "اسم المسؤول",
+  "vendorApplyLocation": "إرفاق موقعي الحالي",
+  "vendorApplySubmit": "إرسال الطلب",
+  "vendorApplySentTitle": "تم إرسال طلبك",
+  "vendorApplySentMessage": "سنراجع الطلب ونتواصل معك قريباً.",
+  "commonRequired": "هذا الحقل مطلوب",
+  "supportCall": "اتصل بالدعم",
+  "supportOrderIssue": "مشكلة في طلب",
+  "supportOrderIssueHint": "افتح الطلب من طلباتي وتواصل مع السائق أو الدعم",
+  "driverLoginTitle": "دخول السائقين",
+  "driverLoginSubtitle": "استخدم رقم جوالك وكلمة المرور التي أعطتك إياها الإدارة.",
+  "driverPassword": "كلمة المرور",
+  "driverPasswordHint": "أدخل كلمة المرور",
+  "driverLoginSubmit": "تسجيل الدخول",
+  "driverIAmCustomer": "لست سائقاً؟ دخول العملاء",
+  "driverEntry": "أنت سائق؟ سجّل دخولك من هنا",
+  "driverCollect": "المبلغ المطلوب تحصيله",
+  "driverEarning": "أرباحك",
+  "driverLocationSending": "جارٍ إرسال موقعك...",
+  "driverLocationOk": "موقعك يُشارك بنجاح",
+  "driverLocationPermission": "نحتاج إذن الموقع للعمل",
+  "driverLocationPermissionHint": "اضغط للسماح أو فتح الإعدادات",
+  "driverLocationFailed": "تعذّر إرسال الموقع، اضغط لإعادة المحاولة",
+  "driverLocationLast": "آخر إرسال: {time}",
+  "@driverLocationLast": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "driverNavOrders": "المهام",
+  "driverNavWallet": "الأرباح",
+  "driverGreeting": "صباح الخير",
+  "driverOnline": "متصل",
+  "driverOffline": "غير متصل",
+  "driverOnlineHint": "تستقبل الطلبات الآن",
+  "driverOfflineHint": "ابدأ يومك عند الاستعداد",
+  "driverGoOnline": "بدء العمل",
+  "driverGoOffline": "إيقاف",
+  "driverCurrentTask": "المهمة الحالية",
+  "driverNoTask": "لا توجد مهمة حالية.",
+  "driverTodaySummary": "ملخص اليوم",
+  "driverTodayOrders": "طلبات اليوم",
+  "driverTodayEarnings": "أرباح اليوم",
+  "driverAvailable": "المتاحة",
+  "driverHistory": "السجل",
+  "driverNoAvailable": "لا توجد طلبات متاحة حالياً",
+  "driverNoHistory": "لا توجد طلبات سابقة",
+  "driverOrderTitle": "تفاصيل الطلب",
+  "driverReject": "رفض",
+  "driverRejectConfirm": "هل تريد رفض هذا الطلب؟",
+  "driverAlreadyTaken": "الطلب أُسند لسائق آخر",
+  "driverCustomer": "الزبون",
+  "driverDeliveredTitle": "تم التسليم بنجاح",
+  "driverDeliveredMessage": "أُضيف {amount} إلى أرباحك.",
+  "@driverDeliveredMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "driverActionConfirm": "تأكيد: {action}؟",
+  "@driverActionConfirm": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "driverProofPhoto": "صورة الإثبات",
+  "driverDeliveryCode": "رمز التسليم",
+  "driverDeliveryCodeHint": "اطلبه من الزبون",
+  "driverCashTitle": "النقد بحوزتك",
+  "driverCashLimit": "الحد الأقصى",
+  "driverCashRemaining": "المتبقي قبل الحد",
+  "driverUnsettled": "طلبات غير مسواة",
+  "driverCashLimitReached": "وصلت للحد الأقصى، سلّم النقد للإدارة لتستقبل طلبات جديدة.",
+  "driverSettlements": "التسويات",
+  "driverNoSettlements": "لا توجد تسويات بعد.",
+  "driverPeriodDay": "اليوم",
+  "driverPeriodWeek": "الأسبوع",
+  "driverPeriodMonth": "الشهر",
+  "driverEarnings": "الأرباح",
+  "driverEarningsHistory": "سجل الأرباح",
+  "driverProfileHint": "اللغة، المركبة، والصورة",
+  "driverVehicle": "نوع المركبة"
+}
