@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/customer/checkout_controller.dart';
 import '../../../core/constants/app_defaults.dart';
+import '../../../data/models/catalog/payment_option.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/utils/date_formatter.dart';
 import '../../../l10n/app_localizations.dart';
@@ -23,36 +24,41 @@ class DeliveryScreen extends GetView<CheckoutController> {
   Future<void> _pickSchedule(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
-    final asap = await showModalBottomSheet<bool>(
-      context: context,
-      builder: (sheet) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(LucideIcons.zap),
-              title: Text(l10n.scheduleNow),
-              onTap: () => Navigator.of(sheet).pop(true),
-            ),
-            ListTile(
-              leading: const Icon(LucideIcons.calendarClock),
-              title: Text(l10n.schedulePick),
-              onTap: () => Navigator.of(sheet).pop(false),
-            ),
-          ],
+    // Scheduled work starts from the next day; a service must be scheduled.
+    final firstDay = DateTime(now.year, now.month, now.day + 1);
+    if (!controller.isService) {
+      final asap = await showModalBottomSheet<bool>(
+        context: context,
+        builder: (sheet) => SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(LucideIcons.zap),
+                title: Text(l10n.scheduleNow),
+                onTap: () => Navigator.of(sheet).pop(true),
+              ),
+              ListTile(
+                leading: const Icon(LucideIcons.calendarClock),
+                title: Text(l10n.schedulePick),
+                onTap: () => Navigator.of(sheet).pop(false),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-    if (asap == null) return;
-    if (asap) {
-      controller.setSchedule(null);
-      return;
+      );
+      if (asap == null) return;
+      if (asap) {
+        controller.setSchedule(null);
+        return;
+      }
     }
     if (!context.mounted) return;
     final day = await showDatePicker(
       context: context,
-      firstDate: now,
-      lastDate: now.add(const Duration(days: AppDefaults.scheduleDaysAhead)),
+      firstDate: firstDay,
+      lastDate:
+          firstDay.add(const Duration(days: AppDefaults.scheduleDaysAhead)),
     );
     if (day == null || !context.mounted) return;
     final time = await showTimePicker(
@@ -67,19 +73,21 @@ class DeliveryScreen extends GetView<CheckoutController> {
 
   Future<void> _pickPayment(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
-    final picked = await showModalBottomSheet<String>(
+    final picked = await showModalBottomSheet<PaymentOption>(
       context: context,
       builder: (sheet) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            for (final method in controller.paymentMethods)
+            for (final option in controller.paymentOptions)
               ListTile(
-                title: Text(paymentLabel(l10n, method)),
-                trailing: method == controller.paymentMethod.value
+                title: Text(
+                  option.gateway?.name ?? paymentLabel(l10n, option.method),
+                ),
+                trailing: option.same(controller.payment)
                     ? const Icon(LucideIcons.check)
                     : null,
-                onTap: () => Navigator.of(sheet).pop(method),
+                onTap: () => Navigator.of(sheet).pop(option),
               ),
           ],
         ),
@@ -128,16 +136,19 @@ class DeliveryScreen extends GetView<CheckoutController> {
                     icon: LucideIcons.calendarClock,
                     title: l10n.deliveryTime,
                     value: schedule == null
-                        ? l10n.scheduleNow
+                        ? controller.isService
+                            ? l10n.scheduleChoose
+                            : l10n.scheduleNow
                         : DateFormatter.dayMonthTime(schedule, locale),
                     onTap: () => _pickSchedule(context),
                   ),
-                  if (controller.paymentMethods.isNotEmpty)
+                  if (controller.paymentOptions.isNotEmpty)
                     CheckoutRow(
                       icon: LucideIcons.banknote,
                       title: l10n.checkoutPayment,
-                      value: paymentLabel(l10n, controller.paymentMethod.value),
-                      onTap: controller.paymentMethods.length > 1
+                      value: controller.gateway.value?.name ??
+                          paymentLabel(l10n, controller.paymentMethod.value),
+                      onTap: controller.paymentOptions.length > 1
                           ? () => _pickPayment(context)
                           : null,
                     ),

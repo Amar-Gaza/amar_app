@@ -13,8 +13,10 @@ import '../../widgets/catalog/product_grid.dart';
 import '../../widgets/catalog/vendor_header.dart';
 import '../../widgets/common/error_view.dart';
 import '../../widgets/common/loading_view.dart';
+import '../../widgets/common/segment_item.dart';
+import '../../widgets/common/segmented_tabs.dart';
 
-/// Vendor page (designs 06 and 07): header, then products / hours / about.
+/// Vendor page: header, then products and/or services, hours and about.
 class VendorDetailsScreen extends GetView<VendorDetailsController> {
   const VendorDetailsScreen({super.key});
 
@@ -31,32 +33,36 @@ class VendorDetailsScreen extends GetView<VendorDetailsController> {
           );
         }
         if (vendor == null) return const LoadingView();
-        final tabs = <VendorTab, String>{
-          VendorTab.products: l10n.vendorTabProducts,
-          VendorTab.hours: l10n.vendorTabHours,
-          VendorTab.about: l10n.vendorTabAbout,
-        };
+        final tabs = [
+          if (controller.hasProducts.value || !controller.hasServices.value)
+            SegmentItem(
+              value: VendorTab.products,
+              label: l10n.vendorTabProducts,
+            ),
+          if (controller.hasServices.value)
+            SegmentItem(
+              value: VendorTab.services,
+              label: l10n.vendorTabServices,
+            ),
+          SegmentItem(value: VendorTab.hours, label: l10n.vendorTabHours),
+          SegmentItem(value: VendorTab.about, label: l10n.vendorTabAbout),
+        ];
         final header = Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             VendorHeader(vendor: vendor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: SegmentedButton<VendorTab>(
-                showSelectedIcon: false,
-                segments: [
-                  for (final entry in tabs.entries)
-                    ButtonSegment(value: entry.key, label: Text(entry.value)),
-                ],
-                selected: {controller.tab.value},
-                onSelectionChanged: (value) =>
-                    controller.tab.value = value.first,
+              child: SegmentedTabs<VendorTab>(
+                items: tabs,
+                selected: controller.tab.value,
+                onSelect: controller.selectTab,
               ),
             ),
           ],
         );
         return switch (controller.tab.value) {
-          VendorTab.products => ProductGrid(
+          VendorTab.products || VendorTab.services => ProductGrid(
               header: header,
               products: controller.items.toList(),
               isLoadingMore: controller.isLoadingMore.value,

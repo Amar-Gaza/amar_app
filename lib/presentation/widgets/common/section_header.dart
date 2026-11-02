@@ -21,7 +21,7 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.page),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [

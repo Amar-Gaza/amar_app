@@ -1,60 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
-import '../common/avatar_initial.dart';
-import '../catalog/cart_button.dart';
+import '../../../l10n/app_localizations.dart';
 import '../common/brand_wordmark.dart';
+import '../common/square_icon_button.dart';
 
-/// Wordmark at the start; notifications and the user avatar at the end.
+/// Brand, notifications and the location shortcut at the top of home.
 class HomeHeader extends StatelessWidget {
   const HomeHeader({
     super.key,
-    required this.userName,
-    required this.avatarUrl,
+    required this.hasUnread,
+    required this.locationLabel,
     required this.onNotifications,
-    required this.onAccount,
+    required this.onLocation,
   });
 
-  final String? userName;
-  final String? avatarUrl;
+  final bool hasUnread;
+  final String locationLabel;
   final VoidCallback onNotifications;
-  final VoidCallback onAccount;
+  final VoidCallback onLocation;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.md,
-        AppSpacing.lg,
-        AppSpacing.md,
+        AppSpacing.page,
+        AppSpacing.sm,
+        AppSpacing.page,
+        0,
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const BrandWordmark(),
-          const Spacer(),
-          const CartButton(),
-          SizedBox(
-            width: AppSizes.avatarSm,
-            height: AppSizes.avatarSm,
-            child: IconButton.outlined(
-              onPressed: onNotifications,
-              style: IconButton.styleFrom(
-                backgroundColor: context.scheme.surface,
-                side: BorderSide(color: colors.border),
+          Row(
+            children: [
+              const BrandWordmark(),
+              const Spacer(),
+              SquareIconButton(
+                icon: LucideIcons.bell,
+                onPressed: onNotifications,
+                showDot: hasUnread,
+                tooltip: AppLocalizations.of(context).navNotifications,
               ),
-              icon: Icon(LucideIcons.bell,
-                  size: AppSizes.iconSm, color: colors.ink),
-            ),
+            ],
           ),
-          const SizedBox(width: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.sm),
           GestureDetector(
-            onTap: onAccount,
-            child: AvatarInitial(name: userName, imageUrl: avatarUrl),
+            onTap: onLocation,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  LucideIcons.mapPin,
+                  size: AppSpacing.lg,
+                  color: colors.brand,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  locationLabel,
+                  style:
+                      context.text.labelMedium?.copyWith(color: colors.brand),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../app/routes/route_args.dart';
+import '../../../core/constants/api_query.dart';
 import '../../../controllers/customer/cart_controller.dart';
 import '../../../controllers/customer/product_controller.dart';
 import '../../../data/models/cart/cart_item.dart';
@@ -12,9 +13,10 @@ import '../common/confirmation_dialog.dart';
 
 /// UI side of adding to the cart: vendor conflict and confirmation.
 abstract final class AddToCartFlow {
-  /// Quick add from a grid. Products with options open their page.
+  /// Quick add from a grid. Services and products with options open their
+  /// page, because a service is requested there and never joins the cart.
   static Future<void> quickAdd(BuildContext context, Product product) async {
-    if (product.options.isNotEmpty) {
+    if (product.options.isNotEmpty || product.kind == ProductKinds.service) {
       await Get.toNamed<void>(
         AppRoutes.product,
         arguments: ProductArgs(product.id),

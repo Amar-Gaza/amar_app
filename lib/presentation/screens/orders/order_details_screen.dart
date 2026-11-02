@@ -23,9 +23,11 @@ import '../../widgets/common/state_tone.dart';
 import '../../widgets/orders/person_card.dart';
 import '../../widgets/orders/route_card.dart';
 import '../../widgets/orders/section_card.dart';
+import '../../widgets/orders/service_quote_card.dart';
 import '../../widgets/orders/status_chip.dart';
 import '../../widgets/orders/status_progress.dart';
 import '../../widgets/orders/timeline_list.dart';
+import '../../widgets/orders/transfer_receipt_card.dart';
 
 /// Order details and timeline (designs 05, 06).
 class OrderDetailsScreen extends GetView<OrderDetailsController> {
@@ -104,12 +106,23 @@ class OrderDetailsScreen extends GetView<OrderDetailsController> {
                 ],
               ),
               const SizedBox(height: AppSpacing.md),
-              if (!order.status.isTerminal)
+              if (!order.status.isTerminal && controller.progress.$2 >= 0)
                 StatusProgress(
-                  step: order.status.step,
-                  total: controller.lastStep,
+                  step: controller.progress.$2 + 1,
+                  total: controller.progress.$1,
                 ),
               const SizedBox(height: AppSpacing.md),
+              if (controller.openQuote case final quote?) ...[
+                ServiceQuoteCard(quote: quote, controller: controller),
+                const SizedBox(height: AppSpacing.md),
+              ],
+              if (controller.needsReceipt) ...[
+                TransferReceiptCard(
+                  payment: order.payment,
+                  controller: controller,
+                ),
+                const SizedBox(height: AppSpacing.md),
+              ],
               if (controller.hasOffer) ...[
                 InkWell(
                   onTap: () => _open(AppRoutes.orderOffer),

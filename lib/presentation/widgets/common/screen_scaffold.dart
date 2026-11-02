@@ -30,17 +30,17 @@ class ScreenScaffold extends StatelessWidget {
                 children: [
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(AppSpacing.xl),
+                      padding: const EdgeInsets.all(AppSpacing.page),
                       child: child,
                     ),
                   ),
                   if (bottom != null)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
-                        AppSpacing.xl,
+                        AppSpacing.page,
                         0,
-                        AppSpacing.xl,
-                        AppSpacing.xl,
+                        AppSpacing.page,
+                        AppSpacing.page,
                       ),
                       child: bottom,
                     ),

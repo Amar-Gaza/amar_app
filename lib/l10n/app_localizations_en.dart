@@ -9,7 +9,13 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get statusAwaitingPayment => 'Awaiting payment';
+
+  @override
   String get statusAwaitingPricing => 'Waiting for a price';
+
+  @override
+  String get statusPaymentReview => 'Payment review';
 
   @override
   String get statusPriced => 'Priced';
@@ -42,6 +48,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statusCancelled => 'Cancelled';
 
   @override
+  String get statusServiceRequested => 'Service requested';
+
+  @override
+  String get statusServiceInspection => 'Waiting for the store\'s price';
+
+  @override
+  String get statusServiceQuoted => 'Price sent';
+
+  @override
+  String get statusServiceScheduled => 'Visit scheduled';
+
+  @override
+  String get statusTechnicianOnWay => 'Technician on the way';
+
+  @override
+  String get statusServiceInProgress => 'Work in progress';
+
+  @override
+  String get statusServiceCompleted => 'Service completed';
+
+  @override
   String get actionAwaitingVendorToPreparingVendor => 'Accept order';
 
   @override
@@ -54,10 +81,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionPendingToAcceptedDriver => 'Accept order';
 
   @override
+  String get actionServiceRequestedToServiceScheduledVendor =>
+      'Accept the request';
+
+  @override
+  String get actionServiceInspectionToServiceQuotedVendor => 'Send the price';
+
+  @override
+  String get actionServiceQuotedToServiceScheduledUser => 'Accept the price';
+
+  @override
+  String get actionServiceScheduledToTechnicianOnWayVendor =>
+      'Technician on the way';
+
+  @override
+  String get actionTechnicianOnWayToServiceInProgressVendor => 'Start the work';
+
+  @override
+  String get actionServiceInProgressToServiceCompletedVendor =>
+      'Complete the service';
+
+  @override
+  String get actionPaymentReviewToPendingAdmin => 'Approve payment';
+
+  @override
+  String get actionAwaitingPaymentToPaymentReviewUser =>
+      'Send transfer receipt';
+
+  @override
+  String get actionPaymentReviewToPendingVendor => 'Approve payment';
+
+  @override
+  String get actionPricedToAwaitingPaymentUser => 'Approve the price and pay';
+
+  @override
+  String get actionServiceQuotedToAwaitingPaymentUser => 'Accept the price';
+
+  @override
+  String get actionPaymentReviewToServiceRequestedAdmin => 'Approve payment';
+
+  @override
+  String get actionPaymentReviewToServiceRequestedVendor => 'Approve payment';
+
+  @override
+  String get actionPaymentReviewToServiceScheduledAdmin => 'Approve payment';
+
+  @override
+  String get actionPaymentReviewToServiceScheduledVendor => 'Approve payment';
+
+  @override
   String get actionAcceptedToPickedUpDriver => 'Picked up';
 
   @override
   String get confirmAcceptedToPickedUpDriver => 'Did you pick up the order?';
+
+  @override
+  String get actionPaymentReviewToAwaitingPaymentAdmin =>
+      'Ask for a new receipt';
+
+  @override
+  String get actionPaymentReviewToAwaitingPaymentVendor =>
+      'Ask for a new receipt';
 
   @override
   String get actionPickedUpToOnTheWayDriver => 'Head to customer';
@@ -83,6 +167,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionAwaitingPricingToCancelledUser => 'Cancel order';
+
+  @override
+  String get actionServiceQuotedToCancelledUser => 'Reject the price';
+
+  @override
+  String get actionServiceRequestedToCancelledVendor => 'Decline the request';
+
+  @override
+  String get actionServiceInspectionToCancelledVendor => 'Decline the request';
+
+  @override
+  String get actionServiceScheduledToCancelledVendor => 'Cancel the visit';
 
   @override
   String get actionAcceptedToCancelledUser => 'Cancel order';
@@ -217,7 +313,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Temporary failure (chaos mode), please retry';
 
   @override
-  String get splashTagline => 'Building trust, and keeping it.';
+  String get splashTagline => 'Built with our own hands';
 
   @override
   String get onboardingTitle => 'Trusted home services, made easy';
@@ -431,7 +527,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navAccount => 'Account';
 
   @override
-  String get homeSearchHint => 'What service are you looking for?';
+  String get homeSearchHint => 'Search for a service, product or store';
 
   @override
   String get homeVendorsTitle => 'Suggested providers';
@@ -1581,4 +1677,219 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get driverVehicle => 'Vehicle type';
+
+  @override
+  String get onboarding1Title => 'Everything your home needs';
+
+  @override
+  String get onboarding1Body =>
+      'Building, electrical and tool supplies from trusted stores, with clear prices and guaranteed quality.';
+
+  @override
+  String get onboarding2Title => 'Outstanding home services';
+
+  @override
+  String get onboarding2Body =>
+      'Plumbing, electrical, cooling and more. Book easily with certified professionals.';
+
+  @override
+  String get onboarding3Title => 'Fast, reliable delivery';
+
+  @override
+  String get onboarding3Body =>
+      'Follow your order moment by moment and receive it at your door on time.';
+
+  @override
+  String get commonNext => 'Next';
+
+  @override
+  String get commonSkip => 'Skip';
+
+  @override
+  String get commonSoon => 'Coming soon';
+
+  @override
+  String get authSignupTitle => 'Welcome to Amar';
+
+  @override
+  String get authSignupSubtitle =>
+      'Create your account in a minute and start building your home.';
+
+  @override
+  String get authLoginTitle => 'Glad to see you again';
+
+  @override
+  String get authLoginSubtitle => 'Sign in to follow your orders.';
+
+  @override
+  String get authTabSignup => 'Create account';
+
+  @override
+  String get authTabLogin => 'Sign in';
+
+  @override
+  String get authNameLabel => 'Full name';
+
+  @override
+  String get authNameHint => 'Example: Sami Ahmad';
+
+  @override
+  String get authSignupSubmit => 'Create account';
+
+  @override
+  String get authLoginSubmit => 'Sign in';
+
+  @override
+  String get authDriverTitle => 'Are you a driver?';
+
+  @override
+  String get authDriverSubtitle => 'Sign in here';
+
+  @override
+  String get consentAgree => 'I agree to the ';
+
+  @override
+  String get otpConfirmTitle => 'Confirm your phone';
+
+  @override
+  String get otpSentTo => 'We sent a 4-digit code to ';
+
+  @override
+  String get otpResendIn => 'Resend in ';
+
+  @override
+  String get otpResendAction => 'Did not get the code? Resend';
+
+  @override
+  String get otpVerifyAction => 'Verify';
+
+  @override
+  String get profileCompleteTitle => 'Complete your profile';
+
+  @override
+  String get profileCompleteSubtitle =>
+      'One last step so drivers and stores can reach you easily.';
+
+  @override
+  String get profileFullNameHint => 'Name';
+
+  @override
+  String get locationTitle => 'Where do we deliver?';
+
+  @override
+  String get locationSubtitle =>
+      'Set your location to see nearby stores and services.';
+
+  @override
+  String get locationUseCurrent => 'Use my current location';
+
+  @override
+  String get driverDesignTitle => 'Driver sign-in';
+
+  @override
+  String get driverDesignSubtitle =>
+      'Sign in with your phone and the password Amar gave you.';
+
+  @override
+  String get driverDesignPasswordHint => 'Driver password';
+
+  @override
+  String get driverDesignCustomer => 'I am a customer — back to sign-in';
+
+  @override
+  String get homeSetLocation => 'Set your location';
+
+  @override
+  String get homeOrderHint => 'Tap to follow your order';
+
+  @override
+  String get homeMostOrdered => 'Most ordered';
+
+  @override
+  String get homeStoresTitle => 'Stores';
+
+  @override
+  String get homeCompaniesTitle => 'Company services';
+
+  @override
+  String get homeProvidersEmpty => 'Nothing to show here yet';
+
+  @override
+  String get promoTitle => '15% off maintenance';
+
+  @override
+  String get promoSubtitle => 'On your first service booking';
+
+  @override
+  String get promoAction => 'Book now';
+
+  @override
+  String get navCart => 'Cart';
+
+  @override
+  String get priceAfterInspection => 'After inspection';
+
+  @override
+  String get vendorTabServices => 'Services';
+
+  @override
+  String get addressPickOnMap => 'Pick on the map';
+
+  @override
+  String get mapPickerTitle => 'Pick the location on the map';
+
+  @override
+  String get mapPickerConfirm => 'Confirm location';
+
+  @override
+  String get serviceRequestAction => 'Request service';
+
+  @override
+  String get scheduleChoose => 'Choose a time';
+
+  @override
+  String get paymentBankTransfer => 'Bank transfer';
+
+  @override
+  String get serviceQuoteTitle => 'Service price';
+
+  @override
+  String get serviceQuoteLabor => 'Labor';
+
+  @override
+  String get serviceQuoteTotal => 'Total';
+
+  @override
+  String get serviceQuoteVisit => 'Visit time';
+
+  @override
+  String get serviceQuoteAccept => 'Accept price';
+
+  @override
+  String get serviceQuoteReject => 'Reject price';
+
+  @override
+  String get serviceQuoteRejectConfirm => 'Reject this price?';
+
+  @override
+  String get transferTitle => 'Send transfer receipt';
+
+  @override
+  String get transferHint =>
+      'Transfer the amount to this account, then upload the receipt image.';
+
+  @override
+  String get transferBank => 'Provider';
+
+  @override
+  String get transferHolder => 'Account holder';
+
+  @override
+  String get transferAccount => 'Account number';
+
+  @override
+  String get transferFixNeeded => 'The receipt needs correcting';
+
+  @override
+  String get transferUpload => 'Upload receipt image';
 }

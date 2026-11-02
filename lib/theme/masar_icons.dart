@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 /// Masar icon name (from /app/config statuses[].icon) → Lucide icon.
 const Map<String, IconData> masarIcons = {
+  'wallet': LucideIcons.wallet,
   'receipt': LucideIcons.receipt,
   'badge-check': LucideIcons.badgeCheck,
   'store': LucideIcons.store,
@@ -15,6 +16,11 @@ const Map<String, IconData> masarIcons = {
   'bike': LucideIcons.bike,
   'map-pin': LucideIcons.mapPin,
   'circle-x': LucideIcons.circleX,
+  'clipboard-list': LucideIcons.clipboardList,
+  'search': LucideIcons.search,
+  'calendar-check': LucideIcons.calendarCheck,
+  'truck': LucideIcons.truck,
+  'wrench': LucideIcons.wrench,
 };
 
 IconData masarIcon(String name) => masarIcons[name] ?? LucideIcons.circle;

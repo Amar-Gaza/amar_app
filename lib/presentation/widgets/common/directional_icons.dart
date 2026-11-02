@@ -7,7 +7,7 @@ abstract final class DirectionalIcons {
       Directionality.of(context) == TextDirection.rtl;
 
   static IconData back(BuildContext context) =>
-      _rtl(context) ? LucideIcons.arrowRight : LucideIcons.arrowLeft;
+      _rtl(context) ? LucideIcons.chevronRight : LucideIcons.chevronLeft;
 
   static IconData forward(BuildContext context) =>
       _rtl(context) ? LucideIcons.chevronLeft : LucideIcons.chevronRight;

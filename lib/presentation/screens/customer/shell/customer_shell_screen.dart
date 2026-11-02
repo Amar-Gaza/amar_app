@@ -6,8 +6,8 @@ import '../../../../controllers/shared/connectivity_controller.dart';
 import '../../../widgets/common/offline_banner.dart';
 import '../../../widgets/shell/customer_bottom_nav.dart';
 import '../account/account_tab.dart';
+import '../cart/cart_tab.dart';
 import '../home/home_tab.dart';
-import '../notifications/notifications_tab.dart';
 import '../orders/orders_tab.dart';
 
 /// Customer app frame: offline strip, the active tab and the bottom nav.
@@ -29,11 +29,14 @@ class CustomerShellScreen extends GetView<ShellController> {
                 removeTop: connectivity.isOffline.value,
                 child: IndexedStack(
                   index: controller.tab.value.index,
-                  children: const [
-                    HomeTab(),
-                    OrdersTab(),
-                    NotificationsTab(),
-                    AccountTab(),
+                  children: [
+                    const HomeTab(),
+                    const OrdersTab(),
+                    if (controller.tab.value == CustomerTab.cart)
+                      const CartTab()
+                    else
+                      const SizedBox.shrink(),
+                    const AccountTab(),
                   ],
                 ),
               ),

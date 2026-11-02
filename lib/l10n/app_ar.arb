@@ -1,8 +1,16 @@
 {
   "@@locale": "ar",
+  "statusAwaitingPayment": "بانتظار الدفع",
+  "@statusAwaitingPayment": {
+    "description": "Order status \"awaiting_payment\""
+  },
   "statusAwaitingPricing": "بانتظار التسعير",
   "@statusAwaitingPricing": {
     "description": "Order status \"awaiting_pricing\""
+  },
+  "statusPaymentReview": "مراجعة الدفع",
+  "@statusPaymentReview": {
+    "description": "Order status \"payment_review\""
   },
   "statusPriced": "تم التسعير",
   "@statusPriced": {
@@ -44,6 +52,34 @@
   "@statusCancelled": {
     "description": "Order status \"cancelled\""
   },
+  "statusServiceRequested": "تم طلب الخدمة",
+  "@statusServiceRequested": {
+    "description": "Order status \"service_requested\""
+  },
+  "statusServiceInspection": "بانتظار سعر المتجر",
+  "@statusServiceInspection": {
+    "description": "Order status \"service_inspection\""
+  },
+  "statusServiceQuoted": "تم إرسال السعر",
+  "@statusServiceQuoted": {
+    "description": "Order status \"service_quoted\""
+  },
+  "statusServiceScheduled": "تم تحديد موعد الزيارة",
+  "@statusServiceScheduled": {
+    "description": "Order status \"service_scheduled\""
+  },
+  "statusTechnicianOnWay": "الفنّي في الطريق",
+  "@statusTechnicianOnWay": {
+    "description": "Order status \"technician_on_way\""
+  },
+  "statusServiceInProgress": "جارٍ تنفيذ العمل",
+  "@statusServiceInProgress": {
+    "description": "Order status \"service_in_progress\""
+  },
+  "statusServiceCompleted": "اكتملت الخدمة",
+  "@statusServiceCompleted": {
+    "description": "Order status \"service_completed\""
+  },
   "actionAwaitingVendorToPreparingVendor": "قبول الطلب",
   "@actionAwaitingVendorToPreparingVendor": {
     "description": "Button for awaiting_vendor → preparing (vendor)"
@@ -60,6 +96,66 @@
   "@actionPendingToAcceptedDriver": {
     "description": "Button for pending → accepted (driver)"
   },
+  "actionServiceRequestedToServiceScheduledVendor": "قبول الطلب",
+  "@actionServiceRequestedToServiceScheduledVendor": {
+    "description": "Button for service_requested → service_scheduled (vendor)"
+  },
+  "actionServiceInspectionToServiceQuotedVendor": "إرسال السعر",
+  "@actionServiceInspectionToServiceQuotedVendor": {
+    "description": "Button for service_inspection → service_quoted (vendor)"
+  },
+  "actionServiceQuotedToServiceScheduledUser": "الموافقة على السعر",
+  "@actionServiceQuotedToServiceScheduledUser": {
+    "description": "Button for service_quoted → service_scheduled (user)"
+  },
+  "actionServiceScheduledToTechnicianOnWayVendor": "الفنّي في الطريق",
+  "@actionServiceScheduledToTechnicianOnWayVendor": {
+    "description": "Button for service_scheduled → technician_on_way (vendor)"
+  },
+  "actionTechnicianOnWayToServiceInProgressVendor": "بدء العمل",
+  "@actionTechnicianOnWayToServiceInProgressVendor": {
+    "description": "Button for technician_on_way → service_in_progress (vendor)"
+  },
+  "actionServiceInProgressToServiceCompletedVendor": "إنهاء الخدمة",
+  "@actionServiceInProgressToServiceCompletedVendor": {
+    "description": "Button for service_in_progress → service_completed (vendor)"
+  },
+  "actionPaymentReviewToPendingAdmin": "اعتماد الدفع",
+  "@actionPaymentReviewToPendingAdmin": {
+    "description": "Button for payment_review → pending (admin)"
+  },
+  "actionAwaitingPaymentToPaymentReviewUser": "إرسال إشعار التحويل",
+  "@actionAwaitingPaymentToPaymentReviewUser": {
+    "description": "Button for awaiting_payment → payment_review (user)"
+  },
+  "actionPaymentReviewToPendingVendor": "اعتماد الدفع",
+  "@actionPaymentReviewToPendingVendor": {
+    "description": "Button for payment_review → pending (vendor)"
+  },
+  "actionPricedToAwaitingPaymentUser": "الموافقة على السعر والدفع",
+  "@actionPricedToAwaitingPaymentUser": {
+    "description": "Button for priced → awaiting_payment (user)"
+  },
+  "actionServiceQuotedToAwaitingPaymentUser": "الموافقة على السعر",
+  "@actionServiceQuotedToAwaitingPaymentUser": {
+    "description": "Button for service_quoted → awaiting_payment (user)"
+  },
+  "actionPaymentReviewToServiceRequestedAdmin": "اعتماد الدفع",
+  "@actionPaymentReviewToServiceRequestedAdmin": {
+    "description": "Button for payment_review → service_requested (admin)"
+  },
+  "actionPaymentReviewToServiceRequestedVendor": "اعتماد الدفع",
+  "@actionPaymentReviewToServiceRequestedVendor": {
+    "description": "Button for payment_review → service_requested (vendor)"
+  },
+  "actionPaymentReviewToServiceScheduledAdmin": "اعتماد الدفع",
+  "@actionPaymentReviewToServiceScheduledAdmin": {
+    "description": "Button for payment_review → service_scheduled (admin)"
+  },
+  "actionPaymentReviewToServiceScheduledVendor": "اعتماد الدفع",
+  "@actionPaymentReviewToServiceScheduledVendor": {
+    "description": "Button for payment_review → service_scheduled (vendor)"
+  },
   "actionAcceptedToPickedUpDriver": "استلمت الطلب",
   "@actionAcceptedToPickedUpDriver": {
     "description": "Button for accepted → picked_up (driver)"
@@ -67,6 +163,14 @@
   "confirmAcceptedToPickedUpDriver": "متأكد إنك استلمت الطلب؟",
   "@confirmAcceptedToPickedUpDriver": {
     "description": "Confirmation before accepted → picked_up"
+  },
+  "actionPaymentReviewToAwaitingPaymentAdmin": "طلب تصحيح الإشعار",
+  "@actionPaymentReviewToAwaitingPaymentAdmin": {
+    "description": "Button for payment_review → awaiting_payment (admin)"
+  },
+  "actionPaymentReviewToAwaitingPaymentVendor": "طلب تصحيح الإشعار",
+  "@actionPaymentReviewToAwaitingPaymentVendor": {
+    "description": "Button for payment_review → awaiting_payment (vendor)"
   },
   "actionPickedUpToOnTheWayDriver": "انطلقت للزبون",
   "@actionPickedUpToOnTheWayDriver": {
@@ -99,6 +203,22 @@
   "actionAwaitingPricingToCancelledUser": "إلغاء الطلب",
   "@actionAwaitingPricingToCancelledUser": {
     "description": "Button for awaiting_pricing → cancelled (user)"
+  },
+  "actionServiceQuotedToCancelledUser": "رفض السعر",
+  "@actionServiceQuotedToCancelledUser": {
+    "description": "Button for service_quoted → cancelled (user)"
+  },
+  "actionServiceRequestedToCancelledVendor": "رفض الطلب",
+  "@actionServiceRequestedToCancelledVendor": {
+    "description": "Button for service_requested → cancelled (vendor)"
+  },
+  "actionServiceInspectionToCancelledVendor": "رفض الطلب",
+  "@actionServiceInspectionToCancelledVendor": {
+    "description": "Button for service_inspection → cancelled (vendor)"
+  },
+  "actionServiceScheduledToCancelledVendor": "إلغاء الزيارة",
+  "@actionServiceScheduledToCancelledVendor": {
+    "description": "Button for service_scheduled → cancelled (vendor)"
   },
   "actionAcceptedToCancelledUser": "إلغاء الطلب",
   "@actionAcceptedToCancelledUser": {
@@ -268,7 +388,7 @@
   "@errorChaosInjected": {
     "description": "Message for the API error code \"chaos_injected\""
   },
-  "splashTagline": "نبني الثقة، ونصونها.",
+  "splashTagline": "بإيدينا بنعمّرها",
   "onboardingTitle": "خدمات منزلية موثوقة بكل سهولة",
   "onboardingSubtitle": "من التنظيف والصيانة إلى خدمات السباكة والكهرباء وأكثر.",
   "onboardingStart": "ابدأ الآن",
@@ -302,7 +422,7 @@
   "validationPhoneInvalid": "رقم الجوال غير صحيح",
   "validationNameInvalid": "الاسم يجب أن يكون حرفين على الأقل",
   "validationOtpIncomplete": "أدخل الرمز كاملاً",
-  "brandName": "عَمار",
+  "brandName": "عَمَار",
   "splashFooter": "عَمار · كل ما يحتاجه بيتك",
   "configLoadingTitle": "نجهّز تجربتك",
   "configLoadingMessage": "جارٍ تحميل إعدادات التطبيق والخدمات المتاحة...",
@@ -337,7 +457,7 @@
   "navOrders": "طلباتي",
   "navNotifications": "الإشعارات",
   "navAccount": "حسابي",
-  "homeSearchHint": "ما الخدمة التي تبحث عنها؟",
+  "homeSearchHint": "ابحث عن خدمة أو منتج أو متجر",
   "homeVendorsTitle": "مزوّدون مقترحون",
   "homeVendorsSubtitle": "مختارون بعناية لك",
   "homeProductsTitle": "منتجات شائعة",
@@ -915,5 +1035,74 @@
   "driverEarnings": "الأرباح",
   "driverEarningsHistory": "سجل الأرباح",
   "driverProfileHint": "اللغة، المركبة، والصورة",
-  "driverVehicle": "نوع المركبة"
+  "driverVehicle": "نوع المركبة",
+  "onboarding1Title": "كل ما يحتاجه بيتك",
+  "onboarding1Body": "مواد بناء وكهرباء وأدوات من متاجر موثوقة، بأسعار واضحة وجودة مضمونة.",
+  "onboarding2Title": "خدمات منزلية متميزة",
+  "onboarding2Body": "سباكة وكهرباء وتبريد وأكثر — احجز خدمتك بسهولة مع محترفين معتمدين.",
+  "onboarding3Title": "توصيل سريع وموثوق",
+  "onboarding3Body": "تابع طلبك لحظة بلحظة واستلمه عند باب بيتك في الوقت المحدد.",
+  "commonNext": "التالي",
+  "commonSkip": "تخطّي",
+  "commonSoon": "قريباً",
+  "authSignupTitle": "أهلاً بك في عَمَار",
+  "authSignupSubtitle": "أنشئ حسابك خلال دقيقة وابدأ بتعمير بيتك.",
+  "authLoginTitle": "سعداء بعودتك",
+  "authLoginSubtitle": "سجّل دخولك لمتابعة طلباتك.",
+  "authTabSignup": "إنشاء حساب",
+  "authTabLogin": "تسجيل الدخول",
+  "authNameLabel": "الاسم الكامل",
+  "authNameHint": "مثال: سامي أحمد",
+  "authSignupSubmit": "إنشاء الحساب",
+  "authLoginSubmit": "تسجيل الدخول",
+  "authDriverTitle": "هل أنت سائق؟",
+  "authDriverSubtitle": "سجّل دخولك من هنا",
+  "consentAgree": "أوافق على ",
+  "otpConfirmTitle": "تأكيد رقم الجوال",
+  "otpSentTo": "أرسلنا رمزاً من 4 أرقام إلى ",
+  "otpResendIn": "إعادة الإرسال بعد ",
+  "otpResendAction": "لم يصلك الرمز؟ أعد الإرسال",
+  "otpVerifyAction": "تحقّق",
+  "profileCompleteTitle": "أكمل ملفك الشخصي",
+  "profileCompleteSubtitle": "خطوة أخيرة ليسهل على السائق والمتاجر التواصل معك.",
+  "profileFullNameHint": "الاسم",
+  "locationTitle": "أين نوصّل طلباتك؟",
+  "locationSubtitle": "حدّد موقعك لنعرض لك المتاجر والخدمات القريبة منك.",
+  "locationUseCurrent": "استخدام موقعي الحالي",
+  "driverDesignTitle": "دخول السائق",
+  "driverDesignSubtitle": "سجّل دخولك برقم جوالك وكلمة المرور التي زوّدتك بها عَمَار.",
+  "driverDesignPasswordHint": "كلمة مرور السائق",
+  "driverDesignCustomer": "أنا زبون — العودة لتسجيل الدخول",
+  "homeSetLocation": "حدّد موقعك",
+  "homeOrderHint": "اضغط لمتابعة طلبك",
+  "homeMostOrdered": "الأكثر طلباً",
+  "homeStoresTitle": "المتاجر",
+  "homeCompaniesTitle": "خدمات الشركات",
+  "homeProvidersEmpty": "لا يوجد ما نعرضه هنا حالياً",
+  "promoTitle": "خصم 15% على الصيانة",
+  "promoSubtitle": "على أول حجز خدمة لك",
+  "promoAction": "احجز الآن",
+  "navCart": "السلة",
+  "priceAfterInspection": "بعد المعاينة",
+  "vendorTabServices": "الخدمات",
+  "addressPickOnMap": "تحديد على الخريطة",
+  "mapPickerTitle": "حدّد الموقع على الخريطة",
+  "mapPickerConfirm": "تأكيد الموقع",
+  "serviceRequestAction": "اطلب الخدمة",
+  "scheduleChoose": "اختر الموعد",
+  "paymentBankTransfer": "تحويل بنكي",
+  "serviceQuoteTitle": "سعر الخدمة",
+  "serviceQuoteLabor": "أجرة العمل",
+  "serviceQuoteTotal": "الإجمالي",
+  "serviceQuoteVisit": "موعد الزيارة",
+  "serviceQuoteAccept": "موافقة على السعر",
+  "serviceQuoteReject": "رفض السعر",
+  "serviceQuoteRejectConfirm": "هل تريد رفض هذا السعر؟",
+  "transferTitle": "إرسال إشعار التحويل",
+  "transferHint": "حوّل المبلغ إلى الحساب التالي ثم ارفع صورة الإشعار.",
+  "transferBank": "الجهة",
+  "transferHolder": "صاحب الحساب",
+  "transferAccount": "رقم الحساب",
+  "transferFixNeeded": "يلزم تصحيح الإشعار",
+  "transferUpload": "رفع صورة الإشعار"
 }

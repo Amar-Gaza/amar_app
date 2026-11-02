@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_radius.dart';
+import '../../../core/constants/app_durations.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
+import 'nav_badge.dart';
 
+/// Tab icon and label. The active tab's icon moves into the floating bubble.
 class NavItem extends StatelessWidget {
   const NavItem({
     super.key,
@@ -12,42 +14,49 @@ class NavItem extends StatelessWidget {
     required this.label,
     required this.selected,
     required this.onTap,
+    this.badge = 0,
   });
 
   final IconData icon;
   final String label;
   final bool selected;
   final VoidCallback onTap;
+  final int badge;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.appColors;
-    return InkWell(
+    final color = selected ? colors.brand : colors.subtleText;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+        padding: const EdgeInsets.only(bottom: AppSpacing.md),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-              width: AppSizes.navIndicatorWidth,
-              height: AppSizes.navIndicatorHeight,
-              decoration: BoxDecoration(
-                color: selected ? colors.brandSoft : null,
-                borderRadius: AppRadius.pillAll,
-              ),
-              child: Icon(
-                icon,
-                size: AppSizes.iconSm,
-                color: selected ? colors.brand : colors.subtleText,
+            AnimatedOpacity(
+              opacity: selected ? 0 : 1,
+              duration: AppDurations.dot,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Icon(icon, size: AppSizes.iconMd, color: color),
+                  if (badge > 0)
+                    PositionedDirectional(
+                      top: -AppSpacing.sm,
+                      end: -AppSpacing.md,
+                      child: NavBadge(count: badge),
+                    ),
+                ],
               ),
             ),
             const SizedBox(height: AppSpacing.xs),
             Text(
               label,
               style: context.text.labelSmall?.copyWith(
-                color: selected ? colors.ink : colors.mutedText,
-                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                color: color,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],

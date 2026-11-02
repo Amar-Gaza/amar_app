@@ -66,7 +66,7 @@ class CategoriesScreen extends GetView<CategoriesController> {
                     onTap: () => Get.toNamed<void>(
                       AppRoutes.products,
                       arguments: ProductsArgs(
-                        categoryId: category.id,
+                        categoryIds: category.ids,
                         title: category.name.trim(),
                       ),
                     ),

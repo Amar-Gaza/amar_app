@@ -19,14 +19,18 @@ class AuthController extends GetxController {
   final AuthService _auth;
   final SessionController _session;
 
+  final TextEditingController nameInput = TextEditingController();
   final TextEditingController phoneInput = TextEditingController();
   final TextEditingController otpInput = TextEditingController();
   final RxString otpCode = ''.obs;
-  final RxInt otpLength = ApiRules.defaultOtpLength.obs;
+  final RxBool isSignup = true.obs;
+  final RxBool hasConsent = false.obs;
+  final RxBool canSubmit = false.obs;
   final RxInt secondsLeft = 0.obs;
   final RxBool isSubmitting = false.obs;
   final RxString fullPhone = ''.obs;
   final Rxn<ApiFailure> failure = Rxn<ApiFailure>();
+  final Rxn<FieldIssue> nameIssue = Rxn<FieldIssue>();
   final Rxn<FieldIssue> phoneIssue = Rxn<FieldIssue>();
   final Rxn<FieldIssue> otpIssue = Rxn<FieldIssue>();
   Timer? _timer;
@@ -35,12 +39,40 @@ class AuthController extends GetxController {
   bool get isOtpExpired => failure.value?.code == ApiErrorCodes.otpExpired;
   bool get canResend => secondsLeft.value <= 0;
   bool get isVerifying =>
-      isSubmitting.value && otpCode.value.length == otpLength.value;
+      isSubmitting.value && otpCode.value.length == ApiRules.otpLength;
+
+  @override
+  void onInit() {
+    super.onInit();
+    nameInput.addListener(_refreshForm);
+    phoneInput.addListener(_refreshForm);
+  }
+
+  void setSignup(bool value) {
+    isSignup.value = value;
+    failure.value = null;
+    nameIssue.value = null;
+    phoneIssue.value = null;
+    _refreshForm();
+  }
+
+  void setConsent(bool value) {
+    hasConsent.value = value;
+    _refreshForm();
+  }
+
+  void _refreshForm() {
+    final phoneOk = Validators.phone(phoneInput.text) == null;
+    final signupOk =
+        Validators.name(nameInput.text) == null && hasConsent.value;
+    canSubmit.value = phoneOk && (!isSignup.value || signupOk);
+  }
 
   Future<void> sendOtp() async {
     if (isSubmitting.value) return;
+    nameIssue.value = isSignup.value ? Validators.name(nameInput.text) : null;
     phoneIssue.value = Validators.phone(phoneInput.text);
-    if (phoneIssue.value != null) return;
+    if (nameIssue.value != null || phoneIssue.value != null) return;
     final sent = await _requestCode(Validators.normalizePhone(phoneInput.text));
     if (sent) await Get.toNamed<void>(AppRoutes.otp);
   }
@@ -58,8 +90,7 @@ class AuthController extends GetxController {
     try {
       final result = await _auth.sendOtp(phone);
       fullPhone.value = result.phone;
-      otpLength.value = result.length;
-      _startCountdown(result.expiresIn);
+      _startCountdown(AppDefaults.otpResendSeconds);
       return true;
     } on ApiFailure catch (e) {
       failure.value = e;
@@ -72,13 +103,13 @@ class AuthController extends GetxController {
   void setCode(String input) {
     if (isSubmitting.value) return;
     final digits = input.replaceAll(RegExp('[^0-9]'), '');
-    final code = digits.length > otpLength.value
-        ? digits.substring(0, otpLength.value)
+    final code = digits.length > ApiRules.otpLength
+        ? digits.substring(0, ApiRules.otpLength)
         : digits;
     failure.value = null;
     otpIssue.value = null;
     otpCode.value = code;
-    if (code.length == otpLength.value) verify();
+    if (code.length == ApiRules.otpLength) verify();
   }
 
   /// Clears a rejected code so the user can type it again.
@@ -100,6 +131,7 @@ class AuthController extends GetxController {
         phone: fullPhone.value,
         code: otpCode.value,
         deviceName: AppDefaults.deviceName,
+        name: isSignup.value ? nameInput.text.trim() : null,
       );
       await _session.start(result.token, result.user);
       await Get.offAllNamed<void>(
@@ -129,6 +161,7 @@ class AuthController extends GetxController {
   @override
   void onClose() {
     _timer?.cancel();
+    nameInput.dispose();
     phoneInput.dispose();
     otpInput.dispose();
     super.onClose();

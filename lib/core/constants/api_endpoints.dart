@@ -28,6 +28,8 @@ abstract final class ApiEndpoints {
   static String address(int id) => '$addresses/$id';
 
   // Orders
+  static String vendorPaymentMethods(int id) =>
+      '$_v1/vendors/$id/payment-methods';
   static const String orders = '$_v1/orders';
   static const String quote = '$orders/quote';
   static const String cancelReasons = '$_v1/cancel-reasons';
@@ -38,6 +40,12 @@ abstract final class ApiEndpoints {
   static String orderOffer(int id) => '${order(id)}/offer';
   static String orderOfferApprove(int id) => '${orderOffer(id)}/approve';
   static String orderOfferReject(int id) => '${orderOffer(id)}/reject';
+  static String orderServiceQuote(int id) => '${order(id)}/service-quote';
+  static String orderServiceQuoteAccept(int id) =>
+      '${orderServiceQuote(id)}/accept';
+  static String orderServiceQuoteReject(int id) =>
+      '${orderServiceQuote(id)}/reject';
+  static String orderPaymentReceipt(int id) => '${order(id)}/payment-receipt';
   static String orderRate(int id) => '${order(id)}/rate';
   static String orderReceipt(int id) => '${order(id)}/receipt';
   static String orderShareLink(int id) => '${order(id)}/share-link';

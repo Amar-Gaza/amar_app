@@ -1,9 +1,22 @@
 /// Typed arguments passed with [Get.toNamed].
 class ProductsArgs {
-  const ProductsArgs({this.categoryId, this.vendorId, required this.title});
+  const ProductsArgs({
+    this.categoryIds = const [],
+    this.vendorId,
+    required this.title,
+  });
 
-  final int? categoryId;
+  /// A unified category can span several server ids (one per vendor).
+  final List<int> categoryIds;
   final int? vendorId;
+  final String title;
+}
+
+/// Kind of the providers shown by the "view all" list.
+class ProvidersArgs {
+  const ProvidersArgs({required this.kind, required this.title});
+
+  final String kind;
   final String title;
 }
 

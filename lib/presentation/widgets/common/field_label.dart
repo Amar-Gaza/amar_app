@@ -11,7 +11,10 @@ class FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+        padding: const EdgeInsetsDirectional.only(
+          start: AppSpacing.xs,
+          bottom: AppSpacing.xs,
+        ),
         child: Text(text, style: context.text.titleSmall),
       );
 }

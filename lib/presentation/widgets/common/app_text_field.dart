@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
 import 'field_label.dart';
+import 'focus_glow.dart';
 
 class AppTextField extends StatelessWidget {
   const AppTextField({
@@ -22,6 +24,9 @@ class AppTextField extends StatelessWidget {
     this.textDirection,
     this.onSubmitted,
     this.obscure = false,
+    this.suffix,
+    this.enabled = true,
+    this.textAlign = TextAlign.start,
   });
 
   final TextEditingController controller;
@@ -38,12 +43,17 @@ class AppTextField extends StatelessWidget {
   final TextDirection? textDirection;
   final VoidCallback? onSubmitted;
   final bool obscure;
+  final Widget? suffix;
+  final bool enabled;
+  final TextAlign textAlign;
 
   @override
   Widget build(BuildContext context) {
     final field = TextField(
       controller: controller,
       obscureText: obscure,
+      enabled: enabled,
+      textAlign: textAlign,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       maxLength: maxLength,
@@ -61,16 +71,18 @@ class AppTextField extends StatelessWidget {
             ?.copyWith(color: context.appColors.mutedText),
         errorText: errorText,
         prefixIcon: prefix ?? (prefixIcon == null ? null : Icon(prefixIcon)),
+        suffixIcon: suffix,
         counterStyle: context.text.labelSmall
             ?.copyWith(color: context.appColors.mutedText),
       ),
     );
-    if (label == null) return field;
+    final glowing = FocusGlow(borderRadius: AppRadius.mdAll, child: field);
+    if (label == null) return glowing;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         FieldLabel(label!),
-        field,
+        glowing,
         const SizedBox(height: AppSpacing.xs),
       ],
     );

@@ -4,7 +4,7 @@ import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
-import '../../../data/models/masar/masar_models.dart';
+import '../../../data/models/catalog/category_group.dart';
 import '../../../l10n/app_localizations.dart';
 import '../common/directional_icons.dart';
 import '../common/icon_tile.dart';
@@ -19,7 +19,7 @@ class CategoryRow extends StatelessWidget {
     required this.onTap,
   });
 
-  final Category category;
+  final CategoryGroup category;
   final StateTone tone;
   final VoidCallback onTap;
 
@@ -51,10 +51,10 @@ class CategoryRow extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(category.name.trim(), style: context.text.titleSmall),
+                    Text(category.name, style: context.text.titleSmall),
                     Text(
                       AppLocalizations.of(context)
-                          .categoryProductsCount(category.productsCount),
+                          .categoryProductsCount(category.itemsCount),
                       style: context.text.labelSmall
                           ?.copyWith(color: colors.mutedText),
                     ),

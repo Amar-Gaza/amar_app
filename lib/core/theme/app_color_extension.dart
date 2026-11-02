@@ -23,6 +23,14 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
     required this.skeleton,
     required this.mutedText,
     required this.subtleText,
+    required this.brandBright,
+    required this.brandDeep,
+    required this.amber,
+    required this.onAmber,
+    required this.disabled,
+    required this.promoStart,
+    required this.promoEnd,
+    required this.onPromo,
   });
 
   /// Primary action color (buttons, links, active states).
@@ -55,36 +63,80 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
   final Color mutedText;
   final Color subtleText;
 
+  /// Lighter end of the brand gradient, focus rings and links.
+  final Color brandBright;
+
+  /// Darker start of the hero gradient (splash, order and profile cards).
+  final Color brandDeep;
+
+  /// Attention dot, current progress step and the cart badge.
+  final Color amber;
+  final Color onAmber;
+
+  /// Background of disabled primary buttons.
+  final Color disabled;
+
+  /// Promo banner gradient and its content color.
+  final Color promoStart;
+  final Color promoEnd;
+  final Color onPromo;
+
+  LinearGradient get brandGradient => LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [brand, brandBright],
+      );
+
+  LinearGradient get heroGradient => LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [brandDeep, brandBright],
+      );
+
+  LinearGradient get promoGradient => LinearGradient(
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: [promoStart, promoEnd],
+      );
+
   static const AppColorExtension light = AppColorExtension(
-    brand: Color(0xFF238778),
+    brand: Color(0xFF14624A),
     onBrand: Color(0xFFFFFFFF),
-    brandSoft: Color(0xFFE6F5F1),
-    ink: Color(0xFF243B3A),
+    brandSoft: Color(0xFFE3EDEA),
+    ink: Color(0xFF13281F),
     onInk: Color(0xFFFFFFFF),
-    accent: Color(0xFFB7FBED),
-    surfaceSoft: Color(0xFFF0F8F6),
-    success: Color(0xFF167A55),
-    successSoft: Color(0xFFE5F6ED),
-    warning: Color(0xFFB46A09),
-    warningSoft: Color(0xFFFFF2DD),
-    danger: Color(0xFFC33D4E),
-    dangerSoft: Color(0xFFFDECEF),
-    info: Color(0xFF2672A8),
-    infoSoft: Color(0xFFE8F1FA),
-    highlightSoft: Color(0xFFFCEAF6),
-    border: Color(0xFFDCEFEA),
-    skeleton: Color(0xFFE8EFED),
-    mutedText: Color(0xFF667C78),
-    subtleText: Color(0xFFA7B8B4),
+    accent: Color(0xFFCDEBDC),
+    surfaceSoft: Color(0xFFF1F6F4),
+    success: Color(0xFF1F7A55),
+    successSoft: Color(0xFFE3F3E8),
+    warning: Color(0xFF9A6200),
+    warningSoft: Color(0xFFFFF3D9),
+    danger: Color(0xFFC0392B),
+    dangerSoft: Color(0xFFFDECEB),
+    info: Color(0xFF2F5BD1),
+    infoSoft: Color(0xFFE0EBFF),
+    highlightSoft: Color(0xFFFDE4EF),
+    border: Color(0xFFDDE7E2),
+    skeleton: Color(0xFFE3EDEA),
+    mutedText: Color(0xFF667A70),
+    subtleText: Color(0xFF8AA196),
+    brandBright: Color(0xFF1F8A66),
+    brandDeep: Color(0xFF0F5240),
+    amber: Color(0xFFF2A93B),
+    onAmber: Color(0xFF4A2F00),
+    disabled: Color(0xFFC9D6D0),
+    promoStart: Color(0xFFFBE7C0),
+    promoEnd: Color(0xFFF7D089),
+    onPromo: Color(0xFF5B3B05),
   );
 
   static const AppColorExtension dark = AppColorExtension(
-    brand: Color(0xFF3DB5A2),
+    brand: Color(0xFF3DB58F),
     onBrand: Color(0xFF0E1F1D),
-    brandSoft: Color(0xFF173A36),
+    brandSoft: Color(0xFF17392E),
     ink: Color(0xFFE6F2EF),
     onInk: Color(0xFF0E1F1D),
-    accent: Color(0xFFB7FBED),
+    accent: Color(0xFFCDEBDC),
     surfaceSoft: Color(0xFF15292A),
     success: Color(0xFF4CC28F),
     successSoft: Color(0xFF15302A),
@@ -99,6 +151,14 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
     skeleton: Color(0xFF223634),
     mutedText: Color(0xFF9DB2AE),
     subtleText: Color(0xFF6E8581),
+    brandBright: Color(0xFF4CC28F),
+    brandDeep: Color(0xFF14624A),
+    amber: Color(0xFFF2A93B),
+    onAmber: Color(0xFF4A2F00),
+    disabled: Color(0xFF2F4640),
+    promoStart: Color(0xFF3A2C14),
+    promoEnd: Color(0xFF4A3818),
+    onPromo: Color(0xFFFBE7C0),
   );
 
   @override
@@ -123,6 +183,14 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
     Color? skeleton,
     Color? mutedText,
     Color? subtleText,
+    Color? brandBright,
+    Color? brandDeep,
+    Color? amber,
+    Color? onAmber,
+    Color? disabled,
+    Color? promoStart,
+    Color? promoEnd,
+    Color? onPromo,
   }) =>
       AppColorExtension(
         brand: brand ?? this.brand,
@@ -145,6 +213,14 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
         skeleton: skeleton ?? this.skeleton,
         mutedText: mutedText ?? this.mutedText,
         subtleText: subtleText ?? this.subtleText,
+        brandBright: brandBright ?? this.brandBright,
+        brandDeep: brandDeep ?? this.brandDeep,
+        amber: amber ?? this.amber,
+        onAmber: onAmber ?? this.onAmber,
+        disabled: disabled ?? this.disabled,
+        promoStart: promoStart ?? this.promoStart,
+        promoEnd: promoEnd ?? this.promoEnd,
+        onPromo: onPromo ?? this.onPromo,
       );
 
   @override
@@ -172,6 +248,14 @@ class AppColorExtension extends ThemeExtension<AppColorExtension> {
       skeleton: mix(skeleton, other.skeleton),
       mutedText: mix(mutedText, other.mutedText),
       subtleText: mix(subtleText, other.subtleText),
+      brandBright: mix(brandBright, other.brandBright),
+      brandDeep: mix(brandDeep, other.brandDeep),
+      amber: mix(amber, other.amber),
+      onAmber: mix(onAmber, other.onAmber),
+      disabled: mix(disabled, other.disabled),
+      promoStart: mix(promoStart, other.promoStart),
+      promoEnd: mix(promoEnd, other.promoEnd),
+      onPromo: mix(onPromo, other.onPromo),
     );
   }
 }

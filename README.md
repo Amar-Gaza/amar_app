@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/images/logo.png" alt="AMAR logo" width="110" />
+<img src="assets/images/app_logo.png" alt="AMAR logo" width="110" />
 
 # AMAR
 

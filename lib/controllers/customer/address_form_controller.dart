@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../core/network/api_failure.dart';
+import '../../data/models/catalog/picked_location.dart';
 import '../../data/models/masar/masar_models.dart';
 import '../../data/models/requests/address_request.dart';
 import '../../data/services/customer/address_service.dart';
@@ -63,6 +64,12 @@ class AddressFormController extends GetxController {
     } finally {
       isLocating.value = false;
     }
+  }
+
+  void setPosition(PickedLocation point) {
+    lat.value = point.lat;
+    lng.value = point.lng;
+    locationIssue.value = null;
   }
 
   Future<bool> openSettings() => _location.openSettings();

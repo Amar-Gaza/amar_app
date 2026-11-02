@@ -6,6 +6,7 @@ import '../../controllers/customer/public_tracking_controller.dart';
 import '../../controllers/customer/tracking_controller.dart';
 import '../../controllers/shared/app_config_controller.dart';
 import '../../data/services/customer/order_service.dart';
+import '../../data/services/shared/upload_service.dart';
 
 /// Order screens receive the order id as [Get.arguments].
 class OrderDetailsBinding extends Bindings {
@@ -14,6 +15,7 @@ class OrderDetailsBinding extends Bindings {
         () => OrderDetailsController(
           Get.find<OrderService>(),
           Get.find<AppConfigController>(),
+          Get.find<UploadService>(),
           Get.arguments as int,
         ),
       );

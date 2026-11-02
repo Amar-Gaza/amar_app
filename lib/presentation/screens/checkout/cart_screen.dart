@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/customer/cart_controller.dart';
 import '../../../controllers/customer/checkout_controller.dart';
+import '../../../controllers/customer/shell_controller.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../l10n/app_localizations.dart';
@@ -31,19 +32,20 @@ class CartScreen extends GetView<CheckoutController> {
     return Obx(() {
       if (cart.items.isEmpty) {
         return Scaffold(
-          appBar: AppTopBar(title: l10n.cartTitle),
+          appBar: AppTopBar(title: l10n.cartTitle, showBack: false),
           body: EmptyView(
             icon: LucideIcons.shoppingCart,
             title: l10n.cartEmptyTitle,
             message: l10n.cartEmptyMessage,
             actionLabel: l10n.ordersExplore,
-            onAction: () => Get.until((r) => r.settings.name == AppRoutes.home),
+            onAction: () =>
+                Get.find<ShellController>().select(CustomerTab.home),
           ),
         );
       }
       final vendor = controller.vendor.value;
       return Scaffold(
-        appBar: AppTopBar(title: l10n.cartTitle),
+        appBar: AppTopBar(title: l10n.cartTitle, showBack: false),
         body: Column(
           children: [
             const CheckoutSteps(current: 0),

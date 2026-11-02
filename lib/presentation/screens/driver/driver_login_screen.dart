@@ -4,18 +4,23 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/driver/driver_session_controller.dart';
+import '../../../core/constants/app_defaults.dart';
+import '../../../core/theme/app_radius.dart';
+import '../../../core/theme/app_shadows.dart';
+import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/theme_context.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../widgets/auth/auth_intro.dart';
-import '../../widgets/auth/language_toggle.dart';
+import '../../widgets/auth/auth_body_text.dart';
+import '../../widgets/auth/auth_heading.dart';
 import '../../widgets/auth/phone_field.dart';
 import '../../widgets/common/app_text_field.dart';
-import '../../widgets/common/app_top_bar.dart';
-import '../../widgets/common/brand_mark.dart';
+import '../../widgets/common/directional_icons.dart';
 import '../../widgets/common/error_banner.dart';
 import '../../widgets/common/link_button.dart';
 import '../../widgets/common/primary_button.dart';
 import '../../widgets/common/screen_scaffold.dart';
+import '../../widgets/common/square_icon_button.dart';
 
 /// Driver sign-in with phone and password (designs 01, 03).
 class DriverLoginScreen extends StatefulWidget {
@@ -30,6 +35,20 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
   final TextEditingController _phone = TextEditingController();
   final TextEditingController _password = TextEditingController();
   bool _obscure = true;
+  bool _canSubmit = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _phone.addListener(_refresh);
+    _password.addListener(_refresh);
+  }
+
+  void _refresh() {
+    final ok = _phone.text.length >= AppDefaults.driverPhoneMinDigits &&
+        _password.text.length >= AppDefaults.driverPasswordMin;
+    if (ok != _canSubmit) setState(() => _canSubmit = ok);
+  }
 
   @override
   void dispose() {
@@ -45,37 +64,68 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
     }
   }
 
+  // Pop back to the existing phone route when there is one: re-pushing it with
+  // offAllNamed lets GetX dispose the old AuthController after the new screen
+  // already grabbed it.
+  void _toCustomer() => Navigator.of(context).canPop()
+      ? Get.back<void>()
+      : Get.offAllNamed<void>(AppRoutes.phone);
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final colors = context.appColors;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
     return ScreenScaffold(
-      appBar: const AppTopBar(
-        showBack: false,
-        leading: BrandMark(),
-        trailing: LanguageToggle(),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AuthIntro(
-            icon: LucideIcons.truck,
-            title: l10n.driverLoginTitle,
-            subtitle: l10n.driverLoginSubtitle,
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: SquareIconButton(
+              icon: DirectionalIcons.back(context),
+              onPressed: _toCustomer,
+            ),
           ),
+          const SizedBox(height: AppSpacing.xl),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: Container(
+              width: AppSizes.driverTile,
+              height: AppSizes.driverTile,
+              decoration: BoxDecoration(
+                gradient: colors.brandGradient,
+                borderRadius: AppRadius.xlAll,
+                boxShadow: AppShadows.hero(colors),
+              ),
+              child: Icon(
+                LucideIcons.truck,
+                size: AppSizes.iconXl,
+                color: colors.onBrand,
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          AuthHeading(
+            title: l10n.driverDesignTitle,
+            subtitle: AuthBodyText(l10n.driverDesignSubtitle),
+          ),
+          const SizedBox(height: AppSpacing.page),
           PhoneField(
             controller: _phone,
             label: l10n.phoneLabel,
             hint: l10n.phoneHint,
-            helper: l10n.phoneHelper,
-            errorText: null,
             onSubmitted: _submit,
           ),
           const SizedBox(height: AppSpacing.sm),
           AppTextField(
             controller: _password,
             label: l10n.driverPassword,
-            hint: l10n.driverPasswordHint,
-            prefix: IconButton(
+            hint: l10n.driverDesignPasswordHint,
+            prefixIcon: LucideIcons.lock,
+            textDirection: TextDirection.ltr,
+            textAlign: isRtl ? TextAlign.right : TextAlign.left,
+            suffix: IconButton(
               onPressed: () => setState(() => _obscure = !_obscure),
               icon: Icon(_obscure ? LucideIcons.eye : LucideIcons.eyeOff),
             ),
@@ -91,24 +141,19 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
                     child: ErrorBanner(failure: failure),
                   );
           }),
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: AppSpacing.md),
           Obx(
             () => PrimaryButton(
               label: l10n.driverLoginSubmit,
               isLoading: _session.isSubmitting.value,
-              onPressed: _submit,
+              onPressed: _canSubmit ? _submit : null,
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.md),
           Center(
             child: LinkButton(
-              label: l10n.driverIAmCustomer,
-              // Pop back to the existing phone route when there is one:
-              // re-pushing it with offAllNamed lets GetX dispose the old
-              // AuthController after the new screen already grabbed it.
-              onPressed: () => Navigator.of(context).canPop()
-                  ? Get.back<void>()
-                  : Get.offAllNamed<void>(AppRoutes.phone),
+              label: l10n.driverDesignCustomer,
+              onPressed: _toCustomer,
             ),
           ),
         ],

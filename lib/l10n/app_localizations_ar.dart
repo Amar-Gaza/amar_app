@@ -9,7 +9,13 @@ class AppLocalizationsAr extends AppLocalizations {
   AppLocalizationsAr([String locale = 'ar']) : super(locale);
 
   @override
+  String get statusAwaitingPayment => 'بانتظار الدفع';
+
+  @override
   String get statusAwaitingPricing => 'بانتظار التسعير';
+
+  @override
+  String get statusPaymentReview => 'مراجعة الدفع';
 
   @override
   String get statusPriced => 'تم التسعير';
@@ -42,6 +48,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get statusCancelled => 'ملغي';
 
   @override
+  String get statusServiceRequested => 'تم طلب الخدمة';
+
+  @override
+  String get statusServiceInspection => 'بانتظار سعر المتجر';
+
+  @override
+  String get statusServiceQuoted => 'تم إرسال السعر';
+
+  @override
+  String get statusServiceScheduled => 'تم تحديد موعد الزيارة';
+
+  @override
+  String get statusTechnicianOnWay => 'الفنّي في الطريق';
+
+  @override
+  String get statusServiceInProgress => 'جارٍ تنفيذ العمل';
+
+  @override
+  String get statusServiceCompleted => 'اكتملت الخدمة';
+
+  @override
   String get actionAwaitingVendorToPreparingVendor => 'قبول الطلب';
 
   @override
@@ -54,10 +81,62 @@ class AppLocalizationsAr extends AppLocalizations {
   String get actionPendingToAcceptedDriver => 'اقبل الطلب';
 
   @override
+  String get actionServiceRequestedToServiceScheduledVendor => 'قبول الطلب';
+
+  @override
+  String get actionServiceInspectionToServiceQuotedVendor => 'إرسال السعر';
+
+  @override
+  String get actionServiceQuotedToServiceScheduledUser => 'الموافقة على السعر';
+
+  @override
+  String get actionServiceScheduledToTechnicianOnWayVendor =>
+      'الفنّي في الطريق';
+
+  @override
+  String get actionTechnicianOnWayToServiceInProgressVendor => 'بدء العمل';
+
+  @override
+  String get actionServiceInProgressToServiceCompletedVendor => 'إنهاء الخدمة';
+
+  @override
+  String get actionPaymentReviewToPendingAdmin => 'اعتماد الدفع';
+
+  @override
+  String get actionAwaitingPaymentToPaymentReviewUser => 'إرسال إشعار التحويل';
+
+  @override
+  String get actionPaymentReviewToPendingVendor => 'اعتماد الدفع';
+
+  @override
+  String get actionPricedToAwaitingPaymentUser => 'الموافقة على السعر والدفع';
+
+  @override
+  String get actionServiceQuotedToAwaitingPaymentUser => 'الموافقة على السعر';
+
+  @override
+  String get actionPaymentReviewToServiceRequestedAdmin => 'اعتماد الدفع';
+
+  @override
+  String get actionPaymentReviewToServiceRequestedVendor => 'اعتماد الدفع';
+
+  @override
+  String get actionPaymentReviewToServiceScheduledAdmin => 'اعتماد الدفع';
+
+  @override
+  String get actionPaymentReviewToServiceScheduledVendor => 'اعتماد الدفع';
+
+  @override
   String get actionAcceptedToPickedUpDriver => 'استلمت الطلب';
 
   @override
   String get confirmAcceptedToPickedUpDriver => 'متأكد إنك استلمت الطلب؟';
+
+  @override
+  String get actionPaymentReviewToAwaitingPaymentAdmin => 'طلب تصحيح الإشعار';
+
+  @override
+  String get actionPaymentReviewToAwaitingPaymentVendor => 'طلب تصحيح الإشعار';
 
   @override
   String get actionPickedUpToOnTheWayDriver => 'انطلقت للزبون';
@@ -82,6 +161,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get actionAwaitingPricingToCancelledUser => 'إلغاء الطلب';
+
+  @override
+  String get actionServiceQuotedToCancelledUser => 'رفض السعر';
+
+  @override
+  String get actionServiceRequestedToCancelledVendor => 'رفض الطلب';
+
+  @override
+  String get actionServiceInspectionToCancelledVendor => 'رفض الطلب';
+
+  @override
+  String get actionServiceScheduledToCancelledVendor => 'إلغاء الزيارة';
 
   @override
   String get actionAcceptedToCancelledUser => 'إلغاء الطلب';
@@ -212,7 +303,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorChaosInjected => 'عطل مؤقت (وضع الفوضى)، أعد المحاولة';
 
   @override
-  String get splashTagline => 'نبني الثقة، ونصونها.';
+  String get splashTagline => 'بإيدينا بنعمّرها';
 
   @override
   String get onboardingTitle => 'خدمات منزلية موثوقة بكل سهولة';
@@ -316,7 +407,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get validationOtpIncomplete => 'أدخل الرمز كاملاً';
 
   @override
-  String get brandName => 'عَمار';
+  String get brandName => 'عَمَار';
 
   @override
   String get splashFooter => 'عَمار · كل ما يحتاجه بيتك';
@@ -423,7 +514,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get navAccount => 'حسابي';
 
   @override
-  String get homeSearchHint => 'ما الخدمة التي تبحث عنها؟';
+  String get homeSearchHint => 'ابحث عن خدمة أو منتج أو متجر';
 
   @override
   String get homeVendorsTitle => 'مزوّدون مقترحون';
@@ -1564,4 +1655,218 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get driverVehicle => 'نوع المركبة';
+
+  @override
+  String get onboarding1Title => 'كل ما يحتاجه بيتك';
+
+  @override
+  String get onboarding1Body =>
+      'مواد بناء وكهرباء وأدوات من متاجر موثوقة، بأسعار واضحة وجودة مضمونة.';
+
+  @override
+  String get onboarding2Title => 'خدمات منزلية متميزة';
+
+  @override
+  String get onboarding2Body =>
+      'سباكة وكهرباء وتبريد وأكثر — احجز خدمتك بسهولة مع محترفين معتمدين.';
+
+  @override
+  String get onboarding3Title => 'توصيل سريع وموثوق';
+
+  @override
+  String get onboarding3Body =>
+      'تابع طلبك لحظة بلحظة واستلمه عند باب بيتك في الوقت المحدد.';
+
+  @override
+  String get commonNext => 'التالي';
+
+  @override
+  String get commonSkip => 'تخطّي';
+
+  @override
+  String get commonSoon => 'قريباً';
+
+  @override
+  String get authSignupTitle => 'أهلاً بك في عَمَار';
+
+  @override
+  String get authSignupSubtitle => 'أنشئ حسابك خلال دقيقة وابدأ بتعمير بيتك.';
+
+  @override
+  String get authLoginTitle => 'سعداء بعودتك';
+
+  @override
+  String get authLoginSubtitle => 'سجّل دخولك لمتابعة طلباتك.';
+
+  @override
+  String get authTabSignup => 'إنشاء حساب';
+
+  @override
+  String get authTabLogin => 'تسجيل الدخول';
+
+  @override
+  String get authNameLabel => 'الاسم الكامل';
+
+  @override
+  String get authNameHint => 'مثال: سامي أحمد';
+
+  @override
+  String get authSignupSubmit => 'إنشاء الحساب';
+
+  @override
+  String get authLoginSubmit => 'تسجيل الدخول';
+
+  @override
+  String get authDriverTitle => 'هل أنت سائق؟';
+
+  @override
+  String get authDriverSubtitle => 'سجّل دخولك من هنا';
+
+  @override
+  String get consentAgree => 'أوافق على ';
+
+  @override
+  String get otpConfirmTitle => 'تأكيد رقم الجوال';
+
+  @override
+  String get otpSentTo => 'أرسلنا رمزاً من 4 أرقام إلى ';
+
+  @override
+  String get otpResendIn => 'إعادة الإرسال بعد ';
+
+  @override
+  String get otpResendAction => 'لم يصلك الرمز؟ أعد الإرسال';
+
+  @override
+  String get otpVerifyAction => 'تحقّق';
+
+  @override
+  String get profileCompleteTitle => 'أكمل ملفك الشخصي';
+
+  @override
+  String get profileCompleteSubtitle =>
+      'خطوة أخيرة ليسهل على السائق والمتاجر التواصل معك.';
+
+  @override
+  String get profileFullNameHint => 'الاسم';
+
+  @override
+  String get locationTitle => 'أين نوصّل طلباتك؟';
+
+  @override
+  String get locationSubtitle =>
+      'حدّد موقعك لنعرض لك المتاجر والخدمات القريبة منك.';
+
+  @override
+  String get locationUseCurrent => 'استخدام موقعي الحالي';
+
+  @override
+  String get driverDesignTitle => 'دخول السائق';
+
+  @override
+  String get driverDesignSubtitle =>
+      'سجّل دخولك برقم جوالك وكلمة المرور التي زوّدتك بها عَمَار.';
+
+  @override
+  String get driverDesignPasswordHint => 'كلمة مرور السائق';
+
+  @override
+  String get driverDesignCustomer => 'أنا زبون — العودة لتسجيل الدخول';
+
+  @override
+  String get homeSetLocation => 'حدّد موقعك';
+
+  @override
+  String get homeOrderHint => 'اضغط لمتابعة طلبك';
+
+  @override
+  String get homeMostOrdered => 'الأكثر طلباً';
+
+  @override
+  String get homeStoresTitle => 'المتاجر';
+
+  @override
+  String get homeCompaniesTitle => 'خدمات الشركات';
+
+  @override
+  String get homeProvidersEmpty => 'لا يوجد ما نعرضه هنا حالياً';
+
+  @override
+  String get promoTitle => 'خصم 15% على الصيانة';
+
+  @override
+  String get promoSubtitle => 'على أول حجز خدمة لك';
+
+  @override
+  String get promoAction => 'احجز الآن';
+
+  @override
+  String get navCart => 'السلة';
+
+  @override
+  String get priceAfterInspection => 'بعد المعاينة';
+
+  @override
+  String get vendorTabServices => 'الخدمات';
+
+  @override
+  String get addressPickOnMap => 'تحديد على الخريطة';
+
+  @override
+  String get mapPickerTitle => 'حدّد الموقع على الخريطة';
+
+  @override
+  String get mapPickerConfirm => 'تأكيد الموقع';
+
+  @override
+  String get serviceRequestAction => 'اطلب الخدمة';
+
+  @override
+  String get scheduleChoose => 'اختر الموعد';
+
+  @override
+  String get paymentBankTransfer => 'تحويل بنكي';
+
+  @override
+  String get serviceQuoteTitle => 'سعر الخدمة';
+
+  @override
+  String get serviceQuoteLabor => 'أجرة العمل';
+
+  @override
+  String get serviceQuoteTotal => 'الإجمالي';
+
+  @override
+  String get serviceQuoteVisit => 'موعد الزيارة';
+
+  @override
+  String get serviceQuoteAccept => 'موافقة على السعر';
+
+  @override
+  String get serviceQuoteReject => 'رفض السعر';
+
+  @override
+  String get serviceQuoteRejectConfirm => 'هل تريد رفض هذا السعر؟';
+
+  @override
+  String get transferTitle => 'إرسال إشعار التحويل';
+
+  @override
+  String get transferHint =>
+      'حوّل المبلغ إلى الحساب التالي ثم ارفع صورة الإشعار.';
+
+  @override
+  String get transferBank => 'الجهة';
+
+  @override
+  String get transferHolder => 'صاحب الحساب';
+
+  @override
+  String get transferAccount => 'رقم الحساب';
+
+  @override
+  String get transferFixNeeded => 'يلزم تصحيح الإشعار';
+
+  @override
+  String get transferUpload => 'رفع صورة الإشعار';
 }

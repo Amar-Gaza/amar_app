@@ -6,7 +6,7 @@ No code has been changed. Questions 1 to 3 need an answer before work can start.
 
 - **Missing dashboard contract and code (Q1):** The Postman files cover only the user app and the driver app. OpenAPI has no endpoints to create, edit, or delete products or services. The project context also says the vendor dashboard is not in this repo.
 - **Missing `env/dev.json` (Q2):** Without the test project key, I can't call the live API or check real data such as `zones` and a service's `fields`.
-- **Unclear app name and logo (Q3):** The brief says "Ghammar", but the design and API say "عَمَار". The only logo in the repo, `assets/images/logo.png`, is a letter A with a wrench.
+- **Unclear app name and logo (Q3):** The brief says "Ghammar", but the design and API say "عَمَار". The only logo in the repo, `../assets/images/app_logo.png`, is a letter A with a wrench.
 
 ## Questions
 

@@ -5,20 +5,24 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../app/routes/app_routes.dart';
 import '../../../../controllers/customer/auth_controller.dart';
 import '../../../../core/constants/api_query.dart';
+import '../../../../core/constants/api_rules.dart';
 import '../../../../core/localization/field_issue_resolver.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../widgets/auth/auth_intro.dart';
-import '../../../widgets/auth/consent_text.dart';
-import '../../../widgets/auth/language_toggle.dart';
+import '../../../widgets/auth/auth_body_text.dart';
+import '../../../widgets/auth/auth_heading.dart';
+import '../../../widgets/auth/consent_check.dart';
+import '../../../widgets/auth/driver_entry_card.dart';
+import '../../../widgets/auth/form_steps.dart';
 import '../../../widgets/auth/phone_field.dart';
-import '../../../widgets/common/app_top_bar.dart';
-import '../../../widgets/common/brand_mark.dart';
+import '../../../widgets/common/app_text_field.dart';
 import '../../../widgets/common/error_banner.dart';
-import '../../../widgets/common/link_button.dart';
 import '../../../widgets/common/primary_button.dart';
 import '../../../widgets/common/screen_scaffold.dart';
+import '../../../widgets/common/segment_item.dart';
+import '../../../widgets/common/segmented_tabs.dart';
 
+/// Sign up and sign in by phone; both continue to the code screen.
 class PhoneScreen extends GetView<AuthController> {
   const PhoneScreen({super.key});
 
@@ -26,66 +30,81 @@ class PhoneScreen extends GetView<AuthController> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return ScreenScaffold(
-      appBar: const AppTopBar(
-        showBack: false,
-        leading: BrandMark(),
-        trailing: LanguageToggle(),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          AuthIntro(
-            icon: LucideIcons.phone,
-            title: l10n.phoneTitle,
-            subtitle: l10n.phoneSubtitle,
-          ),
-          Obx(() {
-            final issue = controller.phoneIssue.value;
-            final server = controller.failure.value?.fieldError(ApiBody.phone);
-            return PhoneField(
+      child: Obx(() {
+        final signup = controller.isSignup.value;
+        final failure = controller.failure.value;
+        final nameIssue = controller.nameIssue.value;
+        final phoneIssue = controller.phoneIssue.value;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const FormSteps(current: 1),
+            const SizedBox(height: AppSpacing.lg),
+            AuthHeading(
+              title: signup ? l10n.authSignupTitle : l10n.authLoginTitle,
+              subtitle: AuthBodyText(
+                signup ? l10n.authSignupSubtitle : l10n.authLoginSubtitle,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            SegmentedTabs<bool>(
+              selected: signup,
+              onSelect: controller.setSignup,
+              items: [
+                SegmentItem(value: true, label: l10n.authTabSignup),
+                SegmentItem(value: false, label: l10n.authTabLogin),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            if (signup) ...[
+              AppTextField(
+                controller: controller.nameInput,
+                label: l10n.authNameLabel,
+                hint: l10n.authNameHint,
+                prefixIcon: LucideIcons.user,
+                keyboardType: TextInputType.name,
+                maxLength: ApiRules.nameMaxLength,
+                errorText: nameIssue == null
+                    ? failure?.fieldError(ApiBody.name)
+                    : FieldIssueResolver.message(nameIssue, l10n),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+            ],
+            PhoneField(
               controller: controller.phoneInput,
               label: l10n.phoneLabel,
               hint: l10n.phoneHint,
-              helper: l10n.phoneHelper,
-              errorText: issue != null
-                  ? FieldIssueResolver.message(issue, l10n)
-                  : server,
+              errorText: phoneIssue == null
+                  ? failure?.fieldError(ApiBody.phone)
+                  : FieldIssueResolver.message(phoneIssue, l10n),
               onSubmitted: controller.sendOtp,
-            );
-          }),
-          Obx(() {
-            final failure = controller.failure.value;
-            if (failure == null || failure.isValidation) {
-              return const SizedBox.shrink();
-            }
-            return Padding(
-              padding: const EdgeInsets.only(top: AppSpacing.md),
-              child: ErrorBanner(failure: failure),
-            );
-          }),
-          const SizedBox(height: AppSpacing.xl),
-          Obx(
-            () => PrimaryButton(
-              label: l10n.phoneSend,
+            ),
+            if (signup) ...[
+              const SizedBox(height: AppSpacing.sm),
+              ConsentCheck(
+                value: controller.hasConsent.value,
+                onChanged: controller.setConsent,
+              ),
+            ],
+            if (failure != null && !failure.isValidation) ...[
+              const SizedBox(height: AppSpacing.md),
+              ErrorBanner(failure: failure),
+            ],
+            const SizedBox(height: AppSpacing.lg),
+            PrimaryButton(
+              label: signup ? l10n.authSignupSubmit : l10n.authLoginSubmit,
               isLoading: controller.isSubmitting.value,
-              onPressed: controller.sendOtp,
+              onPressed: controller.canSubmit.value ? controller.sendOtp : null,
             ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          Center(
-            child: LinkButton(
-              label: l10n.driverEntry,
-              onPressed: () => Get.toNamed<void>(AppRoutes.driverLogin),
-            ),
-          ),
-          ConsentText(
-            prefix: l10n.consentPrefix,
-            terms: l10n.consentTerms,
-            separator: l10n.consentAnd,
-            privacy: l10n.consentPrivacy,
-          ),
-        ],
-      ),
+            if (!signup) ...[
+              const SizedBox(height: AppSpacing.md),
+              DriverEntryCard(
+                onTap: () => Get.toNamed<void>(AppRoutes.driverLogin),
+              ),
+            ],
+          ],
+        );
+      }),
     );
   }
 }

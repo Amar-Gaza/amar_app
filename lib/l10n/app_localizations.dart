@@ -98,11 +98,23 @@ abstract class AppLocalizations {
     Locale('en')
   ];
 
+  /// Order status "awaiting_payment"
+  ///
+  /// In ar, this message translates to:
+  /// **'بانتظار الدفع'**
+  String get statusAwaitingPayment;
+
   /// Order status "awaiting_pricing"
   ///
   /// In ar, this message translates to:
   /// **'بانتظار التسعير'**
   String get statusAwaitingPricing;
+
+  /// Order status "payment_review"
+  ///
+  /// In ar, this message translates to:
+  /// **'مراجعة الدفع'**
+  String get statusPaymentReview;
 
   /// Order status "priced"
   ///
@@ -164,6 +176,48 @@ abstract class AppLocalizations {
   /// **'ملغي'**
   String get statusCancelled;
 
+  /// Order status "service_requested"
+  ///
+  /// In ar, this message translates to:
+  /// **'تم طلب الخدمة'**
+  String get statusServiceRequested;
+
+  /// Order status "service_inspection"
+  ///
+  /// In ar, this message translates to:
+  /// **'بانتظار سعر المتجر'**
+  String get statusServiceInspection;
+
+  /// Order status "service_quoted"
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إرسال السعر'**
+  String get statusServiceQuoted;
+
+  /// Order status "service_scheduled"
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تحديد موعد الزيارة'**
+  String get statusServiceScheduled;
+
+  /// Order status "technician_on_way"
+  ///
+  /// In ar, this message translates to:
+  /// **'الفنّي في الطريق'**
+  String get statusTechnicianOnWay;
+
+  /// Order status "service_in_progress"
+  ///
+  /// In ar, this message translates to:
+  /// **'جارٍ تنفيذ العمل'**
+  String get statusServiceInProgress;
+
+  /// Order status "service_completed"
+  ///
+  /// In ar, this message translates to:
+  /// **'اكتملت الخدمة'**
+  String get statusServiceCompleted;
+
   /// Button for awaiting_vendor → preparing (vendor)
   ///
   /// In ar, this message translates to:
@@ -188,6 +242,96 @@ abstract class AppLocalizations {
   /// **'اقبل الطلب'**
   String get actionPendingToAcceptedDriver;
 
+  /// Button for service_requested → service_scheduled (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'قبول الطلب'**
+  String get actionServiceRequestedToServiceScheduledVendor;
+
+  /// Button for service_inspection → service_quoted (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'إرسال السعر'**
+  String get actionServiceInspectionToServiceQuotedVendor;
+
+  /// Button for service_quoted → service_scheduled (user)
+  ///
+  /// In ar, this message translates to:
+  /// **'الموافقة على السعر'**
+  String get actionServiceQuotedToServiceScheduledUser;
+
+  /// Button for service_scheduled → technician_on_way (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'الفنّي في الطريق'**
+  String get actionServiceScheduledToTechnicianOnWayVendor;
+
+  /// Button for technician_on_way → service_in_progress (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'بدء العمل'**
+  String get actionTechnicianOnWayToServiceInProgressVendor;
+
+  /// Button for service_in_progress → service_completed (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'إنهاء الخدمة'**
+  String get actionServiceInProgressToServiceCompletedVendor;
+
+  /// Button for payment_review → pending (admin)
+  ///
+  /// In ar, this message translates to:
+  /// **'اعتماد الدفع'**
+  String get actionPaymentReviewToPendingAdmin;
+
+  /// Button for awaiting_payment → payment_review (user)
+  ///
+  /// In ar, this message translates to:
+  /// **'إرسال إشعار التحويل'**
+  String get actionAwaitingPaymentToPaymentReviewUser;
+
+  /// Button for payment_review → pending (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'اعتماد الدفع'**
+  String get actionPaymentReviewToPendingVendor;
+
+  /// Button for priced → awaiting_payment (user)
+  ///
+  /// In ar, this message translates to:
+  /// **'الموافقة على السعر والدفع'**
+  String get actionPricedToAwaitingPaymentUser;
+
+  /// Button for service_quoted → awaiting_payment (user)
+  ///
+  /// In ar, this message translates to:
+  /// **'الموافقة على السعر'**
+  String get actionServiceQuotedToAwaitingPaymentUser;
+
+  /// Button for payment_review → service_requested (admin)
+  ///
+  /// In ar, this message translates to:
+  /// **'اعتماد الدفع'**
+  String get actionPaymentReviewToServiceRequestedAdmin;
+
+  /// Button for payment_review → service_requested (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'اعتماد الدفع'**
+  String get actionPaymentReviewToServiceRequestedVendor;
+
+  /// Button for payment_review → service_scheduled (admin)
+  ///
+  /// In ar, this message translates to:
+  /// **'اعتماد الدفع'**
+  String get actionPaymentReviewToServiceScheduledAdmin;
+
+  /// Button for payment_review → service_scheduled (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'اعتماد الدفع'**
+  String get actionPaymentReviewToServiceScheduledVendor;
+
   /// Button for accepted → picked_up (driver)
   ///
   /// In ar, this message translates to:
@@ -199,6 +343,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'متأكد إنك استلمت الطلب؟'**
   String get confirmAcceptedToPickedUpDriver;
+
+  /// Button for payment_review → awaiting_payment (admin)
+  ///
+  /// In ar, this message translates to:
+  /// **'طلب تصحيح الإشعار'**
+  String get actionPaymentReviewToAwaitingPaymentAdmin;
+
+  /// Button for payment_review → awaiting_payment (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'طلب تصحيح الإشعار'**
+  String get actionPaymentReviewToAwaitingPaymentVendor;
 
   /// Button for picked_up → on_the_way (driver)
   ///
@@ -247,6 +403,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'إلغاء الطلب'**
   String get actionAwaitingPricingToCancelledUser;
+
+  /// Button for service_quoted → cancelled (user)
+  ///
+  /// In ar, this message translates to:
+  /// **'رفض السعر'**
+  String get actionServiceQuotedToCancelledUser;
+
+  /// Button for service_requested → cancelled (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'رفض الطلب'**
+  String get actionServiceRequestedToCancelledVendor;
+
+  /// Button for service_inspection → cancelled (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'رفض الطلب'**
+  String get actionServiceInspectionToCancelledVendor;
+
+  /// Button for service_scheduled → cancelled (vendor)
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الزيارة'**
+  String get actionServiceScheduledToCancelledVendor;
 
   /// Button for accepted → cancelled (user)
   ///
@@ -503,7 +683,7 @@ abstract class AppLocalizations {
   /// No description provided for @splashTagline.
   ///
   /// In ar, this message translates to:
-  /// **'نبني الثقة، ونصونها.'**
+  /// **'بإيدينا بنعمّرها'**
   String get splashTagline;
 
   /// No description provided for @onboardingTitle.
@@ -707,7 +887,7 @@ abstract class AppLocalizations {
   /// No description provided for @brandName.
   ///
   /// In ar, this message translates to:
-  /// **'عَمار'**
+  /// **'عَمَار'**
   String get brandName;
 
   /// No description provided for @splashFooter.
@@ -917,7 +1097,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeSearchHint.
   ///
   /// In ar, this message translates to:
-  /// **'ما الخدمة التي تبحث عنها؟'**
+  /// **'ابحث عن خدمة أو منتج أو متجر'**
   String get homeSearchHint;
 
   /// No description provided for @homeVendorsTitle.
@@ -3031,6 +3211,420 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'نوع المركبة'**
   String get driverVehicle;
+
+  /// No description provided for @onboarding1Title.
+  ///
+  /// In ar, this message translates to:
+  /// **'كل ما يحتاجه بيتك'**
+  String get onboarding1Title;
+
+  /// No description provided for @onboarding1Body.
+  ///
+  /// In ar, this message translates to:
+  /// **'مواد بناء وكهرباء وأدوات من متاجر موثوقة، بأسعار واضحة وجودة مضمونة.'**
+  String get onboarding1Body;
+
+  /// No description provided for @onboarding2Title.
+  ///
+  /// In ar, this message translates to:
+  /// **'خدمات منزلية متميزة'**
+  String get onboarding2Title;
+
+  /// No description provided for @onboarding2Body.
+  ///
+  /// In ar, this message translates to:
+  /// **'سباكة وكهرباء وتبريد وأكثر — احجز خدمتك بسهولة مع محترفين معتمدين.'**
+  String get onboarding2Body;
+
+  /// No description provided for @onboarding3Title.
+  ///
+  /// In ar, this message translates to:
+  /// **'توصيل سريع وموثوق'**
+  String get onboarding3Title;
+
+  /// No description provided for @onboarding3Body.
+  ///
+  /// In ar, this message translates to:
+  /// **'تابع طلبك لحظة بلحظة واستلمه عند باب بيتك في الوقت المحدد.'**
+  String get onboarding3Body;
+
+  /// No description provided for @commonNext.
+  ///
+  /// In ar, this message translates to:
+  /// **'التالي'**
+  String get commonNext;
+
+  /// No description provided for @commonSkip.
+  ///
+  /// In ar, this message translates to:
+  /// **'تخطّي'**
+  String get commonSkip;
+
+  /// No description provided for @commonSoon.
+  ///
+  /// In ar, this message translates to:
+  /// **'قريباً'**
+  String get commonSoon;
+
+  /// No description provided for @authSignupTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أهلاً بك في عَمَار'**
+  String get authSignupTitle;
+
+  /// No description provided for @authSignupSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنشئ حسابك خلال دقيقة وابدأ بتعمير بيتك.'**
+  String get authSignupSubtitle;
+
+  /// No description provided for @authLoginTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سعداء بعودتك'**
+  String get authLoginTitle;
+
+  /// No description provided for @authLoginSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل دخولك لمتابعة طلباتك.'**
+  String get authLoginSubtitle;
+
+  /// No description provided for @authTabSignup.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء حساب'**
+  String get authTabSignup;
+
+  /// No description provided for @authTabLogin.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسجيل الدخول'**
+  String get authTabLogin;
+
+  /// No description provided for @authNameLabel.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاسم الكامل'**
+  String get authNameLabel;
+
+  /// No description provided for @authNameHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'مثال: سامي أحمد'**
+  String get authNameHint;
+
+  /// No description provided for @authSignupSubmit.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنشاء الحساب'**
+  String get authSignupSubmit;
+
+  /// No description provided for @authLoginSubmit.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسجيل الدخول'**
+  String get authLoginSubmit;
+
+  /// No description provided for @authDriverTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'هل أنت سائق؟'**
+  String get authDriverTitle;
+
+  /// No description provided for @authDriverSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل دخولك من هنا'**
+  String get authDriverSubtitle;
+
+  /// No description provided for @consentAgree.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوافق على '**
+  String get consentAgree;
+
+  /// No description provided for @otpConfirmTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد رقم الجوال'**
+  String get otpConfirmTitle;
+
+  /// No description provided for @otpSentTo.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسلنا رمزاً من 4 أرقام إلى '**
+  String get otpSentTo;
+
+  /// No description provided for @otpResendIn.
+  ///
+  /// In ar, this message translates to:
+  /// **'إعادة الإرسال بعد '**
+  String get otpResendIn;
+
+  /// No description provided for @otpResendAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يصلك الرمز؟ أعد الإرسال'**
+  String get otpResendAction;
+
+  /// No description provided for @otpVerifyAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحقّق'**
+  String get otpVerifyAction;
+
+  /// No description provided for @profileCompleteTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكمل ملفك الشخصي'**
+  String get profileCompleteTitle;
+
+  /// No description provided for @profileCompleteSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطوة أخيرة ليسهل على السائق والمتاجر التواصل معك.'**
+  String get profileCompleteSubtitle;
+
+  /// No description provided for @profileFullNameHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'الاسم'**
+  String get profileFullNameHint;
+
+  /// No description provided for @locationTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أين نوصّل طلباتك؟'**
+  String get locationTitle;
+
+  /// No description provided for @locationSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدّد موقعك لنعرض لك المتاجر والخدمات القريبة منك.'**
+  String get locationSubtitle;
+
+  /// No description provided for @locationUseCurrent.
+  ///
+  /// In ar, this message translates to:
+  /// **'استخدام موقعي الحالي'**
+  String get locationUseCurrent;
+
+  /// No description provided for @driverDesignTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'دخول السائق'**
+  String get driverDesignTitle;
+
+  /// No description provided for @driverDesignSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل دخولك برقم جوالك وكلمة المرور التي زوّدتك بها عَمَار.'**
+  String get driverDesignSubtitle;
+
+  /// No description provided for @driverDesignPasswordHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'كلمة مرور السائق'**
+  String get driverDesignPasswordHint;
+
+  /// No description provided for @driverDesignCustomer.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنا زبون — العودة لتسجيل الدخول'**
+  String get driverDesignCustomer;
+
+  /// No description provided for @homeSetLocation.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدّد موقعك'**
+  String get homeSetLocation;
+
+  /// No description provided for @homeOrderHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'اضغط لمتابعة طلبك'**
+  String get homeOrderHint;
+
+  /// No description provided for @homeMostOrdered.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأكثر طلباً'**
+  String get homeMostOrdered;
+
+  /// No description provided for @homeStoresTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتاجر'**
+  String get homeStoresTitle;
+
+  /// No description provided for @homeCompaniesTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'خدمات الشركات'**
+  String get homeCompaniesTitle;
+
+  /// No description provided for @homeProvidersEmpty.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد ما نعرضه هنا حالياً'**
+  String get homeProvidersEmpty;
+
+  /// No description provided for @promoTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'خصم 15% على الصيانة'**
+  String get promoTitle;
+
+  /// No description provided for @promoSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'على أول حجز خدمة لك'**
+  String get promoSubtitle;
+
+  /// No description provided for @promoAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'احجز الآن'**
+  String get promoAction;
+
+  /// No description provided for @navCart.
+  ///
+  /// In ar, this message translates to:
+  /// **'السلة'**
+  String get navCart;
+
+  /// No description provided for @priceAfterInspection.
+  ///
+  /// In ar, this message translates to:
+  /// **'بعد المعاينة'**
+  String get priceAfterInspection;
+
+  /// No description provided for @vendorTabServices.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخدمات'**
+  String get vendorTabServices;
+
+  /// No description provided for @addressPickOnMap.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديد على الخريطة'**
+  String get addressPickOnMap;
+
+  /// No description provided for @mapPickerTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدّد الموقع على الخريطة'**
+  String get mapPickerTitle;
+
+  /// No description provided for @mapPickerConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد الموقع'**
+  String get mapPickerConfirm;
+
+  /// No description provided for @serviceRequestAction.
+  ///
+  /// In ar, this message translates to:
+  /// **'اطلب الخدمة'**
+  String get serviceRequestAction;
+
+  /// No description provided for @scheduleChoose.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر الموعد'**
+  String get scheduleChoose;
+
+  /// No description provided for @paymentBankTransfer.
+  ///
+  /// In ar, this message translates to:
+  /// **'تحويل بنكي'**
+  String get paymentBankTransfer;
+
+  /// No description provided for @serviceQuoteTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سعر الخدمة'**
+  String get serviceQuoteTitle;
+
+  /// No description provided for @serviceQuoteLabor.
+  ///
+  /// In ar, this message translates to:
+  /// **'أجرة العمل'**
+  String get serviceQuoteLabor;
+
+  /// No description provided for @serviceQuoteTotal.
+  ///
+  /// In ar, this message translates to:
+  /// **'الإجمالي'**
+  String get serviceQuoteTotal;
+
+  /// No description provided for @serviceQuoteVisit.
+  ///
+  /// In ar, this message translates to:
+  /// **'موعد الزيارة'**
+  String get serviceQuoteVisit;
+
+  /// No description provided for @serviceQuoteAccept.
+  ///
+  /// In ar, this message translates to:
+  /// **'موافقة على السعر'**
+  String get serviceQuoteAccept;
+
+  /// No description provided for @serviceQuoteReject.
+  ///
+  /// In ar, this message translates to:
+  /// **'رفض السعر'**
+  String get serviceQuoteReject;
+
+  /// No description provided for @serviceQuoteRejectConfirm.
+  ///
+  /// In ar, this message translates to:
+  /// **'هل تريد رفض هذا السعر؟'**
+  String get serviceQuoteRejectConfirm;
+
+  /// No description provided for @transferTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'إرسال إشعار التحويل'**
+  String get transferTitle;
+
+  /// No description provided for @transferHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'حوّل المبلغ إلى الحساب التالي ثم ارفع صورة الإشعار.'**
+  String get transferHint;
+
+  /// No description provided for @transferBank.
+  ///
+  /// In ar, this message translates to:
+  /// **'الجهة'**
+  String get transferBank;
+
+  /// No description provided for @transferHolder.
+  ///
+  /// In ar, this message translates to:
+  /// **'صاحب الحساب'**
+  String get transferHolder;
+
+  /// No description provided for @transferAccount.
+  ///
+  /// In ar, this message translates to:
+  /// **'رقم الحساب'**
+  String get transferAccount;
+
+  /// No description provided for @transferFixNeeded.
+  ///
+  /// In ar, this message translates to:
+  /// **'يلزم تصحيح الإشعار'**
+  String get transferFixNeeded;
+
+  /// No description provided for @transferUpload.
+  ///
+  /// In ar, this message translates to:
+  /// **'رفع صورة الإشعار'**
+  String get transferUpload;
 }
 
 class _AppLocalizationsDelegate

@@ -119,6 +119,40 @@ class OrderService {
         parse: _offer,
       );
 
+  ServiceQuote _serviceQuote(Object? data) =>
+      ApiClient.parseObject(data, ServiceQuote.fromJson);
+
+  Future<ServiceQuote> serviceQuote(int id) => _client.data<ServiceQuote>(
+        HttpMethod.get,
+        ApiEndpoints.orderServiceQuote(id),
+        parse: _serviceQuote,
+      );
+
+  Future<ServiceQuote> acceptServiceQuote(int id, {required int quoteId}) =>
+      _client.data<ServiceQuote>(
+        HttpMethod.post,
+        ApiEndpoints.orderServiceQuoteAccept(id),
+        body: {ApiBody.quoteId: quoteId},
+        idempotent: true,
+        parse: _serviceQuote,
+      );
+
+  Future<ServiceQuote> rejectServiceQuote(int id, {required int quoteId}) =>
+      _client.data<ServiceQuote>(
+        HttpMethod.post,
+        ApiEndpoints.orderServiceQuoteReject(id),
+        body: {ApiBody.quoteId: quoteId},
+        parse: _serviceQuote,
+      );
+
+  Future<Order> sendPaymentReceipt(int id, {required int uploadId}) =>
+      _client.data<Order>(
+        HttpMethod.post,
+        ApiEndpoints.orderPaymentReceipt(id),
+        body: {ApiBody.uploadId: uploadId},
+        parse: _order,
+      );
+
   Future<Order> rate(int id, RateOrderRequest request) => _client.data<Order>(
         HttpMethod.post,
         ApiEndpoints.orderRate(id),

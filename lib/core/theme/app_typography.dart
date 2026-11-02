@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 abstract final class AppTypography {
   static const String fontFamily = 'Cairo';
 
-  static const double display = 26;
+  static const double splash = 34;
+  static const double display = 24;
   static const double title = 24;
-  static const double headline = 20;
+  static const double headline = 17;
   static const double subtitle = 16;
   static const double body = 14;
+  static const double link = 13;
   static const double caption = 12;
   static const double tiny = 11;
-  static const double otp = 22;
+  static const double otp = 24;
 
   static TextTheme apply(TextTheme base, Color ink, Color muted) {
     final themed = base.apply(
@@ -22,9 +24,9 @@ abstract final class AppTypography {
       headlineLarge: themed.headlineLarge
           ?.copyWith(fontSize: display, fontWeight: FontWeight.w800),
       headlineMedium: themed.headlineMedium
-          ?.copyWith(fontSize: title, fontWeight: FontWeight.w500),
+          ?.copyWith(fontSize: title, fontWeight: FontWeight.w800),
       headlineSmall: themed.headlineSmall
-          ?.copyWith(fontSize: headline, fontWeight: FontWeight.w600),
+          ?.copyWith(fontSize: headline, fontWeight: FontWeight.w800),
       titleLarge: themed.titleLarge
           ?.copyWith(fontSize: subtitle, fontWeight: FontWeight.w700),
       titleMedium: themed.titleMedium

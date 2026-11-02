@@ -1,0 +1,2 @@
+// Copy to Maps.xcconfig (git-ignored) and set the iOS maps key.
+AMAR_MAPS_KEY = REPLACE_ME

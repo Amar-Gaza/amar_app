@@ -32,20 +32,21 @@ class AvatarInitial extends StatelessWidget {
         child: Text(
           trimmed.characters.first,
           style: TextStyle(
-            color: colors.accent,
+            color: colors.brand,
             fontSize: size * _letterRatio,
             fontWeight: FontWeight.w800,
           ),
         ),
       );
     } else {
-      child = Icon(LucideIcons.user, color: colors.accent);
+      child = Icon(LucideIcons.user, color: colors.brand);
     }
     return Container(
       width: size,
       height: size,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: colors.ink, shape: BoxShape.circle),
+      decoration:
+          BoxDecoration(color: colors.brandSoft, shape: BoxShape.circle),
       child: child,
     );
   }

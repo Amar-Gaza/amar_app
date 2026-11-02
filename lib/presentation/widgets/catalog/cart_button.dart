@@ -4,15 +4,21 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/customer/cart_controller.dart';
+import '../../../controllers/customer/shell_controller.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../l10n/app_localizations.dart';
 
-/// Cart icon with the item count; opens the cart.
+/// Cart icon with the item count; opens the cart tab.
 class CartButton extends StatelessWidget {
   const CartButton({super.key, this.onPressed});
 
   final VoidCallback? onPressed;
+
+  void _openCart() {
+    Get.until((route) => route.settings.name == AppRoutes.home);
+    Get.find<ShellController>().select(CustomerTab.cart);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class CartButton extends StatelessWidget {
     return Obx(
       () => IconButton(
         tooltip: AppLocalizations.of(context).cartTitle,
-        onPressed: onPressed ?? () => Get.toNamed<void>(AppRoutes.cart),
+        onPressed: onPressed ?? _openCart,
         icon: Badge(
           isLabelVisible: cart.count > 0,
           backgroundColor: colors.danger,

@@ -109,5 +109,7 @@ class ProductController extends GetxController {
 
   AddToCartResult addToCart() => _cart.add(_item());
 
+  void startServiceRequest() => _cart.service.value = _item();
+
   void replaceCart() => _cart.replaceWith(_item());
 }

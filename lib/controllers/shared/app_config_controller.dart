@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../core/constants/api_query.dart';
 import '../../core/network/api_failure.dart';
 import '../../core/storage/app_preferences.dart';
 import '../../data/models/masar/masar_models.dart';
@@ -32,6 +33,19 @@ class AppConfigController extends GetxController with WidgetsBindingObserver {
         config.value?.statuses.where((s) => !s.isTerminal).map((s) => s.step) ??
             const <int>[];
     return steps.isEmpty ? 1 : steps.reduce((a, b) => a > b ? a : b);
+  }
+
+  /// Ordered steps of the status's flow (delivery or service) and its index;
+  /// the index is -1 when the status is outside those steps.
+  (int total, int index) progressOf(String key) {
+    final isService = OrderStatusKeys.isService(key);
+    final statuses = config.value?.statuses ?? const <AppConfigStatus>[];
+    final steps = statuses
+        .where((s) =>
+            !s.isTerminal && OrderStatusKeys.isService(s.key) == isService)
+        .toList()
+      ..sort((a, b) => a.step.compareTo(b.step));
+    return (steps.length, steps.indexWhere((s) => s.key == key));
   }
 
   final Rxn<ApiFailure> error = Rxn<ApiFailure>();

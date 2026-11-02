@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/constants/app_durations.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../l10n/app_localizations.dart';
-import '../common/brand_wordmark.dart';
+import '../common/brand_mark.dart';
 
-/// Dark launch screen: wordmark, tagline and a slim progress bar.
+/// Green launch screen: logo, name, tagline and a filling progress bar.
 class SplashBrandView extends StatelessWidget {
   const SplashBrandView({super.key});
 
-  static const double _taglineAlpha = 0.8;
-  static const double _trackAlpha = 0.15;
-  static const double _footAlpha = 0.5;
+  static const double _trackAlpha = 0.25;
+  static const double _popFrom = 0.3;
 
   @override
   Widget build(BuildContext context) {
@@ -23,49 +24,54 @@ class SplashBrandView extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: colors.ink,
-        body: SafeArea(
-          child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              children: [
-                const Spacer(),
-                const BrandWordmark(
-                  markSize: AppSizes.brandMarkLg,
-                  onDark: true,
+        body: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(gradient: colors.heroGradient),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: _popFrom, end: 1),
+                duration: AppDurations.splashPop,
+                curve: Curves.easeOutBack,
+                builder: (_, scale, child) =>
+                    Transform.scale(scale: scale, child: child),
+                child: const BrandMark(
+                  size: AppSizes.brandMarkXl,
+                  onGradient: true,
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                Text(
-                  l10n.splashTagline,
-                  style: context.text.bodyMedium?.copyWith(
-                    color: colors.onInk.withValues(alpha: _taglineAlpha),
-                  ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                l10n.brandName,
+                style: context.text.headlineMedium?.copyWith(
+                  color: colors.onBrand,
+                  fontSize: AppTypography.splash,
                 ),
-                const SizedBox(height: AppSpacing.xxl),
-                SizedBox(
-                  width: AppSizes.splashProgressWidth,
-                  child: ClipRRect(
-                    borderRadius: AppRadius.pillAll,
-                    child: LinearProgressIndicator(
-                      minHeight: AppSizes.splashProgressHeight,
-                      color: colors.accent,
+              ),
+              Text(
+                l10n.splashTagline,
+                style: context.text.bodyMedium?.copyWith(color: colors.accent),
+              ),
+              const SizedBox(height: AppSpacing.xxl),
+              SizedBox(
+                width: AppSizes.splashProgressWidth,
+                child: ClipRRect(
+                  borderRadius: AppRadius.pillAll,
+                  child: TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: AppDurations.splashBar,
+                    builder: (_, value, __) => LinearProgressIndicator(
+                      value: value,
+                      minHeight: AppSizes.splashBarHeight,
+                      color: colors.onBrand,
                       backgroundColor:
-                          colors.onInk.withValues(alpha: _trackAlpha),
+                          colors.onBrand.withValues(alpha: _trackAlpha),
                     ),
                   ),
                 ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.xl),
-                  child: Text(
-                    l10n.splashFooter,
-                    style: context.text.labelSmall?.copyWith(
-                      color: colors.onInk.withValues(alpha: _footAlpha),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

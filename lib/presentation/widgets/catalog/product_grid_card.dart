@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../core/localization/price_label.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -82,7 +83,7 @@ class ProductGridCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          product.price.formatted,
+                          PriceLabel.of(product, l10n),
                           style: context.text.titleSmall
                               ?.copyWith(color: colors.brand),
                         ),

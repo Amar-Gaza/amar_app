@@ -5,6 +5,14 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Maps key comes from the git-ignored env file: prod when present, else dev.
+val envFile = listOf("env/prod.json", "env/dev.json")
+    .map { rootProject.file("../$it") }
+    .firstOrNull { it.exists() }
+val amarMapsKey = envFile
+    ?.let { (groovy.json.JsonSlurper().parse(it) as Map<*, *>)["AMAR_MAPS_KEY"] as? String }
+    .orEmpty()
+
 android {
     namespace = "com.example.amar_app"
     compileSdk = flutter.compileSdkVersion
@@ -21,13 +29,14 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.amar_app"
+        applicationId = "com.ajyal.amar"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["amarMapsKey"] = amarMapsKey
     }
 
     buildTypes {

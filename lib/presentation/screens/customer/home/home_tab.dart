@@ -4,23 +4,26 @@ import 'package:get/get.dart';
 import '../../../../app/routes/app_routes.dart';
 import '../../../../app/routes/route_args.dart';
 import '../../../../controllers/customer/catalog_controller.dart';
-import '../../../../controllers/customer/shell_controller.dart';
-import '../../../../controllers/shared/session_controller.dart';
+import '../../../../controllers/customer/notifications_controller.dart';
+import '../../../../controllers/shared/app_config_controller.dart';
+import '../../../../core/constants/api_query.dart';
+import '../../../../core/constants/app_defaults.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../widgets/catalog/add_to_cart_flow.dart';
-import '../../../widgets/catalog/product_grid_card.dart';
 import '../../../widgets/common/empty_view.dart';
 import '../../../widgets/common/error_view.dart';
 import '../../../widgets/common/section_header.dart';
 import '../../../widgets/common/skeleton_list.dart';
 import '../../../widgets/home/active_order_card.dart';
-import '../../../widgets/home/category_strip.dart';
+import '../../../widgets/home/category_grid.dart';
 import '../../../widgets/home/home_header.dart';
+import '../../../widgets/home/home_product_card.dart';
 import '../../../widgets/home/home_search_field.dart';
 import '../../../widgets/home/horizontal_strip.dart';
-import '../../../widgets/home/vendor_card.dart';
+import '../../../widgets/home/promo_banner.dart';
+import '../../../widgets/home/provider_section.dart';
 
 class HomeTab extends GetView<CatalogController> {
   const HomeTab({super.key});
@@ -28,21 +31,28 @@ class HomeTab extends GetView<CatalogController> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final session = Get.find<SessionController>();
-    final shell = Get.find<ShellController>();
+    final notifications = Get.find<NotificationsController>();
+    final config = Get.find<AppConfigController>();
+    const sectionGap = SizedBox(height: AppSpacing.page);
+    const headerGap = SizedBox(height: AppSpacing.sm);
+    const sidePadding = EdgeInsets.symmetric(horizontal: AppSpacing.page);
     return SafeArea(
       bottom: false,
       child: Column(
         children: [
-          Obx(() {
-            final user = session.user.value;
-            return HomeHeader(
-              userName: user?.name,
-              avatarUrl: user?.avatarUrl,
-              onNotifications: () => shell.select(CustomerTab.notifications),
-              onAccount: () => shell.select(CustomerTab.account),
-            );
-          }),
+          Obx(
+            () => HomeHeader(
+              hasUnread: notifications.hasUnread,
+              locationLabel:
+                  controller.address.value?.label ?? l10n.homeSetLocation,
+              onNotifications: () => Get.toNamed<void>(AppRoutes.notifications),
+              onLocation: () async {
+                await Get.toNamed<void>(AppRoutes.location);
+                await controller.loadAddress();
+              },
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
           HomeSearchField(
             hint: l10n.homeSearchHint,
             onTap: () => Get.toNamed<void>(AppRoutes.search),
@@ -65,86 +75,85 @@ class HomeTab extends GetView<CatalogController> {
                   onAction: controller.load,
                 );
               }
+              final order = controller.activeOrder.value;
+              final (totalSteps, currentStep) =
+                  order == null ? (0, 0) : config.progressOf(order.status.key);
               return RefreshIndicator(
                 onRefresh: controller.load,
                 child: ListView(
                   padding: const EdgeInsets.only(bottom: AppSpacing.xl),
                   children: [
-                    if (controller.activeOrder.value != null) ...[
-                      const SizedBox(height: AppSpacing.sm),
-                      ActiveOrderCard(
-                        order: controller.activeOrder.value!,
-                        onTap: () => Get.toNamed<void>(
-                          AppRoutes.order,
-                          arguments: controller.activeOrder.value!.id,
-                        ),
-                      ),
-                    ],
-                    if (controller.categories.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.md),
-                      SectionHeader(
-                        title: l10n.homeCategoriesTitle,
-                        subtitle: l10n.homeCategoriesSubtitle,
-                        actionLabel: l10n.commonViewAll,
-                        onAction: () => Get.toNamed<void>(AppRoutes.categories),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      CategoryStrip(
-                        categories: controller.categories,
-                        onTap: (category) => Get.toNamed<void>(
-                          AppRoutes.products,
-                          arguments: ProductsArgs(
-                            categoryId: category.id,
-                            title: category.name.trim(),
+                    if (order != null)
+                      Padding(
+                        padding: sidePadding,
+                        child: ActiveOrderCard(
+                          order: order,
+                          totalSteps: totalSteps,
+                          currentStep: currentStep,
+                          onTap: () => Get.toNamed<void>(
+                            AppRoutes.order,
+                            arguments: order.id,
                           ),
                         ),
                       ),
-                    ],
-                    if (controller.vendors.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.xl),
-                      SectionHeader(
-                        title: l10n.homeVendorsTitle,
-                        subtitle: l10n.homeVendorsSubtitle,
-                        actionLabel: l10n.commonViewAll,
-                        onAction: () => Get.toNamed<void>(AppRoutes.vendors),
+                    const SizedBox(height: AppSpacing.lg),
+                    Padding(
+                      padding: sidePadding,
+                      child: PromoBanner(
+                        onAction: () => Get.toNamed<void>(AppRoutes.categories),
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      HorizontalStrip(
-                        items: controller.vendors,
-                        height: AppSizes.vendorStripHeight,
-                        itemBuilder: (vendor) => VendorCard(
-                          vendor: vendor,
-                          onTap: () => Get.toNamed<void>(
-                            AppRoutes.vendor,
-                            arguments: vendor.id,
+                    ),
+                    if (controller.categories.isNotEmpty) ...[
+                      sectionGap,
+                      SectionHeader(
+                        title: l10n.homeCategoriesTitle,
+                        actionLabel: l10n.commonViewAll,
+                        onAction: () => Get.toNamed<void>(AppRoutes.categories),
+                      ),
+                      headerGap,
+                      Padding(
+                        padding: sidePadding,
+                        child: CategoryGrid(
+                          categories: controller.categories
+                              .take(AppDefaults.homeCategoryLimit)
+                              .toList(),
+                          onTap: (category) => Get.toNamed<void>(
+                            AppRoutes.products,
+                            arguments: ProductsArgs(
+                              categoryIds: category.ids,
+                              title: category.name,
+                            ),
                           ),
                         ),
                       ),
                     ],
                     if (controller.products.isNotEmpty) ...[
-                      const SizedBox(height: AppSpacing.xl),
-                      SectionHeader(
-                        title: l10n.homeProductsTitle,
-                        subtitle: l10n.homeProductsSubtitle,
-                      ),
-                      const SizedBox(height: AppSpacing.md),
+                      sectionGap,
+                      SectionHeader(title: l10n.homeMostOrdered),
+                      headerGap,
                       HorizontalStrip(
                         items: controller.products,
-                        height: AppSizes.productStripHeight,
-                        itemBuilder: (product) => SizedBox(
-                          width: AppSizes.productCardWidth,
-                          child: ProductGridCard(
-                            product: product,
-                            onTap: () => Get.toNamed<void>(
-                              AppRoutes.product,
-                              arguments: ProductArgs(product.id),
-                            ),
-                            onAdd: () =>
-                                AddToCartFlow.quickAdd(context, product),
+                        height: AppSizes.homeProductStrip,
+                        itemBuilder: (product) => HomeProductCard(
+                          product: product,
+                          onTap: () => Get.toNamed<void>(
+                            AppRoutes.product,
+                            arguments: ProductArgs(product.id),
                           ),
+                          onAdd: () => AddToCartFlow.quickAdd(context, product),
                         ),
                       ),
                     ],
+                    ProviderSection(
+                      title: l10n.homeStoresTitle,
+                      kind: ProductKinds.product,
+                      entries: controller.stores,
+                    ),
+                    ProviderSection(
+                      title: l10n.homeCompaniesTitle,
+                      kind: ProductKinds.service,
+                      entries: controller.companies,
+                    ),
                   ],
                 ),
               );

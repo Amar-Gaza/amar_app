@@ -49,6 +49,14 @@ class CatalogService {
         parse: (data) => ApiClient.parseObject(data, Vendor.fromJson),
       );
 
+  Future<StorePaymentMethods> paymentMethods(int vendorId) =>
+      _client.data<StorePaymentMethods>(
+        HttpMethod.get,
+        ApiEndpoints.vendorPaymentMethods(vendorId),
+        parse: (data) =>
+            ApiClient.parseObject(data, StorePaymentMethods.fromJson),
+      );
+
   Future<Paged<Product>> products({
     int? categoryId,
     int? vendorId,

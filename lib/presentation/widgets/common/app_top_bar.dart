@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
-import 'brand_mark.dart';
 import 'directional_icons.dart';
+import 'square_icon_button.dart';
 
-/// Centered title, back arrow at the start and the brand mark at the end.
+/// Centered title with a square back button at the start.
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   const AppTopBar({
     super.key,
@@ -15,7 +15,6 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
     this.onBack,
     this.leading,
     this.trailing,
-    this.showBrand = true,
   });
 
   final String? title;
@@ -25,7 +24,6 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback? onBack;
   final Widget? leading;
   final Widget? trailing;
-  final bool showBrand;
 
   @override
   Size get preferredSize => const Size.fromHeight(AppSizes.topBarHeight);
@@ -35,12 +33,11 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
     final canPop = showBack ?? Navigator.of(context).canPop();
     final start = leading ??
         (canPop
-            ? IconButton(
+            ? SquareIconButton(
+                icon: DirectionalIcons.back(context),
                 onPressed: onBack ?? () => Navigator.of(context).maybePop(),
-                icon: Icon(DirectionalIcons.back(context)),
               )
             : null);
-    final end = trailing ?? (showBrand ? const BrandMark() : null);
     return Material(
       color: context.scheme.surface,
       child: SafeArea(
@@ -48,11 +45,6 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           height: AppSizes.topBarHeight,
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: context.appColors.border),
-            ),
-          ),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -65,14 +57,17 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                     title!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: context.text.titleMedium,
+                    style: context.text.headlineSmall,
                   ),
                 ),
               if (start != null)
                 Align(
                     alignment: AlignmentDirectional.centerStart, child: start),
-              if (end != null)
-                Align(alignment: AlignmentDirectional.centerEnd, child: end),
+              if (trailing != null)
+                Align(
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: trailing,
+                ),
             ],
           ),
         ),

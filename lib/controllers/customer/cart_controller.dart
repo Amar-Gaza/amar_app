@@ -9,6 +9,25 @@ enum AddToCartResult { added, otherVendor }
 class CartController extends GetxController {
   final RxList<CartItem> items = <CartItem>[].obs;
 
+  /// Service being requested. It checks out alone and never joins the cart:
+  /// a service stays out of it until its price is set.
+  final Rxn<CartItem> service = Rxn<CartItem>();
+
+  List<CartItem> get checkoutItems {
+    final pending = service.value;
+    return pending == null ? items : [pending];
+  }
+
+  int? get checkoutVendorId => service.value?.product.vendorId ?? vendorId;
+
+  void clearCheckout() {
+    if (service.value == null) {
+      clear();
+    } else {
+      service.value = null;
+    }
+  }
+
   int get count => items.fold(0, (sum, item) => sum + item.qty);
   int? get vendorId => items.isEmpty ? null : items.first.product.vendorId;
 

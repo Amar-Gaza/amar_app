@@ -1,53 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../controllers/customer/profile_setup_controller.dart';
 import '../../../../core/constants/api_rules.dart';
 import '../../../../core/constants/app_defaults.dart';
 import '../../../../core/localization/field_issue_resolver.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/theme/theme_context.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../widgets/auth/auth_body_text.dart';
+import '../../../widgets/auth/auth_heading.dart';
+import '../../../widgets/auth/form_steps.dart';
+import '../../../widgets/auth/phone_field.dart';
 import '../../../widgets/auth/profile_avatar.dart';
-import '../../../widgets/auth/step_progress.dart';
 import '../../../widgets/common/app_text_field.dart';
-import '../../../widgets/common/app_top_bar.dart';
 import '../../../widgets/common/error_banner.dart';
-import '../../../widgets/common/field_label.dart';
-import '../../../widgets/common/language_sheet.dart';
+import '../../../widgets/common/link_button.dart';
 import '../../../widgets/common/primary_button.dart';
 import '../../../widgets/common/screen_scaffold.dart';
-import '../../../widgets/common/select_row.dart';
 
 class ProfileSetupScreen extends GetView<ProfileSetupController> {
   const ProfileSetupScreen({super.key});
+
+  Future<void> _pickAvatar() async {
+    final file = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: AppDefaults.imageQuality,
+    );
+    if (file != null) controller.avatarPath.value = file.path;
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return ScreenScaffold(
-      appBar: AppTopBar(title: l10n.profileScreenTitle, showBack: false),
-      bottom: Obx(
-        () => PrimaryButton(
-          label: l10n.profileContinue,
-          isLoading: controller.isSubmitting.value,
-          onPressed: controller.submit,
-        ),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          StepProgress(
-            label: l10n.profileStepLabel,
-            value: AppDefaults.profileStepProgress,
+          const FormSteps(current: 3),
+          const SizedBox(height: AppSpacing.lg),
+          AuthHeading(
+            title: l10n.profileCompleteTitle,
+            subtitle: AuthBodyText(l10n.profileCompleteSubtitle),
           ),
-          const SizedBox(height: AppSpacing.xl),
-          const Center(child: ProfileAvatar()),
-          const SizedBox(height: AppSpacing.xl),
-          Text(l10n.profileTitle, style: context.text.headlineMedium),
-          const SizedBox(height: AppSpacing.xs),
-          Text(l10n.profileSubtitle, style: context.text.bodySmall),
+          const SizedBox(height: AppSpacing.md),
+          Center(
+            child: Obx(
+              () => ProfileAvatar(
+                name: controller.nameText.value,
+                imagePath: controller.avatarPath.value,
+                onTap: _pickAvatar,
+              ),
+            ),
+          ),
           const SizedBox(height: AppSpacing.xl),
           Obx(() {
             final issue = controller.nameIssue.value;
@@ -55,40 +60,48 @@ class ProfileSetupScreen extends GetView<ProfileSetupController> {
                 ?.fieldError(ProfileSetupController.nameField);
             return AppTextField(
               controller: controller.nameInput,
-              label: l10n.profileNameLabel,
-              hint: l10n.profileNameHint,
-              prefixIcon: LucideIcons.user,
+              label: l10n.authNameLabel,
+              hint: l10n.profileFullNameHint,
               keyboardType: TextInputType.name,
               maxLength: ApiRules.nameMaxLength,
-              showCounter: true,
               errorText: issue != null
                   ? FieldIssueResolver.message(issue, l10n)
                   : server,
               onSubmitted: controller.submit,
             );
           }),
-          const SizedBox(height: AppSpacing.md),
-          FieldLabel(l10n.profileLanguageLabel),
-          Obx(() {
-            final code = controller.locale.value.languageCode;
-            return SelectRow(
-              value: LanguageSheet.label(l10n, code),
-              onTap: () async {
-                final picked = await LanguageSheet.show(context, code);
-                if (picked != null) await controller.changeLanguage(picked);
-              },
-            );
-          }),
+          const SizedBox(height: AppSpacing.sm),
+          PhoneField(
+            controller: controller.phoneInput,
+            label: l10n.phoneLabel,
+            hint: l10n.phoneHint,
+            enabled: false,
+            showIcon: false,
+          ),
           Obx(() {
             final failure = controller.failure.value;
             if (failure == null || failure.isValidation) {
               return const SizedBox.shrink();
             }
             return Padding(
-              padding: const EdgeInsets.only(top: AppSpacing.lg),
+              padding: const EdgeInsets.only(top: AppSpacing.md),
               child: ErrorBanner(failure: failure),
             );
           }),
+          const SizedBox(height: AppSpacing.md),
+          Obx(
+            () => PrimaryButton(
+              label: l10n.commonContinue,
+              isLoading: controller.isSubmitting.value,
+              onPressed: controller.submit,
+            ),
+          ),
+          Center(
+            child: LinkButton(
+              label: l10n.commonSkip,
+              onPressed: controller.skip,
+            ),
+          ),
         ],
       ),
     );

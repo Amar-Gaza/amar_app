@@ -18,7 +18,10 @@ class SelectRow extends StatelessWidget {
         color: context.scheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: AppRadius.mdAll,
-          side: BorderSide(color: context.appColors.border),
+          side: BorderSide(
+            color: context.appColors.border,
+            width: AppSizes.borderWidthField,
+          ),
         ),
         child: InkWell(
           borderRadius: AppRadius.mdAll,

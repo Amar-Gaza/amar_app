@@ -42,7 +42,8 @@ abstract final class AppTheme {
       colorScheme: scheme,
       fontFamily: AppTypography.fontFamily,
     );
-    const buttonShape = RoundedRectangleBorder(borderRadius: AppRadius.mdAll);
+    const buttonShape =
+        RoundedRectangleBorder(borderRadius: AppRadius.buttonAll);
     const buttonSize = Size.fromHeight(AppSizes.buttonHeight);
     final buttonText = base.textTheme.labelLarge?.copyWith(
       fontFamily: AppTypography.fontFamily,
@@ -54,7 +55,7 @@ abstract final class AppTheme {
           borderRadius: AppRadius.mdAll,
           borderSide: BorderSide(
             color: color,
-            width: width ?? AppSizes.borderWidth,
+            width: width ?? AppSizes.borderWidthField,
           ),
         );
     return base.copyWith(
@@ -79,7 +80,7 @@ abstract final class AppTheme {
         style: FilledButton.styleFrom(
           backgroundColor: colors.brand,
           foregroundColor: colors.onBrand,
-          disabledBackgroundColor: colors.brand.withValues(alpha: 0.45),
+          disabledBackgroundColor: colors.disabled,
           disabledForegroundColor: colors.onBrand,
           minimumSize: buttonSize,
           shape: buttonShape,
@@ -89,16 +90,17 @@ abstract final class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: colors.brand,
+          backgroundColor: colors.brandSoft,
           minimumSize: buttonSize,
           shape: buttonShape,
           textStyle: buttonText,
-          side: BorderSide(color: colors.border, width: AppSizes.borderWidth),
+          side: BorderSide.none,
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: colors.brand,
-          textStyle: buttonText?.copyWith(fontSize: AppTypography.caption),
+          foregroundColor: colors.brandBright,
+          textStyle: buttonText?.copyWith(fontSize: AppTypography.link),
         ),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
@@ -110,6 +112,33 @@ abstract final class AppTheme {
         surfaceTintColor: Colors.transparent,
         showDragHandle: true,
       ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: colors.ink,
+        contentTextStyle: TextStyle(
+          color: colors.onInk,
+          fontFamily: AppTypography.fontFamily,
+          fontSize: AppTypography.link,
+        ),
+        shape: const RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStatePropertyAll(colors.onBrand),
+        trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colors.brandBright
+              : colors.disabled,
+        ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? colors.brandBright
+              : Colors.transparent,
+        ),
+        checkColor: WidgetStatePropertyAll(colors.onBrand),
+      ),
       dialogTheme: DialogThemeData(
         backgroundColor: surface,
         surfaceTintColor: Colors.transparent,
@@ -118,15 +147,17 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surface,
+        constraints: const BoxConstraints(minHeight: AppSizes.fieldHeight),
         hintStyle: TextStyle(color: colors.subtleText),
-        prefixIconColor: colors.mutedText,
+        prefixIconColor: colors.subtleText,
+        suffixIconColor: colors.subtleText,
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.lg,
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.md,
         ),
         border: border(colors.border),
         enabledBorder: border(colors.border),
-        focusedBorder: border(colors.brand, AppSizes.borderWidthActive),
+        focusedBorder: border(colors.brandBright, AppSizes.borderWidthActive),
         errorBorder: border(colors.danger),
         focusedErrorBorder: border(colors.danger, AppSizes.borderWidthActive),
       ),

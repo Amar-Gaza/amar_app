@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../app/routes/app_routes.dart';
 import '../../../controllers/customer/address_form_controller.dart';
 import '../../../core/constants/app_defaults.dart';
+import '../../../core/constants/app_env.dart';
+import '../../../core/localization/location_issue_text.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
+import '../../../data/models/catalog/picked_location.dart';
 import '../../../data/services/shared/device_location_service.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/checkout/bottom_action_bar.dart';
@@ -22,14 +26,22 @@ import '../../widgets/common/state_tone.dart';
 class AddressFormScreen extends GetView<AddressFormController> {
   const AddressFormScreen({super.key});
 
-  static const double _mapHeight = 170;
+  static const double _mapHeight = 220;
   static const int _coordDigits = 5;
 
-  String _issue(AppLocalizations l10n, LocationIssue issue) => switch (issue) {
-        LocationIssue.serviceDisabled => l10n.locationServiceOff,
-        LocationIssue.denied => l10n.locationDenied,
-        LocationIssue.deniedForever => l10n.locationDeniedForever,
-      };
+  Future<void> _pickOnMap() async {
+    final hasPosition = controller.hasPosition;
+    final picked = await Get.toNamed<PickedLocation>(
+      AppRoutes.mapPicker,
+      arguments: hasPosition
+          ? PickedLocation(
+              lat: controller.lat.value!,
+              lng: controller.lng.value!,
+            )
+          : null,
+    );
+    if (picked != null) controller.setPosition(picked);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +84,7 @@ class AddressFormScreen extends GetView<AddressFormController> {
                     controller.hasPosition
                         ? l10n.addressLocated
                         : issue != null
-                            ? _issue(l10n, issue)
+                            ? LocationIssueText.of(l10n, issue)
                             : l10n.addressLocating,
                     textAlign: TextAlign.center,
                     style: context.text.titleSmall,
@@ -96,6 +108,12 @@ class AddressFormScreen extends GetView<AddressFormController> {
                           : l10n.addressUseMyLocation,
                     ),
                   ),
+                  if (AppEnv.hasMaps)
+                    TextButton.icon(
+                      onPressed: _pickOnMap,
+                      icon: const Icon(LucideIcons.map),
+                      label: Text(l10n.addressPickOnMap),
+                    ),
                 ],
               ),
             );

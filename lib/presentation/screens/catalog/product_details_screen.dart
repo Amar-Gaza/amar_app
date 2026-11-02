@@ -4,6 +4,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../app/routes/route_args.dart';
+import '../../../core/constants/api_query.dart';
+import '../../../core/localization/price_label.dart';
 import '../../../controllers/customer/catalog_controller.dart';
 import '../../../controllers/customer/product_controller.dart';
 import '../../../core/theme/app_radius.dart';
@@ -48,13 +50,13 @@ class ProductDetailsScreen extends StatelessWidget {
       }
       if (product == null) return const Scaffold(body: LoadingView());
       final available = product.inStock;
+      final isService = product.kind == ProductKinds.service;
       final vendorName = controller.vendor.value?.name;
       final categoryName = Get.isRegistered<CatalogController>()
           ? Get.find<CatalogController>()
               .categories
-              .firstWhereOrNull((c) => c.id == product.categoryId)
+              .firstWhereOrNull((c) => c.ids.contains(product.categoryId))
               ?.name
-              .trim()
           : null;
       return Scaffold(
         body: ListView(
@@ -121,7 +123,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        product.price.formatted,
+                        PriceLabel.of(product, l10n),
                         style: context.text.headlineSmall?.copyWith(
                           color: product.priceMode ==
                                   ProductPriceMode.inspection
@@ -181,7 +183,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         onPressed: () => Get.offNamed<void>(
                           AppRoutes.products,
                           arguments: ProductsArgs(
-                            categoryId: product.categoryId,
+                            categoryIds: [product.categoryId!],
                             title: categoryName ?? l10n.productAlternatives,
                           ),
                         ),
@@ -236,23 +238,34 @@ class ProductDetailsScreen extends StatelessWidget {
                   )
                 : Row(
                     children: [
-                      QuantityStepper(
-                        value: controller.qty.value,
-                        onIncrement: controller.increment,
-                        onDecrement:
-                            controller.qty.value > ProductController.minQty
-                                ? controller.decrement
-                                : null,
-                      ),
-                      const SizedBox(width: AppSpacing.md),
+                      if (!isService) ...[
+                        QuantityStepper(
+                          value: controller.qty.value,
+                          onIncrement: controller.increment,
+                          onDecrement:
+                              controller.qty.value > ProductController.minQty
+                                  ? controller.decrement
+                                  : null,
+                        ),
+                        const SizedBox(width: AppSpacing.md),
+                      ],
                       Expanded(
                         child: PrimaryButton(
-                          label: l10n.cartAdd,
+                          label: isService
+                              ? l10n.serviceRequestAction
+                              : l10n.cartAdd,
                           onPressed: () async {
                             if (controller.missingRequired) {
                               await Get.toNamed<void>(
                                 AppRoutes.productOptions,
                                 arguments: args,
+                              );
+                              return;
+                            }
+                            if (isService) {
+                              controller.startServiceRequest();
+                              await Get.toNamed<void>(
+                                AppRoutes.serviceRequest,
                               );
                               return;
                             }

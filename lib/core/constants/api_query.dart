@@ -81,6 +81,7 @@ abstract final class ApiModules {
 /// Payment method keys from AppConfig.payment_methods.
 abstract final class PaymentMethods {
   static const String cashOnDelivery = 'cash_on_delivery';
+  static const String bankTransfer = 'bank_transfer';
 }
 
 /// Allowed values for `scope` on GET /orders.
@@ -119,6 +120,8 @@ abstract final class ApiBody {
   static const String couponCode = 'code';
   static const String vendorId = 'vendor_id';
   static const String offerId = 'offer_id';
+  static const String quoteId = 'quote_id';
+  static const String uploadId = 'upload_id';
   static const String reason = 'reason';
   static const String file = 'file';
   static const String purpose = 'purpose';
@@ -143,6 +146,7 @@ abstract final class ApiErrorCodes {
   static const String serverError = 'server_error';
   static const String quoteExpired = 'quote_expired';
   static const String quoteUsed = 'quote_used';
+  static const String quoteChanged = 'quote_changed';
   static const String outOfZone = 'out_of_zone';
   static const String alreadyTaken = 'already_taken';
   static const String invalidTransition = 'invalid_transition';
@@ -157,4 +161,23 @@ abstract final class ApiErrorCodes {
 
   static bool isUnavailable(String code) =>
       code == serverError || code == maintenance;
+}
+
+abstract final class ProductKinds {
+  static const String product = 'product';
+  static const String service = 'service';
+}
+
+abstract final class PriceModes {
+  static const String inspection = 'inspection';
+}
+
+abstract final class OrderStatusKeys {
+  static const String _servicePrefix = 'service_';
+  static const String technicianOnWay = 'technician_on_way';
+  static const String awaitingPayment = 'awaiting_payment';
+  static const String quoteSent = 'sent';
+
+  static bool isService(String key) =>
+      key.startsWith(_servicePrefix) || key == technicianOnWay;
 }

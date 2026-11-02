@@ -4,12 +4,17 @@ abstract final class AppRoutes {
   static const String phone = '/phone';
   static const String otp = '/otp';
   static const String profile = '/profile';
+  static const String location = '/location';
+  static const String mapPicker = '/map-picker';
+  static const String serviceRequest = '/service-request';
+  static const String notifications = '/notifications';
   static const String home = '/home';
 
   // Catalog
   static const String search = '/search';
   static const String categories = '/categories';
   static const String vendors = '/vendors';
+  static const String providers = '/providers';
   static const String vendor = '/vendor';
   static const String products = '/products';
   static const String product = '/product';
@@ -17,7 +22,6 @@ abstract final class AppRoutes {
   static const String productQuantity = '/product/quantity';
 
   // Checkout
-  static const String cart = '/cart';
   static const String checkoutDelivery = '/checkout/delivery';
   static const String checkoutAddresses = '/checkout/addresses';
   static const String checkoutAddressNew = '/checkout/addresses/new';

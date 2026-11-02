@@ -23,7 +23,7 @@ class OtpScreen extends GetView<AuthController> {
       final failure = controller.failure.value;
       if (controller.isOtpExpired) {
         return Scaffold(
-          appBar: AppTopBar(title: l10n.otpExpiredTitle, showBrand: false),
+          appBar: AppTopBar(title: l10n.otpExpiredTitle),
           body: StateView(
             icon: LucideIcons.clock,
             tone: StateTone.warning,
@@ -40,7 +40,7 @@ class OtpScreen extends GetView<AuthController> {
       }
       if (failure != null && failure.isUnavailable) {
         return Scaffold(
-          appBar: AppTopBar(title: l10n.otpScreenTitle, showBrand: false),
+          appBar: AppTopBar(title: l10n.otpScreenTitle),
           body: ErrorView(failure: failure, onRetry: controller.retryOtp),
         );
       }

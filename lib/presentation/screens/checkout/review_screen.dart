@@ -87,7 +87,7 @@ class ReviewScreen extends GetView<CheckoutController> {
                     const SizedBox(height: AppSpacing.md),
                   ],
                   _section(context, l10n.reviewProducts, [
-                    for (final item in cart.items) ...[
+                    for (final item in cart.checkoutItems) ...[
                       CartLineCard(item: item),
                       const SizedBox(height: AppSpacing.sm),
                     ],

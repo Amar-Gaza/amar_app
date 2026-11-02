@@ -20,8 +20,8 @@ import '../../presentation/screens/orders/receipt_screen.dart';
 import '../../presentation/screens/orders/share_link_screen.dart';
 import '../../presentation/screens/orders/tracking_screen.dart';
 import '../../presentation/screens/checkout/address_form_screen.dart';
+import '../../presentation/screens/checkout/map_picker_screen.dart';
 import '../../presentation/screens/checkout/address_picker_screen.dart';
-import '../../presentation/screens/checkout/cart_screen.dart';
 import '../../presentation/screens/checkout/coupon_screen.dart';
 import '../../presentation/screens/checkout/delivery_screen.dart';
 import '../../presentation/screens/checkout/checkout_details_screen.dart';
@@ -35,7 +35,10 @@ import '../../presentation/screens/catalog/products_screen.dart';
 import '../../presentation/screens/catalog/search_screen.dart';
 import '../../presentation/screens/catalog/vendor_details_screen.dart';
 import '../../presentation/screens/catalog/vendors_screen.dart';
+import '../../presentation/screens/auth/location/location_screen.dart';
 import '../../presentation/screens/auth/phone/phone_screen.dart';
+import '../../presentation/screens/catalog/providers_screen.dart';
+import '../../presentation/screens/customer/notifications/notifications_screen.dart';
 import '../../presentation/screens/auth/profile/profile_setup_screen.dart';
 import '../../presentation/screens/customer/shell/customer_shell_screen.dart';
 import '../../presentation/screens/onboarding/onboarding_screen.dart';
@@ -72,6 +75,20 @@ abstract final class AppPages {
       name: AppRoutes.profile,
       page: ProfileSetupScreen.new,
       binding: ProfileSetupBinding(),
+      middlewares: [CustomerAuthMiddleware()],
+    ),
+    GetPage<void>(
+      name: AppRoutes.notifications,
+      page: NotificationsScreen.new,
+      middlewares: [CustomerAuthMiddleware()],
+    ),
+    GetPage<void>(
+      name: AppRoutes.providers,
+      page: ProvidersScreen.new,
+    ),
+    GetPage<void>(
+      name: AppRoutes.location,
+      page: LocationScreen.new,
       middlewares: [CustomerAuthMiddleware()],
     ),
     GetPage<void>(
@@ -118,16 +135,21 @@ abstract final class AppPages {
       name: AppRoutes.productQuantity,
       page: ProductQuantityScreen.new,
     ),
-    GetPage<void>(
-      name: AppRoutes.cart,
-      page: CartScreen.new,
-      binding: CheckoutBinding(),
-      middlewares: [CustomerAuthMiddleware()],
-    ),
     GetPage<void>(name: AppRoutes.checkoutDelivery, page: DeliveryScreen.new),
     GetPage<void>(
       name: AppRoutes.checkoutAddresses,
       page: AddressPickerScreen.new,
+    ),
+    GetPage<void>(
+      name: AppRoutes.serviceRequest,
+      page: DeliveryScreen.new,
+      binding: CheckoutBinding(),
+      middlewares: [CustomerAuthMiddleware()],
+    ),
+    GetPage<void>(
+      name: AppRoutes.mapPicker,
+      page: MapPickerScreen.new,
+      binding: MapPickerBinding(),
     ),
     GetPage<void>(
       name: AppRoutes.checkoutAddressNew,

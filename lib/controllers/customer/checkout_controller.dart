@@ -9,6 +9,7 @@ import '../../core/constants/api_query.dart';
 import '../../core/constants/app_defaults.dart';
 import '../../core/constants/app_durations.dart';
 import '../../core/network/api_failure.dart';
+import '../../data/models/catalog/payment_option.dart';
 import '../../data/models/masar/masar_models.dart';
 import '../../data/models/requests/place_order_request.dart';
 import '../../data/models/requests/quote_request.dart';
@@ -33,7 +34,8 @@ class PendingUpload {
 }
 
 /// Whole checkout: cart → delivery → quote → place order.
-/// Lives with the cart route so every checkout screen shares it.
+/// Lives with the cart tab or the service request route, so every checkout
+/// screen shares it. A service checks out alone, outside the cart.
 class CheckoutController extends GetxController {
   CheckoutController({
     required CartController cart,
@@ -65,6 +67,8 @@ class CheckoutController extends GetxController {
   final Rxn<ApiFailure> addressesFailure = Rxn<ApiFailure>();
   final Rxn<DateTime> scheduledFor = Rxn<DateTime>();
   final RxString paymentMethod = ''.obs;
+  final Rxn<StoreGateway> gateway = Rxn<StoreGateway>();
+  final Rxn<StorePaymentMethods> storePayments = Rxn<StorePaymentMethods>();
   final Rxn<Vendor> vendor = Rxn<Vendor>();
 
   // Details
@@ -93,6 +97,24 @@ class CheckoutController extends GetxController {
 
   List<String> get paymentMethods =>
       _config.config.value?.paymentMethods ?? const [];
+  bool get isService => _cart.service.value != null;
+
+  /// Config methods the store accepts, plus one entry per transfer account.
+  List<PaymentOption> get paymentOptions {
+    final store = storePayments.value;
+    return [
+      if (store?.cash ?? true)
+        for (final method in paymentMethods)
+          if (method != PaymentMethods.bankTransfer)
+            PaymentOption(method: method),
+      for (final account in store?.gateways ?? const <StoreGateway>[])
+        PaymentOption(method: PaymentMethods.bankTransfer, gateway: account),
+    ];
+  }
+
+  PaymentOption get payment =>
+      PaymentOption(method: paymentMethod.value, gateway: gateway.value);
+
   bool get attachmentsEnabled =>
       _config.config.value?.modules.contains(ApiModules.attachments) ?? false;
   bool get couponsEnabled =>
@@ -101,24 +123,38 @@ class CheckoutController extends GetxController {
   bool get hasPendingUploads =>
       attachments.any((a) => !a.isDone && a.failure.value == null);
   bool get canRequestQuote =>
-      _cart.items.isNotEmpty && address.value != null && !hasPendingUploads;
+      _cart.checkoutItems.isNotEmpty &&
+      address.value != null &&
+      !hasPendingUploads &&
+      (!isService || scheduledFor.value != null);
 
   @override
   void onInit() {
     super.onInit();
-    if (paymentMethods.isNotEmpty) paymentMethod.value = paymentMethods.first;
+    _selectFirstPayment();
     loadAddresses();
     _loadVendor();
   }
 
   Future<void> _loadVendor() async {
-    final id = _cart.vendorId;
+    final id = _cart.checkoutVendorId;
     if (id == null) return;
     try {
       vendor.value = await _catalog.vendor(id);
     } on ApiFailure {
       // The pickup row falls back to a generic label.
     }
+    try {
+      storePayments.value = await _catalog.paymentMethods(id);
+      if (!paymentOptions.any(payment.same)) _selectFirstPayment();
+    } on ApiFailure {
+      // Keeps the config's methods.
+    }
+  }
+
+  void _selectFirstPayment() {
+    final first = paymentOptions.firstOrNull;
+    if (first != null) setPayment(first);
   }
 
   Future<void> loadAddresses() async {
@@ -152,8 +188,9 @@ class CheckoutController extends GetxController {
     _invalidateQuote();
   }
 
-  void setPayment(String value) {
-    paymentMethod.value = value;
+  void setPayment(PaymentOption value) {
+    paymentMethod.value = value.method;
+    gateway.value = value.gateway;
     _invalidateQuote();
   }
 
@@ -203,7 +240,7 @@ class CheckoutController extends GetxController {
     couponCheck.value = null;
     try {
       couponCheck.value =
-          await _orders.validateCoupon(code, vendorId: _cart.vendorId);
+          await _orders.validateCoupon(code, vendorId: _cart.checkoutVendorId);
     } on ApiFailure catch (e) {
       couponFailure.value = e;
     } finally {
@@ -234,12 +271,13 @@ class CheckoutController extends GetxController {
     try {
       final result = await _orders.quote(
         QuoteRequest(
-          vendorId: _cart.vendorId,
-          cart: _cart.items.map((e) => e.toCartLine()).toList(),
+          vendorId: _cart.checkoutVendorId,
+          cart: _cart.checkoutItems.map((e) => e.toCartLine()).toList(),
           dropoffAddressId: address.value!.id,
           paymentMethod:
               paymentMethod.value.isEmpty ? null : paymentMethod.value,
           scheduledFor: scheduledFor.value,
+          paymentGatewayId: gateway.value?.id,
           coupon: coupon.value,
         ),
       );
@@ -302,7 +340,7 @@ class CheckoutController extends GetxController {
         idempotencyKey: _idempotencyKey ??= _uuid.v4(),
       );
       placedOrder.value = order;
-      _cart.clear();
+      _cart.clearCheckout();
       return true;
     } on ApiFailure catch (e) {
       placeFailure.value = e;
@@ -322,6 +360,7 @@ class CheckoutController extends GetxController {
   @override
   void onClose() {
     _quoteTimer?.cancel();
+    _cart.service.value = null;
     note.dispose();
     couponInput.dispose();
     super.onClose();

@@ -46,7 +46,7 @@ lib/
 ├── presentation/widgets/{common,auth,splash,shell,home,catalog,checkout,orders,notifications,account,driver}/
 └── theme/                        # masar_theme.dart (generated, only statusColors still used), masar_icons.dart
 ```
-Other folders: `api/` (OpenAPI contract), `env/` (dart-define files), `l10n_src/{pack,custom}/` (ARB sources), `tool/` (`merge_arb.ps1`, `check_secrets.dart`, git hooks), `assets/images/logo.png` (old logo, now unused), `assets/fonts/Cairo-*.ttf`.
+Other folders: `api/` (OpenAPI contract), `env/` (dart-define files), `l10n_src/{pack,custom}/` (ARB sources), `tool/` (`merge_arb.ps1`, `check_secrets.dart`, git hooks), `../assets/images/app_logo.png` (old logo, now unused), `assets/fonts/Cairo-*.ttf`.
 
 ---
 
@@ -59,17 +59,20 @@ Other folders: `api/` (OpenAPI contract), `env/` (dart-define files), `l10n_src/
 
   | Token | Value | Token | Value |
   |---|---|---|---|
-  | `brand` | `#238778` | `brandSoft` | `#E6F5F1` |
-  | `ink` (text + dark surfaces) | `#243B3A` | `accent` (mint) | `#B7FBED` |
-  | `surfaceSoft` | `#F0F8F6` | `border` | `#DCEFEA` |
-  | `mutedText` | `#667C78` | `subtleText` | `#A7B8B4` |
-  | `warning` / `warningSoft` | `#B46A09` / `#FFF2DD` | `danger` / `dangerSoft` | `#C33D4E` / `#FDECEF` |
-  | `success` / `successSoft` | `#167A55` / `#E5F6ED` | `info` / `infoSoft` | `#2672A8` / `#E8F1FA` |
-  | `highlightSoft` | `#FCEAF6` | `skeleton` | `#E8EFED` |
+  | `brand` | `#14624A` | `brandSoft` | `#E3EDEA` |
+  | `brandBright` | `#1F8A66` | `brandDeep` | `#0F5240` |
+  | `ink` | `#13281F` | `accent` | `#CDEBDC` |
+  | `surfaceSoft` | `#F1F6F4` | `border` | `#DDE7E2` |
+  | `mutedText` | `#667A70` | `subtleText` | `#8AA196` |
+  | `amber` / `onAmber` | `#F2A93B` / `#4A2F00` | `disabled` | `#C9D6D0` |
+  | `warning` / `warningSoft` | `#9A6200` / `#FFF3D9` | `danger` / `dangerSoft` | `#C0392B` / `#FDECEB` |
+  | `success` / `successSoft` | `#1F7A55` / `#E3F3E8` | `info` / `infoSoft` | `#2F5BD1` / `#E0EBFF` |
+  | `promoStart` / `promoEnd` / `onPromo` | `#FBE7C0` / `#F7D089` / `#5B3B05` | `skeleton` | `#E3EDEA` |
 
+  Gradients: `brandGradient`, `heroGradient`, `promoGradient`. The primary color comes from the design, not from the server (`#5d9175` is ignored).
   A dark set is defined, but dark mode stays disabled (`AppTheme.mode = ThemeMode.light`).
 - `AppTheme` (`core/theme/app_theme.dart`) builds `ThemeData` itself and no longer depends on `MasarTheme`.
-- The brand mark is a mint tile with the glyph "ع" (`BrandMark`). The design's mark replaced `logo.png`; `BrandLogo` was deleted.
+- `BrandMark` loads `assets/images/app_logo.png` (added by the user) and shows a placeholder icon until the file exists. The app name is Amar / عَمَار.
 - The design's notes such as "API" annotation boxes and "بيانات نموذجية للمعاينة" (sample data) banners are design annotations. They were **not** implemented.
 
 **Navigation and UX**
@@ -104,6 +107,23 @@ Other folders: `api/` (OpenAPI contract), `env/` (dart-define files), `l10n_src/
 
 ## 3. Work completed (by area)
 
+### 3.0 Redesign phase 1: theme and shared widgets (Nov 2, 2026)
+The UI is being rebuilt from `brief/design.html`.
+- Theme: new palette and gradients (`app_color_extension.dart`), new `app_shadows.dart`, updated `app_radius`, `app_sizes`, `app_spacing` (`page = 20`), `app_typography`, `app_theme` (buttons, fields, snackbar, switch, checkbox).
+- New widgets in `widgets/common/`: `square_icon_button`, `segmented_tabs` + `segment_button` + `segment_item`, `tone_pill`, `surface_card`, `hero_card`, `press_scale`, `focus_glow`.
+- Updated widgets: `primary_button`, `app_text_field` (`suffix`, `enabled`, focus ring), `brand_mark`, `brand_wordmark`, `app_top_bar` (`showBrand` removed), `avatar_initial`, `field_label`, `select_row`, `screen_scaffold`, `section_header`, `status_illustration`.
+- Screens were not rebuilt yet; splash, onboarding and auth come in phase 2.
+- Phase order: 1 theme and widgets (done), 2 auth flow (done), 3 home with stores/companies, 4 services and dashboard.
+- Decision: customer login also uses OTP, because the contract has no other customer login.
+
+### 3.0b Redesign phase 2: auth flow (Nov 2, 2026)
+- Flow: splash, onboarding (3 slides), `PhoneScreen` (sign up / sign in tabs), OTP, `ProfileSetupScreen`, new `LocationScreen` (`AppRoutes.location`), home. Existing users go from OTP to home. Customer sign-in also uses OTP.
+- `AuthController`: `isSignup`, `hasConsent`, `canSubmit`, `nameInput`; the name is sent to verify-otp on sign up only. OTP length is fixed at `ApiRules.otpLength = 4`; the resend countdown is `AppDefaults.otpResendSeconds = 45`.
+- `ProfileSetupController`: prefilled name, read-only phone, avatar upload, `skip()`. Continue and Skip both open Location.
+- `LocationScreen` has no logic: GPS and areas are shown as coming soon and only Skip works, until GPS and the map are added together. Terms and privacy links are display-only.
+- New auth widgets: `form_steps`, `auth_heading`, `auth_body_text`, `consent_check`, `driver_entry_card`, `page_dots`, `onboarding_page`, `map_preview`, `map_stripes_painter`, `area_chip`, `otp_sent_line`. Removed: `auth_intro`, `consent_text`, `phone_line`, `step_progress`, `language_toggle`.
+- Assets added: `assets/images/onboarding_{1,2,3}.png`, extracted from the design.
+
 ### 3.1 Theme, fonts, shared widgets
 - `pubspec.yaml`: registered the `Cairo` family (weights 400–800 under `assets/fonts/`).
 - `core/theme/`:
@@ -112,7 +132,7 @@ Other folders: `api/` (OpenAPI contract), `env/` (dart-define files), `l10n_src/
   - `app_sizes.dart`, `app_radius.dart` (adds `pill`, `xlAll`, `pillAll`).
   - `app_theme.dart`: builds the full ThemeData.
 - `presentation/widgets/common/`:
-  - Brand and navigation: `brand_mark.dart`, `brand_wordmark.dart`, `app_top_bar.dart` (centered title, back at start, brand at end), `directional_icons.dart`.
+  - Brand and navigation: `brand_mark.dart`, `brand_wordmark.dart`, `app_top_bar.dart` (centered title, square back button at start, optional trailing), `directional_icons.dart`.
   - Tiles and states: `icon_tile.dart`, `state_tone.dart` (`StateTone` enum and colors), `status_illustration.dart`, `state_view.dart` (generic full-screen state), `code_chip.dart`.
   - Banners and errors: `info_banner.dart`, `error_banner.dart`, `error_view.dart` (offline / unavailable / API error with request id), `support_reference.dart`, `offline_banner.dart`.
   - Buttons: `link_button.dart`, `primary_button.dart` (shadow, loading).
@@ -314,6 +334,22 @@ Other folders: `api/` (OpenAPI contract), `env/` (dart-define files), `l10n_src/
 - `test/widget_test.dart` is still the commented-out template; there is no real test suite.
 
 ---
+
+### 3.0c Phase 3: home, bottom nav, unified categories (Amar redesign)
+- **Models/ARB:** `masar_models.dart` and `l10n_src/pack` are now v6. `ProductKinds`, `PriceModes`, `OrderStatusKeys` live in `api_query.dart`.
+- **Tabs:** `CustomerTab { home, orders, cart, account }`. Notifications moved to the `AppRoutes.notifications` route (bell). `/cart` route removed: `CartTab` applies `CheckoutBinding` and deletes `CheckoutController` when the tab closes; checkout steps stay pushed above the shell. `CartButton` pops to home and selects the cart tab.
+- **Bottom nav:** `customer_bottom_nav`, `nav_bar_painter` (moving notch), `nav_item`, `nav_badge`.
+- **Home:** header, search, `active_order_card` + `progress_segments`, `promo_banner` (fixed, no endpoint), `category_grid`, `home_product_card`, `provider_section` + `provider_card` + `provider_logo`. "View all" opens `ProvidersScreen` (`AppRoutes.providers`, reads `CatalogController`).
+- **Categories:** `CategoryGroup.merge` unifies server categories by trimmed name and drops empty ones; `ProductsArgs.categoryIds` fetches all ids and merges each page.
+- **Providers:** `ProviderEntry.build` joins vendors with the first page (`AppDefaults.catalogPageMax`) of each kind. A vendor whose items fall past that page is not listed.
+- **Vendor page:** `VendorTab { products, services, hours, about }`; only the kinds the vendor offers get a tab (`products?vendor=&kind=&per_page=1`).
+- **Not backed by an endpoint:** promo banner and "most ordered" order (first products returned).
+
+### 3.0d Phase 4: map, services, bank transfer
+- **Map:** `google_maps_flutter`. Key `AMAR_MAPS_KEY` lives in `env/*.json` (Android: read by `android/app/build.gradle.kts`, prod file first; Dart: `AppEnv.hasMaps`) and `ios/Flutter/Maps.xcconfig` (git-ignored, see `Maps.example.xcconfig`). `MapPickerScreen` returns `PickedLocation`; without a key the address form stays GPS only. Area chips removed because `zones` is empty.
+- **Services:** never enter the cart. `CartController.service` holds the pending item, `AppRoutes.serviceRequest` runs the checkout screens on it (`CheckoutBinding`), and a date from tomorrow on is required. Scheduling for products also starts tomorrow; "now" stays available for products.
+- **Price approval:** `OrderDetailsController` loads `service-quote`; `ServiceQuoteCard` accepts or rejects (409 `quote_changed` reloads the price).
+- **Bank transfer:** `CheckoutController.paymentOptions` merges config methods with `/vendors/{id}/payment-methods`; `TransferReceiptCard` uploads (`payment_receipt`, images only) on `awaiting_payment`.
 
 ## 6. Pending tasks / next steps (priority order)
 

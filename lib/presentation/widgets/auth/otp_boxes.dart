@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_radius.dart';
+import '../../../core/theme/app_shadows.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
@@ -27,10 +28,11 @@ class OtpBoxes extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: List<Widget>.generate(length, (index) {
           final isActive = !hasError && index == value.length;
+          final isFilled = index < value.length;
           final borderColor = hasError
               ? colors.danger
-              : isActive
-                  ? colors.brand
+              : isActive || isFilled
+                  ? colors.brandBright
                   : colors.border;
           return Flexible(
             child: Container(
@@ -41,18 +43,19 @@ class OtpBoxes extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: context.scheme.surface,
+                color: isFilled && !hasError
+                    ? colors.successSoft
+                    : context.scheme.surface,
                 borderRadius: AppRadius.mdAll,
                 border: Border.all(
                   color: borderColor,
-                  width: isActive
-                      ? AppSizes.borderWidthActive
-                      : AppSizes.borderWidth,
+                  width: AppSizes.borderWidthField,
                 ),
+                boxShadow: isActive ? AppShadows.focus(colors) : null,
               ),
               child: Text(
-                index < value.length ? value[index] : '',
-                style: context.text.titleLarge?.copyWith(
+                isFilled ? value[index] : '',
+                style: context.text.headlineMedium?.copyWith(
                   fontSize: AppTypography.otp,
                   color: hasError ? colors.danger : colors.ink,
                 ),

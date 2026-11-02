@@ -11,11 +11,13 @@ import '../../controllers/driver/driver_session_controller.dart';
 import '../../controllers/shared/app_config_controller.dart';
 import '../../controllers/shared/session_controller.dart';
 import '../../core/localization/locale_controller.dart';
+import '../../data/services/customer/address_service.dart';
 import '../../data/services/customer/auth_service.dart';
 import '../../data/services/customer/catalog_service.dart';
 import '../../data/services/customer/order_service.dart';
 import '../../data/services/shared/notification_service.dart';
 import '../../data/services/customer/profile_service.dart';
+import '../../data/services/shared/upload_service.dart';
 
 class SplashBinding extends Bindings {
   @override
@@ -48,6 +50,7 @@ class ProfileSetupBinding extends Bindings {
     Get.lazyPut<ProfileSetupController>(
       () => ProfileSetupController(
         Get.find<ProfileService>(),
+        Get.find<UploadService>(),
         Get.find<SessionController>(),
         Get.find<LocaleController>(),
       ),
@@ -64,6 +67,7 @@ class HomeBinding extends Bindings {
         () => CatalogController(
           Get.find<CatalogService>(),
           Get.find<OrderService>(),
+          Get.find<AddressService>(),
         ),
       )
       ..lazyPut<OrdersController>(

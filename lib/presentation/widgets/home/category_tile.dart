@@ -1,53 +1,51 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_category_tints.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
-import '../../../data/models/masar/masar_models.dart';
+import '../../../data/models/catalog/category_group.dart';
 import '../catalog/category_icon.dart';
 import '../common/icon_tile.dart';
-import '../common/state_tone.dart';
+import '../common/press_scale.dart';
 
+/// Tinted icon with the category name below it.
 class CategoryTile extends StatelessWidget {
   const CategoryTile({
     super.key,
     required this.category,
-    required this.tone,
+    required this.index,
     required this.onTap,
   });
 
-  final Category category;
-  final StateTone tone;
+  final CategoryGroup category;
+  final int index;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.appColors;
-    return InkWell(
+    final (background, foreground) = AppCategoryTints.at(index);
+    return PressScale(
       onTap: onTap,
-      borderRadius: AppRadius.lgAll,
-      child: SizedBox(
-        width: AppSizes.categoryTile + AppSpacing.xl,
-        child: Column(
-          children: [
-            IconTile(
-              icon: categoryIcon(category.icon),
-              size: AppSizes.categoryTile,
-              borderRadius: AppRadius.lgAll,
-              background: tone.background(colors),
-              foreground: tone.foreground(colors),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              category.name.trim(),
-              maxLines: 1,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: context.text.labelMedium,
-            ),
-          ],
-        ),
+      child: Column(
+        children: [
+          IconTile(
+            icon: categoryIcon(category.icon),
+            size: AppSizes.categoryIconTile,
+            borderRadius: AppRadius.cardAll,
+            background: background,
+            foreground: foreground,
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            category.name,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: context.text.labelMedium,
+          ),
+        ],
       ),
     );
   }
