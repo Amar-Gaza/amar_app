@@ -1,0 +1,391 @@
+{
+    "@@locale": "ar",
+    "statusAwaitingPayment": "بانتظار الدفع",
+    "@statusAwaitingPayment": {
+        "description": "Order status \"awaiting_payment\""
+    },
+    "statusAwaitingPricing": "بانتظار التسعير",
+    "@statusAwaitingPricing": {
+        "description": "Order status \"awaiting_pricing\""
+    },
+    "statusPaymentReview": "مراجعة الدفع",
+    "@statusPaymentReview": {
+        "description": "Order status \"payment_review\""
+    },
+    "statusPriced": "تم التسعير",
+    "@statusPriced": {
+        "description": "Order status \"priced\""
+    },
+    "statusAwaitingVendor": "بانتظار المتجر",
+    "@statusAwaitingVendor": {
+        "description": "Order status \"awaiting_vendor\""
+    },
+    "statusPreparing": "قيد التحضير",
+    "@statusPreparing": {
+        "description": "Order status \"preparing\""
+    },
+    "statusPending": "بانتظار سائق",
+    "@statusPending": {
+        "description": "Order status \"pending\""
+    },
+    "statusAccepted": "تم القبول",
+    "@statusAccepted": {
+        "description": "Order status \"accepted\""
+    },
+    "statusPickedUp": "تم الاستلام",
+    "@statusPickedUp": {
+        "description": "Order status \"picked_up\""
+    },
+    "statusOnTheWay": "في الطريق",
+    "@statusOnTheWay": {
+        "description": "Order status \"on_the_way\""
+    },
+    "statusArrived": "السائق وصل",
+    "@statusArrived": {
+        "description": "Order status \"arrived\""
+    },
+    "statusDelivered": "تم التوصيل",
+    "@statusDelivered": {
+        "description": "Order status \"delivered\""
+    },
+    "statusCancelled": "ملغي",
+    "@statusCancelled": {
+        "description": "Order status \"cancelled\""
+    },
+    "statusServiceRequested": "تم طلب الخدمة",
+    "@statusServiceRequested": {
+        "description": "Order status \"service_requested\""
+    },
+    "statusServiceInspection": "بانتظار سعر المتجر",
+    "@statusServiceInspection": {
+        "description": "Order status \"service_inspection\""
+    },
+    "statusServiceQuoted": "تم إرسال السعر",
+    "@statusServiceQuoted": {
+        "description": "Order status \"service_quoted\""
+    },
+    "statusServiceScheduled": "تم تحديد موعد الزيارة",
+    "@statusServiceScheduled": {
+        "description": "Order status \"service_scheduled\""
+    },
+    "statusTechnicianOnWay": "الفنّي في الطريق",
+    "@statusTechnicianOnWay": {
+        "description": "Order status \"technician_on_way\""
+    },
+    "statusServiceInProgress": "جارٍ تنفيذ العمل",
+    "@statusServiceInProgress": {
+        "description": "Order status \"service_in_progress\""
+    },
+    "statusServiceCompleted": "اكتملت الخدمة",
+    "@statusServiceCompleted": {
+        "description": "Order status \"service_completed\""
+    },
+    "actionAwaitingVendorToPreparingVendor": "قبول الطلب",
+    "@actionAwaitingVendorToPreparingVendor": {
+        "description": "Button for awaiting_vendor → preparing (vendor)"
+    },
+    "actionAwaitingPricingToPricedAdmin": "أرسل العرض",
+    "@actionAwaitingPricingToPricedAdmin": {
+        "description": "Button for awaiting_pricing → priced (admin)"
+    },
+    "actionPreparingToPendingVendor": "جاهز للاستلام",
+    "@actionPreparingToPendingVendor": {
+        "description": "Button for preparing → pending (vendor)"
+    },
+    "actionPendingToAcceptedDriver": "اقبل الطلب",
+    "@actionPendingToAcceptedDriver": {
+        "description": "Button for pending → accepted (driver)"
+    },
+    "actionServiceRequestedToServiceScheduledVendor": "قبول الطلب",
+    "@actionServiceRequestedToServiceScheduledVendor": {
+        "description": "Button for service_requested → service_scheduled (vendor)"
+    },
+    "actionServiceInspectionToServiceQuotedVendor": "إرسال السعر",
+    "@actionServiceInspectionToServiceQuotedVendor": {
+        "description": "Button for service_inspection → service_quoted (vendor)"
+    },
+    "actionServiceQuotedToServiceScheduledUser": "الموافقة على السعر",
+    "@actionServiceQuotedToServiceScheduledUser": {
+        "description": "Button for service_quoted → service_scheduled (user)"
+    },
+    "actionServiceScheduledToTechnicianOnWayVendor": "الفنّي في الطريق",
+    "@actionServiceScheduledToTechnicianOnWayVendor": {
+        "description": "Button for service_scheduled → technician_on_way (vendor)"
+    },
+    "actionTechnicianOnWayToServiceInProgressVendor": "بدء العمل",
+    "@actionTechnicianOnWayToServiceInProgressVendor": {
+        "description": "Button for technician_on_way → service_in_progress (vendor)"
+    },
+    "actionServiceInProgressToServiceCompletedVendor": "إنهاء الخدمة",
+    "@actionServiceInProgressToServiceCompletedVendor": {
+        "description": "Button for service_in_progress → service_completed (vendor)"
+    },
+    "actionPaymentReviewToPendingAdmin": "اعتماد الدفع",
+    "@actionPaymentReviewToPendingAdmin": {
+        "description": "Button for payment_review → pending (admin)"
+    },
+    "actionAwaitingPaymentToPaymentReviewUser": "إرسال إشعار التحويل",
+    "@actionAwaitingPaymentToPaymentReviewUser": {
+        "description": "Button for awaiting_payment → payment_review (user)"
+    },
+    "actionPaymentReviewToPendingVendor": "اعتماد الدفع",
+    "@actionPaymentReviewToPendingVendor": {
+        "description": "Button for payment_review → pending (vendor)"
+    },
+    "actionPricedToAwaitingPaymentUser": "الموافقة على السعر والدفع",
+    "@actionPricedToAwaitingPaymentUser": {
+        "description": "Button for priced → awaiting_payment (user)"
+    },
+    "actionServiceQuotedToAwaitingPaymentUser": "الموافقة على السعر",
+    "@actionServiceQuotedToAwaitingPaymentUser": {
+        "description": "Button for service_quoted → awaiting_payment (user)"
+    },
+    "actionPaymentReviewToServiceRequestedAdmin": "اعتماد الدفع",
+    "@actionPaymentReviewToServiceRequestedAdmin": {
+        "description": "Button for payment_review → service_requested (admin)"
+    },
+    "actionPaymentReviewToServiceRequestedVendor": "اعتماد الدفع",
+    "@actionPaymentReviewToServiceRequestedVendor": {
+        "description": "Button for payment_review → service_requested (vendor)"
+    },
+    "actionPaymentReviewToServiceScheduledAdmin": "اعتماد الدفع",
+    "@actionPaymentReviewToServiceScheduledAdmin": {
+        "description": "Button for payment_review → service_scheduled (admin)"
+    },
+    "actionPaymentReviewToServiceScheduledVendor": "اعتماد الدفع",
+    "@actionPaymentReviewToServiceScheduledVendor": {
+        "description": "Button for payment_review → service_scheduled (vendor)"
+    },
+    "actionAcceptedToPickedUpDriver": "استلمت الطلب",
+    "@actionAcceptedToPickedUpDriver": {
+        "description": "Button for accepted → picked_up (driver)"
+    },
+    "confirmAcceptedToPickedUpDriver": "متأكد إنك استلمت الطلب؟",
+    "@confirmAcceptedToPickedUpDriver": {
+        "description": "Confirmation before accepted → picked_up"
+    },
+    "actionPaymentReviewToAwaitingPaymentAdmin": "طلب تصحيح الإشعار",
+    "@actionPaymentReviewToAwaitingPaymentAdmin": {
+        "description": "Button for payment_review → awaiting_payment (admin)"
+    },
+    "actionPaymentReviewToAwaitingPaymentVendor": "طلب تصحيح الإشعار",
+    "@actionPaymentReviewToAwaitingPaymentVendor": {
+        "description": "Button for payment_review → awaiting_payment (vendor)"
+    },
+    "actionPickedUpToOnTheWayDriver": "انطلقت للزبون",
+    "@actionPickedUpToOnTheWayDriver": {
+        "description": "Button for picked_up → on_the_way (driver)"
+    },
+    "actionOnTheWayToArrivedDriver": "وصلت",
+    "@actionOnTheWayToArrivedDriver": {
+        "description": "Button for on_the_way → arrived (driver)"
+    },
+    "actionArrivedToDeliveredDriver": "تم التسليم",
+    "@actionArrivedToDeliveredDriver": {
+        "description": "Button for arrived → delivered (driver)"
+    },
+    "confirmArrivedToDeliveredDriver": "تأكد من استلام الزبون للطلب",
+    "@confirmArrivedToDeliveredDriver": {
+        "description": "Confirmation before arrived → delivered"
+    },
+    "actionPendingToCancelledUser": "إلغاء الطلب",
+    "@actionPendingToCancelledUser": {
+        "description": "Button for pending → cancelled (user)"
+    },
+    "actionAwaitingVendorToCancelledUser": "إلغاء الطلب",
+    "@actionAwaitingVendorToCancelledUser": {
+        "description": "Button for awaiting_vendor → cancelled (user)"
+    },
+    "actionPreparingToCancelledUser": "إلغاء الطلب",
+    "@actionPreparingToCancelledUser": {
+        "description": "Button for preparing → cancelled (user)"
+    },
+    "actionAwaitingPricingToCancelledUser": "إلغاء الطلب",
+    "@actionAwaitingPricingToCancelledUser": {
+        "description": "Button for awaiting_pricing → cancelled (user)"
+    },
+    "actionServiceQuotedToCancelledUser": "رفض السعر",
+    "@actionServiceQuotedToCancelledUser": {
+        "description": "Button for service_quoted → cancelled (user)"
+    },
+    "actionServiceRequestedToCancelledVendor": "رفض الطلب",
+    "@actionServiceRequestedToCancelledVendor": {
+        "description": "Button for service_requested → cancelled (vendor)"
+    },
+    "actionServiceInspectionToCancelledVendor": "رفض الطلب",
+    "@actionServiceInspectionToCancelledVendor": {
+        "description": "Button for service_inspection → cancelled (vendor)"
+    },
+    "actionServiceScheduledToCancelledVendor": "إلغاء الزيارة",
+    "@actionServiceScheduledToCancelledVendor": {
+        "description": "Button for service_scheduled → cancelled (vendor)"
+    },
+    "actionAcceptedToCancelledUser": "إلغاء الطلب",
+    "@actionAcceptedToCancelledUser": {
+        "description": "Button for accepted → cancelled (user)"
+    },
+    "actionAwaitingVendorToCancelledVendor": "رفض الطلب",
+    "@actionAwaitingVendorToCancelledVendor": {
+        "description": "Button for awaiting_vendor → cancelled (vendor)"
+    },
+    "actionAwaitingPricingToCancelledVendor": "رفض الطلب",
+    "@actionAwaitingPricingToCancelledVendor": {
+        "description": "Button for awaiting_pricing → cancelled (vendor)"
+    },
+    "actionPricedToCancelledVendor": "رفض الطلب",
+    "@actionPricedToCancelledVendor": {
+        "description": "Button for priced → cancelled (vendor)"
+    },
+    "actionPricedToCancelledUser": "رفض العرض",
+    "@actionPricedToCancelledUser": {
+        "description": "Button for priced → cancelled (user)"
+    },
+    "cancelReasonUserChangedMind": "غيّرت رأيي",
+    "@cancelReasonUserChangedMind": {
+        "description": "Cancel reason \"changed_mind\" (user)"
+    },
+    "cancelReasonUserWrongAddress": "العنوان غير صحيح",
+    "@cancelReasonUserWrongAddress": {
+        "description": "Cancel reason \"wrong_address\" (user)"
+    },
+    "cancelReasonUserTooSlow": "الانتظار طويل",
+    "@cancelReasonUserTooSlow": {
+        "description": "Cancel reason \"too_slow\" (user)"
+    },
+    "cancelReasonUserOther": "سبب آخر",
+    "@cancelReasonUserOther": {
+        "description": "Cancel reason \"other\" (user)"
+    },
+    "cancelReasonAdminCustomerRequest": "بطلب من الزبون",
+    "@cancelReasonAdminCustomerRequest": {
+        "description": "Cancel reason \"customer_request\" (admin)"
+    },
+    "cancelReasonAdminNoDriver": "لا يوجد سائق متاح",
+    "@cancelReasonAdminNoDriver": {
+        "description": "Cancel reason \"no_driver\" (admin)"
+    },
+    "cancelReasonAdminOther": "سبب آخر",
+    "@cancelReasonAdminOther": {
+        "description": "Cancel reason \"other\" (admin)"
+    },
+    "errorMissingProjectKey": "الترويسة X-Project-Key مطلوبة",
+    "@errorMissingProjectKey": {
+        "description": "Message for the API error code \"missing_project_key\""
+    },
+    "errorInvalidProjectKey": "مفتاح المشروع غير صالح أو تم إلغاؤه",
+    "@errorInvalidProjectKey": {
+        "description": "Message for the API error code \"invalid_project_key\""
+    },
+    "errorUnauthenticated": "سجّل الدخول للمتابعة",
+    "@errorUnauthenticated": {
+        "description": "Message for the API error code \"unauthenticated\""
+    },
+    "errorOtpInvalid": "رمز التحقق غير صحيح",
+    "@errorOtpInvalid": {
+        "description": "Message for the API error code \"otp_invalid\""
+    },
+    "errorOtpExpired": "انتهت صلاحية رمز التحقق",
+    "@errorOtpExpired": {
+        "description": "Message for the API error code \"otp_expired\""
+    },
+    "errorForbidden": "غير مسموح لك بتنفيذ هذا الإجراء",
+    "@errorForbidden": {
+        "description": "Message for the API error code \"forbidden\""
+    },
+    "errorModuleDisabled": "هذه الميزة غير مفعّلة في هذا المشروع",
+    "@errorModuleDisabled": {
+        "description": "Message for the API error code \"module_disabled\""
+    },
+    "errorProjectFrozen": "هذا المشروع مجمّد",
+    "@errorProjectFrozen": {
+        "description": "Message for the API error code \"project_frozen\""
+    },
+    "errorProjectInactive": "هذا المشروع غير مفعّل بعد",
+    "@errorProjectInactive": {
+        "description": "Message for the API error code \"project_inactive\""
+    },
+    "errorUserBlocked": "تم حظر هذا الحساب",
+    "@errorUserBlocked": {
+        "description": "Message for the API error code \"user_blocked\""
+    },
+    "errorNotFound": "العنصر المطلوب غير موجود",
+    "@errorNotFound": {
+        "description": "Message for the API error code \"not_found\""
+    },
+    "errorMethodNotAllowed": "طريقة الطلب هذه غير مسموحة هنا",
+    "@errorMethodNotAllowed": {
+        "description": "Message for the API error code \"method_not_allowed\""
+    },
+    "errorAlreadyTaken": "سبقك أحد آخر إلى هذا الطلب",
+    "@errorAlreadyTaken": {
+        "description": "Message for the API error code \"already_taken\""
+    },
+    "errorConflict": "الطلب يتعارض مع الحالة الحالية",
+    "@errorConflict": {
+        "description": "Message for the API error code \"conflict\""
+    },
+    "errorBidClosed": "تم إغلاق العروض على هذا الطلب",
+    "@errorBidClosed": {
+        "description": "Message for the API error code \"bid_closed\""
+    },
+    "errorIdempotencyMismatch": "مفتاح Idempotency-Key مستخدم سابقًا مع طلب مختلف",
+    "@errorIdempotencyMismatch": {
+        "description": "Message for the API error code \"idempotency_mismatch\""
+    },
+    "errorQuoteExpired": "انتهت صلاحية عرض السعر، اطلب عرضًا جديدًا",
+    "@errorQuoteExpired": {
+        "description": "Message for the API error code \"quote_expired\""
+    },
+    "errorQuoteUsed": "تم استخدام عرض السعر هذا مسبقًا",
+    "@errorQuoteUsed": {
+        "description": "Message for the API error code \"quote_used\""
+    },
+    "errorValidationFailed": "بعض الحقول غير صحيحة",
+    "@errorValidationFailed": {
+        "description": "Message for the API error code \"validation_failed\""
+    },
+    "errorInvalidTransition": "لا يمكن تغيير الحالة بهذا الشكل الآن",
+    "@errorInvalidTransition": {
+        "description": "Message for the API error code \"invalid_transition\""
+    },
+    "errorOutOfZone": "هذا الموقع خارج منطقة الخدمة",
+    "@errorOutOfZone": {
+        "description": "Message for the API error code \"out_of_zone\""
+    },
+    "errorOutOfStock": "الكمية المتوفرة غير كافية",
+    "@errorOutOfStock": {
+        "description": "Message for the API error code \"out_of_stock\""
+    },
+    "errorSlotFull": "موعد التوصيل هذا ممتلئ",
+    "@errorSlotFull": {
+        "description": "Message for the API error code \"slot_full\""
+    },
+    "errorCashLimitReached": "وصلت للحد الأعلى للنقد، قم بالتسوية أولًا",
+    "@errorCashLimitReached": {
+        "description": "Message for the API error code \"cash_limit_reached\""
+    },
+    "errorVendorClosed": "المتجر مغلق حاليًا",
+    "@errorVendorClosed": {
+        "description": "Message for the API error code \"vendor_closed\""
+    },
+    "errorAppUpdateRequired": "حدّث التطبيق للمتابعة",
+    "@errorAppUpdateRequired": {
+        "description": "Message for the API error code \"app_update_required\""
+    },
+    "errorTooManyRequests": "طلبات كثيرة جدًا، تمهّل قليلًا",
+    "@errorTooManyRequests": {
+        "description": "Message for the API error code \"too_many_requests\""
+    },
+    "errorServerError": "حدث خطأ من جهتنا",
+    "@errorServerError": {
+        "description": "Message for the API error code \"server_error\""
+    },
+    "errorMaintenance": "الخدمة تحت الصيانة",
+    "@errorMaintenance": {
+        "description": "Message for the API error code \"maintenance\""
+    },
+    "errorChaosInjected": "عطل مؤقت (وضع الفوضى)، أعد المحاولة",
+    "@errorChaosInjected": {
+        "description": "Message for the API error code \"chaos_injected\""
+    }
+}
