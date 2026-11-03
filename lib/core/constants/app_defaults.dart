@@ -29,6 +29,9 @@ abstract final class AppDefaults {
   static const int driverLocationBuffer = 100;
   static const String deliveryProofPurpose = 'delivery_proof';
   static const String transitionPurpose = 'transition_proof';
+
+  /// Delivery code boxes per the driver design; the API allows up to 10.
+  static const int deliveryOtpLength = 4;
   static const String passwordMin = '6';
   static const int activeOrderPreview = 1;
   static const int authSteps = 3;

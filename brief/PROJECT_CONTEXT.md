@@ -2,13 +2,13 @@
 
 ## 1. Overview
 - Flutter marketplace for Gaza: products (stores) and services (companies/technicians). One codebase, two apps with separate sessions: **customer** (OTP login) and **driver** (phone + password).
-- Root: `C:\Users\hp\Desktop\ammar\amar_app` (git repo, branch `main`, work uncommitted unless the user commits). App id `com.ajyal.amar` (Android + iOS).
+- Root: `C:\Users\RUC\StudioProjects\amar\amar_app` (git repo, branch `main`, work uncommitted unless the user commits). App id `com.ajyal.amar` (Android + iOS).
 - Backend: Masar, `https://masar.toldpath.com/api` (`/v1/...`), envelope `{success, message, data, meta, request_id}`; errors `{error: {code, details, hint}}`. Statuses, modules, polling, payment methods come from `GET /v1/app/config` (v6).
 - Stack: Flutter 3.47.7 (`C:\src\flutter`), GetX (state/nav/DI), Dio (one `ApiClient`), flutter_secure_storage + get_storage, gen-l10n (Arabic first, RTL), Lucide icons, Cairo font, google_maps_flutter, geolocator, image_picker.
 - Vendor dashboard is NOT in this repo and the contract has no write endpoints for it.
 
 ## 2. Structure
-- `brief/`: `design.html` (UI source), `amar-openapi (2).json` (contract), Postman collections (user/driver), `amar-dart-models` + `amar-flutter-handoff` (v6 models/ARB/theme), `questions_en.md`, this file.
+- `brief/`: `design.html` (customer UI source), `عَمَار — تصميم السائق.html` (driver UI source), `amar-openapi (2).json` (contract), Postman collections (user/driver), `amar-dart-models` + `amar-flutter-handoff` (v6 models/ARB/theme), `questions_en.md`, this file.
 - `lib/core/`: `constants/` (`api_endpoints`, `api_query` = ApiQuery/ApiBody/ApiErrorCodes/PaymentMethods/ProductKinds/PriceModes/OrderStatusKeys, `app_defaults`, `app_env`, `app_durations`), `network/` (`api_client`, `api_failure`, interceptors), `localization/` (`error_message_resolver`, `price_label`, `location_issue_text`), `theme/` (tokens, `app_category_tints`, `app_shadows`).
 - `lib/data/models/`: `masar/masar_models.dart` (v6, generated), `catalog/` (`category_group`, `provider_entry`, `picked_location`, `payment_option`), `requests/`, `cart/`.
 - `lib/data/services/{customer,driver,shared}/`, `lib/controllers/{customer,driver,shared}/`, `lib/app/{bindings,routes}/`.
@@ -35,9 +35,14 @@
 - Phase 3: v6 models/ARB, curved bottom nav, home redesign, merged categories, providers sections + `ProvidersScreen`, vendor kind tabs.
 - Phase 4: map + address picker, location screen adds a real address, home shows saved address, services request flow, service price accept/reject, bank transfer + receipt upload, removed credential `print`s in driver login, app id `com.ajyal.amar`, release APK builds.
 - Error handling centralized (see section 3).
+- Driver redesign 1 (Nov 3): home tab rebuilt to the driver design (header + online pill, location chip, earnings hero with spark bars from `Earnings.series`, then current task / available offers / offline card). Available offers moved to home (user choice); the "طلباتي" tab becomes history only. Driver shell uses the new `CurvedBottomNav`. New widgets in `widgets/driver/` and `widgets/common/` (`DotPill`, `BlinkingDot`, `CompactButton`, `DashedPainter`, `HeroCircle`). "Accept" opens the order screen (accept stays there). TODOs (no API): hours stat, trip minutes, bell unread dot.
+- Driver redesign 2 (Nov 3): "طلباتي" = history only (summary tiles, all/completed/cancelled chips, grouped by day; `HistoryOrderTile`); "الرصيد" = `CashHeroCard` (cash on hand vs limit), period segments, `EarningsChartCard`, settlements as transactions; "حسابي" = `ProfileHeader` + `ProfileRow`s (edit, vehicle, notifications, language → profile screen, support, logout). Only logic touch: `DriverOrdersController.loadHistory()` (public wrapper, so available offers keep polling). Added `VehicleLabel`, `VehicleTypes` named consts, `DateFormatter.time/weekday/day`. Removed unused `stat_tile`, `location_status_card`, `driver_order_card`. TODOs (no API): driver fee + pickup on history items, earnings balance, growth %, settle-cash button, documents row.
+- Driver redesign 3 (Nov 3): job screen (`DriverOrderScreen`) = `JobMap` (Google map with pickup/drop-off markers when `AppEnv.hasMaps` + coords, else drawn map) + `JobTopBar` + draggable sheet: offer view (header, route, fee, reject/accept) or task view (`ContactRow` customer/store with sms + call, `StageBar` over accepted→delivered, stage hint, route with directions, inline `ProofPhotoButton` / 4-box OTP / fields / note), `DeliveredPanel` on success. Removed `driver_action_sheet.dart` (inputs are inline now). Added `Launcher.sms` + Android `sms` query, `AppDefaults.deliveryOtpLength = 4` (design; API allows up to 10, verify).
+- Driver redesign 4 (Nov 3): notifications screen (inline header + read-all, `DriverNotificationTile` with icon/tint picked by `event` keyword since the contract has no event enum, amber unread dot); profile edit restyled (`ProfileAvatar` now accepts `imageUrl`, vehicle `ChoicePill`s with `VehicleLabel`). Login screen already matched the driver design (phase 2), left unchanged. All driver screens in the design are now done.
 
 ## 5. In progress
 - **Driver login fix (needs device check):** server compares the driver phone exactly as stored (`0599100001`); `+970599100001` returns 422 `fields.phone: بيانات الدخول غير صحيحة.` (confirmed in Postman). Driver login now sends `Validators.localPhone` (customer OTP still uses `normalizePhone` with `+970`).
+- Driver redesign done in code; not yet checked on a device (home, tabs, job screen, notifications, profile).
 - Phase task 3 not done: orders, tracking, notifications, account and cart screens still use the old layout (they work).
 - Not tested on device/backend: map (key just added), address add, service request, quote accept, cash payment key, bank transfer receipt.
 - Known: `test/widget_test.dart` has no `main` (no tests). Release is signed with the debug key. iOS map setup untested (built on Windows).

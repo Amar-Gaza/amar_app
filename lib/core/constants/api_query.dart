@@ -59,13 +59,20 @@ abstract final class DeliveryConfirmation {
 
 /// Vehicle types accepted by PUT /driver/me.
 abstract final class VehicleTypes {
+  static const String motorcycle = 'motorcycle';
+  static const String car = 'car';
+  static const String bicycle = 'bicycle';
+  static const String van = 'van';
+  static const String tukTuk = 'tuk_tuk';
+  static const String onFoot = 'on_foot';
+
   static const List<String> all = [
-    'motorcycle',
-    'car',
-    'bicycle',
-    'van',
-    'tuk_tuk',
-    'on_foot',
+    motorcycle,
+    car,
+    bicycle,
+    van,
+    tukTuk,
+    onFoot,
   ];
 }
 

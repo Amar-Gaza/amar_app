@@ -1,194 +1,133 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/driver/driver_home_controller.dart';
+import '../../../controllers/driver/driver_orders_controller.dart';
 import '../../../core/theme/app_radius.dart';
+import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
-import '../../../core/theme/theme_context.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../widgets/common/avatar_initial.dart';
 import '../../widgets/common/error_banner.dart';
-import '../../widgets/common/section_header.dart';
-import '../../widgets/driver/driver_order_card.dart';
-import '../../widgets/driver/location_status_card.dart';
-import '../../widgets/driver/stat_tile.dart';
+import '../../widgets/common/skeleton_box.dart';
+import '../../widgets/driver/available_order_card.dart';
+import '../../widgets/driver/count_section_title.dart';
+import '../../widgets/driver/current_task_card.dart';
+import '../../widgets/driver/driver_home_header.dart';
+import '../../widgets/driver/driver_offline_card.dart';
+import '../../widgets/driver/earnings_hero_card.dart';
+import '../../widgets/driver/location_chip.dart';
+import '../../widgets/driver/no_available_orders.dart';
 
-/// Dashboard (designs 04, 05).
+/// Dashboard: header with the online switch, location, today's earnings,
+/// then the current task, the available offers or the offline card.
 class DriverHomeTab extends GetView<DriverHomeController> {
   const DriverHomeTab({super.key});
+
+  static const double _heroSkeleton = 200;
+
+  Future<void> _open(int id) async {
+    await Get.toNamed<void>(AppRoutes.driverOrder, arguments: id);
+    await controller.refreshAll();
+  }
+
+  Future<void> _toggle(BuildContext context, bool online) async {
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    await controller.setOnline(online);
+    if (controller.isOnline != online) return;
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(online ? l10n.driverNowOnline : l10n.driverNowOffline),
+        ),
+      );
+  }
+
+  Future<void> _refresh() => Future.wait([
+        controller.refreshAll(),
+        Get.find<DriverOrdersController>().load(),
+      ]);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final colors = context.appColors;
+    final orders = Get.find<DriverOrdersController>();
     return Obx(() {
       final driver = controller.driver;
       final online = controller.isOnline;
       final current = controller.current.value;
       final today = controller.today.value;
       final failure = controller.failure.value;
+      final firstLoad = controller.isLoading.value && today == null;
+      final available = orders.available;
       return RefreshIndicator(
-        onRefresh: controller.refreshAll,
+        onRefresh: _refresh,
         child: ListView(
-          padding: EdgeInsets.zero,
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.page,
+            MediaQuery.paddingOf(context).top + AppSpacing.sm,
+            AppSpacing.page,
+            AppSpacing.xxl,
+          ),
           children: [
-            Container(
-              color: colors.ink,
-              child: SafeArea(
-                bottom: false,
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Row(
-                    children: [
-                      AvatarInitial(
-                        name: driver?.name,
-                        imageUrl: driver?.avatarUrl,
-                      ),
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.driverGreeting,
-                              style: context.text.labelSmall
-                                  ?.copyWith(color: colors.accent),
-                            ),
-                            Text(
-                              driver?.name ?? '',
-                              style: context.text.titleLarge
-                                  ?.copyWith(color: colors.onInk),
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton.outlined(
-                        onPressed: () =>
-                            Get.toNamed<void>(AppRoutes.driverNotifications),
-                        style: IconButton.styleFrom(
-                          side: BorderSide(color: colors.onInk),
-                        ),
-                        icon: Icon(LucideIcons.bell, color: colors.onInk),
-                      ),
-                    ],
-                  ),
-                ),
+            DriverHomeHeader(
+              driver: driver,
+              online: online,
+              toggling: controller.isToggling.value,
+              onToggle: () => _toggle(context, !online),
+              onNotifications: () =>
+                  Get.toNamed<void>(AppRoutes.driverNotifications),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            const LocationChip(),
+            const SizedBox(height: AppSpacing.md),
+            if (failure != null) ...[
+              ErrorBanner(failure: failure),
+              const SizedBox(height: AppSpacing.md),
+            ],
+            if (firstLoad)
+              const SkeletonBox(
+                height: _heroSkeleton,
+                borderRadius: AppRadius.heroAll,
+              )
+            else
+              EarningsHeroCard(today: today, rating: driver?.rating),
+            if (current != null) ...[
+              CountSectionTitle(title: l10n.driverYourTask),
+              CurrentTaskCard(
+                order: current,
+                onOpen: () => _open(current.id),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    decoration: BoxDecoration(
-                      color: context.scheme.surface,
-                      borderRadius: AppRadius.lgAll,
-                      border: Border.all(color: colors.border),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: AppSpacing.sm,
-                                    color: online
-                                        ? colors.success
-                                        : colors.subtleText,
-                                  ),
-                                  const SizedBox(width: AppSpacing.xs),
-                                  Text(
-                                    online
-                                        ? l10n.driverOnline
-                                        : l10n.driverOffline,
-                                    style: context.text.labelSmall,
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                online
-                                    ? l10n.driverOnlineHint
-                                    : l10n.driverOfflineHint,
-                                style: context.text.titleMedium,
-                              ),
-                            ],
-                          ),
-                        ),
-                        controller.isToggling.value
-                            ? const CircularProgressIndicator()
-                            : FilledButton(
-                                style: FilledButton.styleFrom(
-                                  minimumSize: Size.zero,
-                                  backgroundColor:
-                                      online ? colors.danger : colors.brand,
-                                ),
-                                onPressed: () => controller.setOnline(!online),
-                                child: Text(
-                                  online
-                                      ? l10n.driverGoOffline
-                                      : l10n.driverGoOnline,
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  const LocationStatusCard(),
-                  if (failure != null) ...[
-                    const SizedBox(height: AppSpacing.md),
-                    ErrorBanner(failure: failure),
-                  ],
-                  const SizedBox(height: AppSpacing.lg),
-                ],
+            ] else if (online) ...[
+              CountSectionTitle(
+                title: l10n.driverAvailableOrders,
+                count: available.length,
               ),
-            ),
-            SectionHeader(title: l10n.driverCurrentTask),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: current == null
-                  ? Text(l10n.driverNoTask, style: context.text.bodySmall)
-                  : DriverOrderCard(
-                      order: current,
-                      onTap: () async {
-                        await Get.toNamed<void>(
-                          AppRoutes.driverOrder,
-                          arguments: current.id,
-                        );
-                        await controller.refreshAll();
-                      },
-                    ),
-            ),
-            SectionHeader(title: l10n.driverTodaySummary),
-            Padding(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: StatTile(
-                      icon: LucideIcons.fileText,
-                      value: '${today?.orders ?? 0}',
-                      label: l10n.driverTodayOrders,
+              if (orders.failure.value != null)
+                ErrorBanner(failure: orders.failure.value!)
+              else if (orders.isLoading.value && available.isEmpty)
+                const SkeletonBox(
+                  height: _heroSkeleton,
+                  borderRadius: AppRadius.sheetAll,
+                )
+              else if (available.isEmpty)
+                const NoAvailableOrders()
+              else
+                for (final order in available)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    child: AvailableOrderCard(
+                      order: order,
+                      onAccept: () => _open(order.id),
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: StatTile(
-                      icon: LucideIcons.wallet,
-                      value: today?.earnings.formatted ?? '—',
-                      label: l10n.driverTodayEarnings,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            ] else ...[
+              const SizedBox(height: AppSpacing.page),
+              const DriverOfflineCard(),
+            ],
+            const SizedBox(height: AppSizes.navBubble),
           ],
         ),
       );

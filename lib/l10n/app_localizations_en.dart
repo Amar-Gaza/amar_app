@@ -1545,10 +1545,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get driverNavOrders => 'Jobs';
+  String get driverNavOrders => 'My orders';
 
   @override
-  String get driverNavWallet => 'Earnings';
+  String get driverNavWallet => 'Balance';
 
   @override
   String get driverGreeting => 'Hello';
@@ -1930,4 +1930,188 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get failureInvalidResponse =>
       'The server sent an unexpected reply. Please try again later.';
+
+  @override
+  String get driverToggleOnline => 'Toggle online';
+
+  @override
+  String get driverLocationUpdating => 'Updating your location…';
+
+  @override
+  String get driverLocationUpdated => 'Location updated';
+
+  @override
+  String get driverHeroOrders => 'orders';
+
+  @override
+  String get driverHeroHours => 'hours';
+
+  @override
+  String get driverHeroRating => 'rating';
+
+  @override
+  String get driverAvailableOrders => 'Available orders';
+
+  @override
+  String get driverNoAvailableTitle => 'No orders available';
+
+  @override
+  String get driverNoAvailableHint =>
+      'You will be notified when new orders appear in your area';
+
+  @override
+  String get driverNewBadge => 'New';
+
+  @override
+  String get driverYourFee => 'Your fee';
+
+  @override
+  String get driverAcceptOrder => 'Accept order';
+
+  @override
+  String get driverYourTask => 'Your current task';
+
+  @override
+  String get driverInProgress => 'In progress';
+
+  @override
+  String get driverNextStep => 'Next step';
+
+  @override
+  String get driverContinueTask => 'Continue task';
+
+  @override
+  String get driverOfflineTitle => 'You are offline';
+
+  @override
+  String get driverOfflineMessage =>
+      'Turn on the switch above to receive nearby orders';
+
+  @override
+  String get driverNowOnline => 'You are online now';
+
+  @override
+  String get driverNowOffline => 'You are offline now';
+
+  @override
+  String driverCashAmount(String amount) {
+    return 'Cash $amount';
+  }
+
+  @override
+  String get driverYesterday => 'Yesterday';
+
+  @override
+  String get driverCompleted => 'Completed';
+
+  @override
+  String get driverCancelled => 'Cancelled';
+
+  @override
+  String get driverFilterAll => 'All';
+
+  @override
+  String get driverFilterCompleted => 'Completed';
+
+  @override
+  String get driverFilterCancelled => 'Cancelled';
+
+  @override
+  String get driverCashDue => 'Settlement due';
+
+  @override
+  String get driverNoCash => 'No cash';
+
+  @override
+  String get driverHandCash =>
+      'Hand the cash to management before the end of the day';
+
+  @override
+  String get driverTotalEarnings => 'Total earnings';
+
+  @override
+  String get driverTransactions => 'Transactions';
+
+  @override
+  String get driverCashSettlement => 'Cash settlement';
+
+  @override
+  String get driverLicenseVehicle => 'License and vehicle';
+
+  @override
+  String get driverEditProfile => 'Edit profile';
+
+  @override
+  String get driverLanguage => 'Language';
+
+  @override
+  String get driverVehicleMotorcycle => 'Motorbike';
+
+  @override
+  String get driverVehicleCar => 'Car';
+
+  @override
+  String get driverVehicleBicycle => 'Bicycle';
+
+  @override
+  String get driverVehicleVan => 'Van';
+
+  @override
+  String get driverVehicleTukTuk => 'Tuk-tuk';
+
+  @override
+  String get driverVehicleOnFoot => 'On foot';
+
+  @override
+  String driverCashLimitValue(String amount) {
+    return 'Cash limit $amount';
+  }
+
+  @override
+  String driverOrdersCount(String count) {
+    return 'Orders: $count';
+  }
+
+  @override
+  String driverAccountSubtitle(String phone) {
+    return 'Amar driver · $phone';
+  }
+
+  @override
+  String get driverHintAccepted => 'Head to the store to pick up the order';
+
+  @override
+  String get driverHintPickedUp => 'Head to the customer address';
+
+  @override
+  String get driverHintOnTheWay => 'On your way to the customer';
+
+  @override
+  String get driverHintArrived => 'Hand the order to the customer';
+
+  @override
+  String get driverTakePhoto => 'Take a photo of the order';
+
+  @override
+  String get driverPhotoAttached => 'Photo attached';
+
+  @override
+  String get driverAskCode => 'Ask the customer for the delivery code';
+
+  @override
+  String get driverMessage => 'Message';
+
+  @override
+  String get driverCall => 'Call';
+
+  @override
+  String get driverStore => 'Store';
+
+  @override
+  String get driverOrderDetails => 'Order details';
+
+  @override
+  String driverContactSubtitle(String role, String order) {
+    return '$role · $order';
+  }
 }
