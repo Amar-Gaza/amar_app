@@ -155,6 +155,42 @@ abstract final class ApiErrorCodes {
   static const String appUpdateRequired = 'app_update_required';
   static const String emptyResponse = 'empty_response';
   static const String missingProjectKey = 'missing_project_key';
+  static const String invalidProjectKey = 'invalid_project_key';
+  static const String forbidden = 'forbidden';
+  static const String moduleDisabled = 'module_disabled';
+  static const String projectFrozen = 'project_frozen';
+  static const String projectInactive = 'project_inactive';
+  static const String notFound = 'not_found';
+  static const String methodNotAllowed = 'method_not_allowed';
+  static const String conflict = 'conflict';
+  static const String bidClosed = 'bid_closed';
+  static const String idempotencyMismatch = 'idempotency_mismatch';
+  static const String outOfStock = 'out_of_stock';
+  static const String slotFull = 'slot_full';
+  static const String vendorClosed = 'vendor_closed';
+  static const String tooManyRequests = 'too_many_requests';
+  static const String chaosInjected = 'chaos_injected';
+  static const String noQuoteYet = 'no_quote_yet';
+  static const String notATransferOrder = 'not_a_transfer_order';
+
+  // Local codes: the request never got a usable answer from the server.
+  static const String invalidResponse = 'invalid_response';
+  static const String secureConnection = 'secure_connection';
+
+  /// Code for a reply that carries no error envelope, by HTTP status.
+  static String fromStatus(int? status) => switch (status) {
+        401 => unauthenticated,
+        403 => forbidden,
+        404 => notFound,
+        405 => methodNotAllowed,
+        408 => timeout,
+        409 => conflict,
+        422 => validationFailed,
+        426 => appUpdateRequired,
+        429 => tooManyRequests,
+        503 => maintenance,
+        _ => serverError,
+      };
 
   static bool isConnectivity(String code) =>
       code == networkError || code == timeout;

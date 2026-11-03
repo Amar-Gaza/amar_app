@@ -34,6 +34,22 @@ class ApiFailure implements Exception {
   bool get isConnectivity => ApiErrorCodes.isConnectivity(code);
   bool get isUnavailable => ApiErrorCodes.isUnavailable(code);
 
+  /// The server's reason for the first invalid field of a 422, if any.
+  String? get firstFieldError {
+    final fields = details?['fields'];
+    if (fields is! Map) return null;
+    for (final key in fields.keys) {
+      final reason = fieldError('$key');
+      if (reason != null) return reason;
+    }
+    return null;
+  }
+
+  /// Everything a developer needs; never shown to users.
+  @override
+  String toString() => 'ApiFailure(code: $code, status: $statusCode, '
+      'request_id: $requestId, message: $message, details: $details)';
+
   String? fieldError(String field) {
     final fields = details?['fields'];
     if (fields is! Map || fields[field] == null) return null;

@@ -1104,5 +1104,15 @@
   "transferHolder": "صاحب الحساب",
   "transferAccount": "رقم الحساب",
   "transferFixNeeded": "يلزم تصحيح الإشعار",
-  "transferUpload": "رفع صورة الإشعار"
+  "transferUpload": "رفع صورة الإشعار",
+  "failureAppSetup": "التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.",
+  "failureDuplicateRequest": "أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.",
+  "failureQuoteChanged": "أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.",
+  "failureNoQuoteYet": "لم يحدد المتجر السعر بعد.",
+  "failureNotTransferOrder": "هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.",
+  "failureServer": "حدث خلل في الخادم. حاول مرة أخرى بعد قليل.",
+  "failureTemporary": "عطل مؤقت. حاول مرة أخرى.",
+  "failureTimeout": "استغرق الاتصال وقتاً طويلاً. تأكد من الإنترنت وحاول مرة أخرى.",
+  "failureSecureConnection": "تعذّر إنشاء اتصال آمن بالخادم. تأكد من الشبكة وحاول مجدداً.",
+  "failureInvalidResponse": "وصل رد غير متوقع من الخادم. حاول مرة أخرى لاحقاً."
 }

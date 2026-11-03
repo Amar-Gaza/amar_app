@@ -3625,6 +3625,66 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'رفع صورة الإشعار'**
   String get transferUpload;
+
+  /// No description provided for @failureAppSetup.
+  ///
+  /// In ar, this message translates to:
+  /// **'التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.'**
+  String get failureAppSetup;
+
+  /// No description provided for @failureDuplicateRequest.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.'**
+  String get failureDuplicateRequest;
+
+  /// No description provided for @failureQuoteChanged.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.'**
+  String get failureQuoteChanged;
+
+  /// No description provided for @failureNoQuoteYet.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يحدد المتجر السعر بعد.'**
+  String get failureNoQuoteYet;
+
+  /// No description provided for @failureNotTransferOrder.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.'**
+  String get failureNotTransferOrder;
+
+  /// No description provided for @failureServer.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدث خلل في الخادم. حاول مرة أخرى بعد قليل.'**
+  String get failureServer;
+
+  /// No description provided for @failureTemporary.
+  ///
+  /// In ar, this message translates to:
+  /// **'عطل مؤقت. حاول مرة أخرى.'**
+  String get failureTemporary;
+
+  /// No description provided for @failureTimeout.
+  ///
+  /// In ar, this message translates to:
+  /// **'استغرق الاتصال وقتاً طويلاً. تأكد من الإنترنت وحاول مرة أخرى.'**
+  String get failureTimeout;
+
+  /// No description provided for @failureSecureConnection.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر إنشاء اتصال آمن بالخادم. تأكد من الشبكة وحاول مجدداً.'**
+  String get failureSecureConnection;
+
+  /// No description provided for @failureInvalidResponse.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل رد غير متوقع من الخادم. حاول مرة أخرى لاحقاً.'**
+  String get failureInvalidResponse;
 }
 
 class _AppLocalizationsDelegate

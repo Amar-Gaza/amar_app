@@ -102,6 +102,7 @@ class CustomerBottomNav extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(bottom: bottomInset),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   for (final (tab, icon, label) in items)
                     Expanded(
@@ -111,6 +112,7 @@ class CustomerBottomNav extends StatelessWidget {
                           icon: icon,
                           label: label,
                           selected: tab == current,
+                          floatingSelection: true,
                           badge: tab == CustomerTab.cart ? count : 0,
                           onTap: () => onSelect(tab),
                         );
