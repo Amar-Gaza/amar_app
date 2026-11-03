@@ -813,5 +813,15 @@
   "transferHolder": "Account holder",
   "transferAccount": "Account number",
   "transferFixNeeded": "The receipt needs correcting",
-  "transferUpload": "Upload receipt image"
+  "transferUpload": "Upload receipt image",
+  "failureAppSetup": "The app is not set up correctly. Please contact support.",
+  "failureDuplicateRequest": "This request was already sent. Refresh and check it.",
+  "failureQuoteChanged": "The store sent a new price. Review it and accept again.",
+  "failureNoQuoteYet": "The store has not set the price yet.",
+  "failureNotTransferOrder": "This order is paid in cash and needs no transfer receipt.",
+  "failureServer": "The server ran into a problem. Please try again shortly.",
+  "failureTemporary": "Temporary problem. Please try again.",
+  "failureTimeout": "The connection took too long. Check your internet and try again.",
+  "failureSecureConnection": "Could not open a secure connection. Check your network and try again.",
+  "failureInvalidResponse": "The server sent an unexpected reply. Please try again later."
 }

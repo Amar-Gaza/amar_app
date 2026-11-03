@@ -74,7 +74,7 @@ class DriverSessionController extends GetxController {
     failure.value = null;
     try {
       final result = await _auth.login(
-        phone: Validators.normalizePhone(phone),
+        phone: Validators.localPhone(phone),
         password: password,
         deviceName: AppDefaults.deviceName,
       );

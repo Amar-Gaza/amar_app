@@ -1892,4 +1892,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transferUpload => 'Upload receipt image';
+
+  @override
+  String get failureAppSetup =>
+      'The app is not set up correctly. Please contact support.';
+
+  @override
+  String get failureDuplicateRequest =>
+      'This request was already sent. Refresh and check it.';
+
+  @override
+  String get failureQuoteChanged =>
+      'The store sent a new price. Review it and accept again.';
+
+  @override
+  String get failureNoQuoteYet => 'The store has not set the price yet.';
+
+  @override
+  String get failureNotTransferOrder =>
+      'This order is paid in cash and needs no transfer receipt.';
+
+  @override
+  String get failureServer =>
+      'The server ran into a problem. Please try again shortly.';
+
+  @override
+  String get failureTemporary => 'Temporary problem. Please try again.';
+
+  @override
+  String get failureTimeout =>
+      'The connection took too long. Check your internet and try again.';
+
+  @override
+  String get failureSecureConnection =>
+      'Could not open a secure connection. Check your network and try again.';
+
+  @override
+  String get failureInvalidResponse =>
+      'The server sent an unexpected reply. Please try again later.';
 }

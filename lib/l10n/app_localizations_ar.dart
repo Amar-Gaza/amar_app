@@ -1869,4 +1869,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get transferUpload => 'رفع صورة الإشعار';
+
+  @override
+  String get failureAppSetup => 'التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.';
+
+  @override
+  String get failureDuplicateRequest =>
+      'أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.';
+
+  @override
+  String get failureQuoteChanged =>
+      'أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.';
+
+  @override
+  String get failureNoQuoteYet => 'لم يحدد المتجر السعر بعد.';
+
+  @override
+  String get failureNotTransferOrder =>
+      'هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.';
+
+  @override
+  String get failureServer => 'حدث خلل في الخادم. حاول مرة أخرى بعد قليل.';
+
+  @override
+  String get failureTemporary => 'عطل مؤقت. حاول مرة أخرى.';
+
+  @override
+  String get failureTimeout =>
+      'استغرق الاتصال وقتاً طويلاً. تأكد من الإنترنت وحاول مرة أخرى.';
+
+  @override
+  String get failureSecureConnection =>
+      'تعذّر إنشاء اتصال آمن بالخادم. تأكد من الشبكة وحاول مجدداً.';
+
+  @override
+  String get failureInvalidResponse =>
+      'وصل رد غير متوقع من الخادم. حاول مرة أخرى لاحقاً.';
 }
