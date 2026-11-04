@@ -49,6 +49,9 @@ class DriverOrdersController extends GetxController {
     await load();
   }
 
+  /// History without switching [view], so available offers keep polling.
+  Future<void> loadHistory() => _loadHistory();
+
   Future<void> load() => view.value == DriverOrdersView.available
       ? _loadAvailable()
       : _loadHistory();

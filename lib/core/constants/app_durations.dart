@@ -12,4 +12,5 @@ abstract final class AppDurations {
   static const Duration navSlide = Duration(milliseconds: 480);
   static const Duration fast = Duration(milliseconds: 200);
   static const Duration segment = Duration(milliseconds: 250);
+  static const Duration blink = Duration(milliseconds: 700);
 }

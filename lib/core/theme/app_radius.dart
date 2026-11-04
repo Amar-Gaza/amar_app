@@ -10,6 +10,8 @@ abstract final class AppRadius {
   static const double xl = 28;
   static const double illustration = 32;
   static const double pill = 999;
+  static const double sheet = 24;
+  static const double hero = 30;
 
   static const BorderRadius smAll = BorderRadius.all(Radius.circular(sm));
   static const BorderRadius mdAll = BorderRadius.all(Radius.circular(md));
@@ -23,4 +25,6 @@ abstract final class AppRadius {
       BorderRadius.all(Radius.circular(illustration));
   static const BorderRadius xlAll = BorderRadius.all(Radius.circular(xl));
   static const BorderRadius pillAll = BorderRadius.all(Radius.circular(pill));
+  static const BorderRadius sheetAll = BorderRadius.all(Radius.circular(sheet));
+  static const BorderRadius heroAll = BorderRadius.all(Radius.circular(hero));
 }

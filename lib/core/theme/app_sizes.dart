@@ -68,4 +68,21 @@ abstract final class AppSizes {
   static const double borderWidthField = 1.5;
   static const double borderWidthActive = 1.5;
   static const double formMaxWidth = 480;
+  static const double driverAvatar = 48;
+  static const double onlinePillHeight = 44;
+  static const double onlineSwitchWidth = 34;
+  static const double onlineSwitchHeight = 20;
+  static const double onlineSwitchKnob = 16;
+  static const double sparkHeight = 54;
+  static const double sparkBarWidth = 8;
+  static const double routeDot = 14;
+  static const double routeDotBorder = 4;
+  static const double routeLine = 18;
+  static const double dashLength = 5;
+  static const double dashGap = 4;
+  static const double heroCircleLg = 190;
+  static const double heroCircleSm = 120;
+  static const double buttonHeightSm = 44;
+  static const double chartHeight = 130;
+  static const double cashBarHeight = 7;
 }
