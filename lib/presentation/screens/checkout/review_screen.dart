@@ -96,7 +96,10 @@ class ReviewScreen extends GetView<CheckoutController> {
                     LabelValueRow(
                       icon: LucideIcons.house,
                       label: l10n.deliveryAddress,
-                      value: address?.label ?? '',
+                      value: [address?.label, address?.details]
+                          .whereType<String>()
+                          .where((part) => part.isNotEmpty)
+                          .join(' · '),
                     ),
                     LabelValueRow(
                       icon: LucideIcons.banknote,

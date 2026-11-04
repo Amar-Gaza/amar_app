@@ -1067,7 +1067,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Location permission is blocked. Enable it in settings.';
 
   @override
+  String get locationUnavailable =>
+      'Could not get a fresh location. Please try again.';
+
+  @override
   String get locationOpenSettings => 'Open settings';
+
+  @override
+  String get locationAddressUnavailable =>
+      'We couldn\'t determine the city or street for this location.';
 
   @override
   String get couponTitle => 'Discount coupon';

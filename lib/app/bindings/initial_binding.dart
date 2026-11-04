@@ -35,53 +35,142 @@ class InitialBinding extends Bindings {
   void dependencies() {
     final tokens = SecureTokenStorage();
     final events = SessionEvents();
-    final client = ApiClient(prefs: _prefs, tokens: tokens, events: events);
+
+    final client = ApiClient(
+      prefs: _prefs,
+      tokens: tokens,
+      events: events,
+    );
+
     final auth = AuthService(client);
     final profile = ProfileService(client);
 
-    Get.put<AppPreferences>(_prefs, permanent: true);
-    Get.put<ApiClient>(client, permanent: true);
-    Get.put<AuthService>(auth, permanent: true);
-    Get.put<ProfileService>(profile, permanent: true);
-    Get.put<CatalogService>(CatalogService(client), permanent: true);
-    Get.put<AddressService>(AddressService(client), permanent: true);
-    Get.put<OrderService>(OrderService(client), permanent: true);
-    Get.put<UploadService>(UploadService(client), permanent: true);
-    Get.put<DeviceLocationService>(DeviceLocationService(), permanent: true);
+    Get.put<AppPreferences>(
+      _prefs,
+      permanent: true,
+    );
+
+    Get.put<ApiClient>(
+      client,
+      permanent: true,
+    );
+
+    Get.put<AuthService>(
+      auth,
+      permanent: true,
+    );
+
+    Get.put<ProfileService>(
+      profile,
+      permanent: true,
+    );
+
+    Get.put<CatalogService>(
+      CatalogService(client),
+      permanent: true,
+    );
+
+    Get.put<AddressService>(
+      AddressService(client),
+      permanent: true,
+    );
+
+    Get.put<OrderService>(
+      OrderService(client),
+      permanent: true,
+    );
+
+    Get.put<UploadService>(
+      UploadService(client),
+      permanent: true,
+    );
+
+    Get.put<DeviceLocationService>(
+      DeviceLocationService(
+        preferences: _prefs,
+      ),
+      permanent: true,
+    );
+
     Get.put<NotificationService>(
       NotificationService.customer(client),
       permanent: true,
     );
+
     Get.put<NotificationService>(
       NotificationService.driver(client),
       tag: SessionRole.driver.name,
       permanent: true,
     );
-    Get.put<DriverAuthService>(DriverAuthService(client), permanent: true);
+
+    Get.put<DriverAuthService>(
+      DriverAuthService(client),
+      permanent: true,
+    );
+
     Get.put<DriverProfileService>(
       DriverProfileService(client),
       permanent: true,
     );
-    Get.put<DriverOrderService>(DriverOrderService(client), permanent: true);
+
+    Get.put<DriverOrderService>(
+      DriverOrderService(client),
+      permanent: true,
+    );
+
     Get.put<DriverLocationService>(
       DriverLocationService(client),
       permanent: true,
     );
-    Get.put<DriverWalletService>(DriverWalletService(client), permanent: true);
-    Get.put<LocaleController>(LocaleController(_prefs), permanent: true);
-    Get.put<CartController>(CartController(), permanent: true);
+
+    Get.put<DriverWalletService>(
+      DriverWalletService(client),
+      permanent: true,
+    );
+
+    Get.put<LocaleController>(
+      LocaleController(
+        _prefs,
+        Get.find<DeviceLocationService>(),
+      ),
+      permanent: true,
+    );
+
+    Get.put<CartController>(
+      CartController(
+        preferences: _prefs,
+      ),
+      permanent: true,
+    );
+
     Get.put<ConnectivityController>(
-      ConnectivityController(Connectivity()),
+      ConnectivityController(
+        Connectivity(),
+      ),
       permanent: true,
     );
+
     Get.put<AppConfigController>(
-      AppConfigController(AppConfigService(client), _prefs),
+      AppConfigController(
+        AppConfigService(client),
+        _prefs,
+      ),
       permanent: true,
     );
+
     Get.put<SessionController>(
-      SessionController(tokens, auth, profile, events),
+      SessionController(
+        tokens,
+        auth,
+        profile,
+        events,
+        preferences: _prefs,
+        cart: Get.find<CartController>(),
+        location: Get.find<DeviceLocationService>(),
+      ),
       permanent: true,
     );
+
     Get.put<DriverSessionController>(
       DriverSessionController(
         tokens,

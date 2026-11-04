@@ -13,3 +13,6 @@ analyzer:
     - android/**
     - ios/**
     - windows/**
+    - web/**
+    - macos/**
+    - linux/**

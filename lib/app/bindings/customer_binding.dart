@@ -18,12 +18,13 @@ import '../../data/services/customer/order_service.dart';
 import '../../data/services/shared/notification_service.dart';
 import '../../data/services/customer/profile_service.dart';
 import '../../data/services/shared/upload_service.dart';
+import '../../data/services/shared/device_location_service.dart';
 
 class SplashBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SplashController>(
-      () => SplashController(
+          () => SplashController(
         Get.find<AppConfigController>(),
         Get.find<SessionController>(),
         Get.find<DriverSessionController>(),
@@ -36,7 +37,7 @@ class AuthBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AuthController>(
-      () => AuthController(
+          () => AuthController(
         Get.find<AuthService>(),
         Get.find<SessionController>(),
       ),
@@ -48,7 +49,7 @@ class ProfileSetupBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ProfileSetupController>(
-      () => ProfileSetupController(
+          () => ProfileSetupController(
         Get.find<ProfileService>(),
         Get.find<UploadService>(),
         Get.find<SessionController>(),
@@ -64,17 +65,20 @@ class HomeBinding extends Bindings {
     Get
       ..lazyPut<ShellController>(ShellController.new)
       ..lazyPut<CatalogController>(
-        () => CatalogController(
+            () => CatalogController(
           Get.find<CatalogService>(),
           Get.find<OrderService>(),
           Get.find<AddressService>(),
+          Get.find<DeviceLocationService>(),
         ),
       )
       ..lazyPut<OrdersController>(
-        () => OrdersController(Get.find<OrderService>()),
+            () => OrdersController(Get.find<OrderService>()),
       )
       ..lazyPut<NotificationsController>(
-        () => NotificationsController(Get.find<NotificationService>()),
+            () => NotificationsController(
+          Get.find<NotificationService>(),
+        ),
       );
   }
 }

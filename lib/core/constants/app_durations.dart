@@ -2,6 +2,10 @@ abstract final class AppDurations {
   static const Duration splashMin = Duration(milliseconds: 2200);
   static const Duration connect = Duration(seconds: 15);
   static const Duration receive = Duration(seconds: 30);
+  static const Duration locationFix = Duration(seconds: 12);
+  static const Duration locationGeocode = Duration(seconds: 8);
+  static const Duration locationDebounce = Duration(milliseconds: 350);
+  static const Duration addressLoad = Duration(seconds: 20);
   static const Duration tick = Duration(seconds: 1);
   static const Duration press = Duration(milliseconds: 120);
   static const Duration splashBar = Duration(seconds: 2);

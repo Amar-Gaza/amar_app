@@ -59,10 +59,14 @@ class HomeHeader extends StatelessWidget {
                   color: colors.brand,
                 ),
                 const SizedBox(width: AppSpacing.xs),
-                Text(
-                  locationLabel,
-                  style:
-                      context.text.labelMedium?.copyWith(color: colors.brand),
+                Flexible(
+                  child: Text(
+                    locationLabel,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        context.text.labelMedium?.copyWith(color: colors.brand),
+                  ),
                 ),
               ],
             ),

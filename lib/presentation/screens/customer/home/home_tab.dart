@@ -6,7 +6,9 @@ import '../../../../app/routes/route_args.dart';
 import '../../../../controllers/customer/catalog_controller.dart';
 import '../../../../controllers/customer/notifications_controller.dart';
 import '../../../../controllers/shared/app_config_controller.dart';
+import '../../../../data/services/shared/device_location_service.dart';
 import '../../../../core/constants/api_query.dart';
+import '../../../../core/localization/location_issue_text.dart';
 import '../../../../core/constants/app_defaults.dart';
 import '../../../../core/theme/app_sizes.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -18,6 +20,7 @@ import '../../../widgets/common/section_header.dart';
 import '../../../widgets/common/skeleton_list.dart';
 import '../../../widgets/home/active_order_card.dart';
 import '../../../widgets/home/category_grid.dart';
+import '../../../widgets/home/current_location_sheet.dart';
 import '../../../widgets/home/home_header.dart';
 import '../../../widgets/home/home_product_card.dart';
 import '../../../widgets/home/home_search_field.dart';
@@ -33,40 +36,68 @@ class HomeTab extends GetView<CatalogController> {
     final l10n = AppLocalizations.of(context);
     final notifications = Get.find<NotificationsController>();
     final config = Get.find<AppConfigController>();
+
     const sectionGap = SizedBox(height: AppSpacing.page);
     const headerGap = SizedBox(height: AppSpacing.sm);
-    const sidePadding = EdgeInsets.symmetric(horizontal: AppSpacing.page);
+
+    const sidePadding = EdgeInsets.symmetric(
+      horizontal: AppSpacing.page,
+    );
+
     return SafeArea(
       bottom: false,
       child: Column(
         children: [
-          Obx(
-            () => HomeHeader(
+          Obx(() {
+            final location =
+            Get.find<DeviceLocationService>();
+            final issue = location.issue.value;
+            final currentLabel =
+                location.resolvedLocation.value?.label;
+
+            return HomeHeader(
               hasUnread: notifications.hasUnread,
               locationLabel:
-                  controller.address.value?.label ?? l10n.homeSetLocation,
-              onNotifications: () => Get.toNamed<void>(AppRoutes.notifications),
-              onLocation: () async {
-                await Get.toNamed<void>(AppRoutes.location);
-                await controller.loadAddress();
-              },
-            ),
-          ),
+              currentLabel ??
+                  (location.isLocating.value
+                      ? l10n.addressLocating
+                      : issue != null
+                      ? LocationIssueText.of(l10n, issue)
+                      : location.currentPoint.value != null
+                      ? l10n.locationAddressUnavailable
+                      : l10n.homeSetLocation),
+              onNotifications: () => Get.toNamed<void>(
+                AppRoutes.notifications,
+              ),
+              onLocation: () =>
+                  CurrentLocationSheet.show(context, l10n),
+            );
+          }),
           const SizedBox(height: AppSpacing.md),
           HomeSearchField(
             hint: l10n.homeSearchHint,
-            onTap: () => Get.toNamed<void>(AppRoutes.search),
+            onTap: () => Get.toNamed<void>(
+              AppRoutes.search,
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
             child: Obx(() {
               final failure = controller.failure.value;
+
               if (controller.isLoading.value) {
-                return const SkeletonList(showSearch: false);
+                return const SkeletonList(
+                  showSearch: false,
+                );
               }
+
               if (failure != null) {
-                return ErrorView(failure: failure, onRetry: controller.load);
+                return ErrorView(
+                  failure: failure,
+                  onRetry: controller.load,
+                );
               }
+
               if (controller.isEmpty) {
                 return EmptyView(
                   title: l10n.homeEmptyTitle,
@@ -75,13 +106,19 @@ class HomeTab extends GetView<CatalogController> {
                   onAction: controller.load,
                 );
               }
+
               final order = controller.activeOrder.value;
-              final (totalSteps, currentStep) =
-                  order == null ? (0, 0) : config.progressOf(order.status.key);
+
+              final (totalSteps, currentStep) = order == null
+                  ? (0, 0)
+                  : config.progressOf(order.status.key);
+
               return RefreshIndicator(
                 onRefresh: controller.load,
                 child: ListView(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+                  padding: const EdgeInsets.only(
+                    bottom: AppSpacing.xl,
+                  ),
                   children: [
                     if (order != null)
                       Padding(
@@ -100,7 +137,9 @@ class HomeTab extends GetView<CatalogController> {
                     Padding(
                       padding: sidePadding,
                       child: PromoBanner(
-                        onAction: () => Get.toNamed<void>(AppRoutes.categories),
+                        onAction: () => Get.toNamed<void>(
+                          AppRoutes.categories,
+                        ),
                       ),
                     ),
                     if (controller.categories.isNotEmpty) ...[
@@ -108,40 +147,54 @@ class HomeTab extends GetView<CatalogController> {
                       SectionHeader(
                         title: l10n.homeCategoriesTitle,
                         actionLabel: l10n.commonViewAll,
-                        onAction: () => Get.toNamed<void>(AppRoutes.categories),
+                        onAction: () => Get.toNamed<void>(
+                          AppRoutes.categories,
+                        ),
                       ),
                       headerGap,
                       Padding(
                         padding: sidePadding,
                         child: CategoryGrid(
                           categories: controller.categories
-                              .take(AppDefaults.homeCategoryLimit)
+                              .take(
+                            AppDefaults.homeCategoryLimit,
+                          )
                               .toList(),
-                          onTap: (category) => Get.toNamed<void>(
-                            AppRoutes.products,
-                            arguments: ProductsArgs(
-                              categoryIds: category.ids,
-                              title: category.name,
-                            ),
-                          ),
+                          onTap: (category) =>
+                              Get.toNamed<void>(
+                                AppRoutes.products,
+                                arguments: ProductsArgs(
+                                  categoryIds: category.ids,
+                                  title: category.name,
+                                ),
+                              ),
                         ),
                       ),
                     ],
                     if (controller.products.isNotEmpty) ...[
                       sectionGap,
-                      SectionHeader(title: l10n.homeMostOrdered),
+                      SectionHeader(
+                        title: l10n.homeMostOrdered,
+                      ),
                       headerGap,
                       HorizontalStrip(
                         items: controller.products,
                         height: AppSizes.homeProductStrip,
-                        itemBuilder: (product) => HomeProductCard(
-                          product: product,
-                          onTap: () => Get.toNamed<void>(
-                            AppRoutes.product,
-                            arguments: ProductArgs(product.id),
-                          ),
-                          onAdd: () => AddToCartFlow.quickAdd(context, product),
-                        ),
+                        itemBuilder: (product) =>
+                            HomeProductCard(
+                              product: product,
+                              onTap: () => Get.toNamed<void>(
+                                AppRoutes.product,
+                                arguments: ProductArgs(
+                                  product.id,
+                                ),
+                              ),
+                              onAdd: () =>
+                                  AddToCartFlow.quickAdd(
+                                    context,
+                                    product,
+                                  ),
+                            ),
                       ),
                     ],
                     ProviderSection(
