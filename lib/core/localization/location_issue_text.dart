@@ -8,5 +8,6 @@ abstract final class LocationIssueText {
         LocationIssue.serviceDisabled => l10n.locationServiceOff,
         LocationIssue.denied => l10n.locationDenied,
         LocationIssue.deniedForever => l10n.locationDeniedForever,
+        LocationIssue.unavailable => l10n.locationUnavailable,
       };
 }

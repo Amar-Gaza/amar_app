@@ -1,3 +1,5 @@
+import '../../data/models/catalog/picked_location.dart';
+
 /// Typed arguments passed with [Get.toNamed].
 class ProductsArgs {
   const ProductsArgs({
@@ -14,7 +16,10 @@ class ProductsArgs {
 
 /// Kind of the providers shown by the "view all" list.
 class ProvidersArgs {
-  const ProvidersArgs({required this.kind, required this.title});
+  const ProvidersArgs({
+    required this.kind,
+    required this.title,
+  });
 
   final String kind;
   final String title;
@@ -33,4 +38,15 @@ class ProductArgs {
   final int productId;
 
   String get tag => productId.toString();
+}
+
+/// Initial draft for a new delivery address; saved Address arguments still edit.
+class AddressFormArgs {
+  const AddressFormArgs({
+    this.point,
+    this.useCurrentLocation = false,
+  });
+
+  final PickedLocation? point;
+  final bool useCurrentLocation;
 }

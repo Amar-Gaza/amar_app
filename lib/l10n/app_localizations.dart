@@ -2066,11 +2066,23 @@ abstract class AppLocalizations {
   /// **'إذن الموقع مرفوض. فعّله من الإعدادات.'**
   String get locationDeniedForever;
 
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر الحصول على موقع حديث. حاول مرة أخرى.'**
+  String get locationUnavailable;
+
   /// No description provided for @locationOpenSettings.
   ///
   /// In ar, this message translates to:
   /// **'فتح الإعدادات'**
   String get locationOpenSettings;
+
+  /// No description provided for @locationAddressUnavailable.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر معرفة اسم المدينة أو الشارع لهذا الموقع.'**
+  String get locationAddressUnavailable;
 
   /// No description provided for @couponTitle.
   ///

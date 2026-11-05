@@ -1047,7 +1047,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locationDeniedForever => 'إذن الموقع مرفوض. فعّله من الإعدادات.';
 
   @override
+  String get locationUnavailable =>
+      'تعذّر الحصول على موقع حديث. حاول مرة أخرى.';
+
+  @override
   String get locationOpenSettings => 'فتح الإعدادات';
+
+  @override
+  String get locationAddressUnavailable =>
+      'تعذّر معرفة اسم المدينة أو الشارع لهذا الموقع.';
 
   @override
   String get couponTitle => 'كوبون الخصم';
