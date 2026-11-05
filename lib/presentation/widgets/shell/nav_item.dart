@@ -6,7 +6,8 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
 import 'nav_badge.dart';
 
-/// Tab icon and label. The active tab's icon moves into the floating bubble.
+/// Tab icon and label. With [floatingSelection] the active tab's icon is
+/// hidden because the bar draws it in a floating bubble.
 class NavItem extends StatelessWidget {
   const NavItem({
     super.key,
@@ -15,6 +16,7 @@ class NavItem extends StatelessWidget {
     required this.selected,
     required this.onTap,
     this.badge = 0,
+    this.floatingSelection = false,
   });
 
   final IconData icon;
@@ -22,6 +24,7 @@ class NavItem extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
   final int badge;
+  final bool floatingSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +36,11 @@ class NavItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.md),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             AnimatedOpacity(
-              opacity: selected ? 0 : 1,
+              opacity: selected && floatingSelection ? 0 : 1,
               duration: AppDurations.dot,
               child: Stack(
                 clipBehavior: Clip.none,

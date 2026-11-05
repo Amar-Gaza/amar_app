@@ -5,6 +5,9 @@ abstract final class Launcher {
   static Future<bool> call(String phone) =>
       launchUrl(Uri(scheme: 'tel', path: phone));
 
+  static Future<bool> sms(String phone) =>
+      launchUrl(Uri(scheme: 'sms', path: phone));
+
   static Future<bool> web(String url) =>
       launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
 

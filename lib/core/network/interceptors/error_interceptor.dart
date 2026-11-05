@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../constants/api_headers.dart';
 import '../../constants/api_query.dart';
@@ -15,6 +18,10 @@ class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     final failure = _toFailure(err);
+    if (kDebugMode) {
+      debugPrint(
+          '${err.requestOptions.method} ${err.requestOptions.path} -> $failure');
+    }
     final hadToken =
         err.requestOptions.headers.containsKey(ApiHeaders.authorization);
     if (failure.code == ApiErrorCodes.unauthenticated && hadToken) {
@@ -49,11 +56,21 @@ class ErrorInterceptor extends Interceptor {
         return const ApiFailure(code: ApiErrorCodes.timeout);
       case DioExceptionType.connectionError:
         return const ApiFailure(code: ApiErrorCodes.networkError);
+      case DioExceptionType.badCertificate:
+        return const ApiFailure(code: ApiErrorCodes.secureConnection);
+      case DioExceptionType.unknown when err.error is SocketException:
+        return const ApiFailure(code: ApiErrorCodes.networkError);
+      case DioExceptionType.badResponse:
+        // A reply without the error envelope (proxy page, HTML, empty body).
+        return ApiFailure(
+          code: ApiErrorCodes.fromStatus(status),
+          statusCode: status,
+        );
       default:
         return ApiFailure(
-          code: status == 426
-              ? ApiErrorCodes.appUpdateRequired
-              : ApiErrorCodes.serverError,
+          code: status == null
+              ? ApiErrorCodes.networkError
+              : ApiErrorCodes.fromStatus(status),
           statusCode: status,
         );
     }

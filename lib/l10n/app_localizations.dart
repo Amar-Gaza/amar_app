@@ -2969,13 +2969,13 @@ abstract class AppLocalizations {
   /// No description provided for @driverNavOrders.
   ///
   /// In ar, this message translates to:
-  /// **'المهام'**
+  /// **'طلباتي'**
   String get driverNavOrders;
 
   /// No description provided for @driverNavWallet.
   ///
   /// In ar, this message translates to:
-  /// **'الأرباح'**
+  /// **'الرصيد'**
   String get driverNavWallet;
 
   /// No description provided for @driverGreeting.
@@ -3637,6 +3637,408 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'رفع صورة الإشعار'**
   String get transferUpload;
+
+  /// No description provided for @failureAppSetup.
+  ///
+  /// In ar, this message translates to:
+  /// **'التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.'**
+  String get failureAppSetup;
+
+  /// No description provided for @failureDuplicateRequest.
+  ///
+  /// In ar, this message translates to:
+  /// **'أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.'**
+  String get failureDuplicateRequest;
+
+  /// No description provided for @failureQuoteChanged.
+  ///
+  /// In ar, this message translates to:
+  /// **'أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.'**
+  String get failureQuoteChanged;
+
+  /// No description provided for @failureNoQuoteYet.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يحدد المتجر السعر بعد.'**
+  String get failureNoQuoteYet;
+
+  /// No description provided for @failureNotTransferOrder.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.'**
+  String get failureNotTransferOrder;
+
+  /// No description provided for @failureServer.
+  ///
+  /// In ar, this message translates to:
+  /// **'حدث خلل في الخادم. حاول مرة أخرى بعد قليل.'**
+  String get failureServer;
+
+  /// No description provided for @failureTemporary.
+  ///
+  /// In ar, this message translates to:
+  /// **'عطل مؤقت. حاول مرة أخرى.'**
+  String get failureTemporary;
+
+  /// No description provided for @failureTimeout.
+  ///
+  /// In ar, this message translates to:
+  /// **'استغرق الاتصال وقتاً طويلاً. تأكد من الإنترنت وحاول مرة أخرى.'**
+  String get failureTimeout;
+
+  /// No description provided for @failureSecureConnection.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر إنشاء اتصال آمن بالخادم. تأكد من الشبكة وحاول مجدداً.'**
+  String get failureSecureConnection;
+
+  /// No description provided for @failureInvalidResponse.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل رد غير متوقع من الخادم. حاول مرة أخرى لاحقاً.'**
+  String get failureInvalidResponse;
+
+  /// No description provided for @driverToggleOnline.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبديل الاتصال'**
+  String get driverToggleOnline;
+
+  /// No description provided for @driverLocationUpdating.
+  ///
+  /// In ar, this message translates to:
+  /// **'جاري تحديث موقعك…'**
+  String get driverLocationUpdating;
+
+  /// No description provided for @driverLocationUpdated.
+  ///
+  /// In ar, this message translates to:
+  /// **'موقعك محدّث'**
+  String get driverLocationUpdated;
+
+  /// No description provided for @driverHeroOrders.
+  ///
+  /// In ar, this message translates to:
+  /// **'طلبات'**
+  String get driverHeroOrders;
+
+  /// No description provided for @driverHeroHours.
+  ///
+  /// In ar, this message translates to:
+  /// **'ساعات'**
+  String get driverHeroHours;
+
+  /// No description provided for @driverHeroRating.
+  ///
+  /// In ar, this message translates to:
+  /// **'تقييم'**
+  String get driverHeroRating;
+
+  /// No description provided for @driverAvailableOrders.
+  ///
+  /// In ar, this message translates to:
+  /// **'الطلبات المتاحة'**
+  String get driverAvailableOrders;
+
+  /// No description provided for @driverNoAvailableTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد طلبات متاحة'**
+  String get driverNoAvailableTitle;
+
+  /// No description provided for @driverNoAvailableHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيصلك إشعار عند وجود طلبات جديدة في منطقتك'**
+  String get driverNoAvailableHint;
+
+  /// No description provided for @driverNewBadge.
+  ///
+  /// In ar, this message translates to:
+  /// **'جديد'**
+  String get driverNewBadge;
+
+  /// No description provided for @driverYourFee.
+  ///
+  /// In ar, this message translates to:
+  /// **'أجرتك'**
+  String get driverYourFee;
+
+  /// No description provided for @driverAcceptOrder.
+  ///
+  /// In ar, this message translates to:
+  /// **'قبول الطلب'**
+  String get driverAcceptOrder;
+
+  /// No description provided for @driverYourTask.
+  ///
+  /// In ar, this message translates to:
+  /// **'مهمتك الحالية'**
+  String get driverYourTask;
+
+  /// No description provided for @driverInProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'جارية'**
+  String get driverInProgress;
+
+  /// No description provided for @driverNextStep.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطوة التالية'**
+  String get driverNextStep;
+
+  /// No description provided for @driverContinueTask.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة المهمة'**
+  String get driverContinueTask;
+
+  /// No description provided for @driverOfflineTitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنت غير متصل'**
+  String get driverOfflineTitle;
+
+  /// No description provided for @driverOfflineMessage.
+  ///
+  /// In ar, this message translates to:
+  /// **'شغّل زر الاتصال بالأعلى لتستقبل الطلبات القريبة منك'**
+  String get driverOfflineMessage;
+
+  /// No description provided for @driverNowOnline.
+  ///
+  /// In ar, this message translates to:
+  /// **'أنت متصل الآن'**
+  String get driverNowOnline;
+
+  /// No description provided for @driverNowOffline.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إيقاف العمل'**
+  String get driverNowOffline;
+
+  /// No description provided for @driverCashAmount.
+  ///
+  /// In ar, this message translates to:
+  /// **'نقداً {amount}'**
+  String driverCashAmount(String amount);
+
+  /// No description provided for @driverYesterday.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمس'**
+  String get driverYesterday;
+
+  /// No description provided for @driverCompleted.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكتملة'**
+  String get driverCompleted;
+
+  /// No description provided for @driverCancelled.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملغية'**
+  String get driverCancelled;
+
+  /// No description provided for @driverFilterAll.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكل'**
+  String get driverFilterAll;
+
+  /// No description provided for @driverFilterCompleted.
+  ///
+  /// In ar, this message translates to:
+  /// **'مكتمل'**
+  String get driverFilterCompleted;
+
+  /// No description provided for @driverFilterCancelled.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملغي'**
+  String get driverFilterCancelled;
+
+  /// No description provided for @driverCashDue.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجب التسوية'**
+  String get driverCashDue;
+
+  /// No description provided for @driverNoCash.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد نقد'**
+  String get driverNoCash;
+
+  /// No description provided for @driverHandCash.
+  ///
+  /// In ar, this message translates to:
+  /// **'سلّم النقد للإدارة قبل نهاية اليوم'**
+  String get driverHandCash;
+
+  /// No description provided for @driverTotalEarnings.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي الأرباح'**
+  String get driverTotalEarnings;
+
+  /// No description provided for @driverTransactions.
+  ///
+  /// In ar, this message translates to:
+  /// **'المعاملات'**
+  String get driverTransactions;
+
+  /// No description provided for @driverCashSettlement.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسوية نقدية'**
+  String get driverCashSettlement;
+
+  /// No description provided for @driverLicenseVehicle.
+  ///
+  /// In ar, this message translates to:
+  /// **'الرخصة والمركبة'**
+  String get driverLicenseVehicle;
+
+  /// No description provided for @driverEditProfile.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل الملف'**
+  String get driverEditProfile;
+
+  /// No description provided for @driverLanguage.
+  ///
+  /// In ar, this message translates to:
+  /// **'اللغة'**
+  String get driverLanguage;
+
+  /// No description provided for @driverVehicleMotorcycle.
+  ///
+  /// In ar, this message translates to:
+  /// **'دراجة نارية'**
+  String get driverVehicleMotorcycle;
+
+  /// No description provided for @driverVehicleCar.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيارة'**
+  String get driverVehicleCar;
+
+  /// No description provided for @driverVehicleBicycle.
+  ///
+  /// In ar, this message translates to:
+  /// **'دراجة هوائية'**
+  String get driverVehicleBicycle;
+
+  /// No description provided for @driverVehicleVan.
+  ///
+  /// In ar, this message translates to:
+  /// **'فان'**
+  String get driverVehicleVan;
+
+  /// No description provided for @driverVehicleTukTuk.
+  ///
+  /// In ar, this message translates to:
+  /// **'توك توك'**
+  String get driverVehicleTukTuk;
+
+  /// No description provided for @driverVehicleOnFoot.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيراً على الأقدام'**
+  String get driverVehicleOnFoot;
+
+  /// No description provided for @driverCashLimitValue.
+  ///
+  /// In ar, this message translates to:
+  /// **'حد النقد {amount}'**
+  String driverCashLimitValue(String amount);
+
+  /// No description provided for @driverOrdersCount.
+  ///
+  /// In ar, this message translates to:
+  /// **'الطلبات: {count}'**
+  String driverOrdersCount(String count);
+
+  /// No description provided for @driverAccountSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'سائق عَمَار · {phone}'**
+  String driverAccountSubtitle(String phone);
+
+  /// No description provided for @driverHintAccepted.
+  ///
+  /// In ar, this message translates to:
+  /// **'توجّه إلى المتجر لاستلام الطلب'**
+  String get driverHintAccepted;
+
+  /// No description provided for @driverHintPickedUp.
+  ///
+  /// In ar, this message translates to:
+  /// **'توجّه إلى عنوان العميل'**
+  String get driverHintPickedUp;
+
+  /// No description provided for @driverHintOnTheWay.
+  ///
+  /// In ar, this message translates to:
+  /// **'في طريقك للعميل'**
+  String get driverHintOnTheWay;
+
+  /// No description provided for @driverHintArrived.
+  ///
+  /// In ar, this message translates to:
+  /// **'سلّم الطلب للعميل'**
+  String get driverHintArrived;
+
+  /// No description provided for @driverTakePhoto.
+  ///
+  /// In ar, this message translates to:
+  /// **'التقط صورة للطلب'**
+  String get driverTakePhoto;
+
+  /// No description provided for @driverPhotoAttached.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إرفاق الصورة'**
+  String get driverPhotoAttached;
+
+  /// No description provided for @driverAskCode.
+  ///
+  /// In ar, this message translates to:
+  /// **'اطلب من العميل رمز التسليم'**
+  String get driverAskCode;
+
+  /// No description provided for @driverMessage.
+  ///
+  /// In ar, this message translates to:
+  /// **'رسالة'**
+  String get driverMessage;
+
+  /// No description provided for @driverCall.
+  ///
+  /// In ar, this message translates to:
+  /// **'اتصال'**
+  String get driverCall;
+
+  /// No description provided for @driverStore.
+  ///
+  /// In ar, this message translates to:
+  /// **'المتجر'**
+  String get driverStore;
+
+  /// No description provided for @driverOrderDetails.
+  ///
+  /// In ar, this message translates to:
+  /// **'تفاصيل الطلب'**
+  String get driverOrderDetails;
+
+  /// No description provided for @driverContactSubtitle.
+  ///
+  /// In ar, this message translates to:
+  /// **'{role} · {order}'**
+  String driverContactSubtitle(String role, String order);
 }
 
 class _AppLocalizationsDelegate

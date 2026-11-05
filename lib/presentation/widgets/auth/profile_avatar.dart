@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -8,13 +9,15 @@ import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
 
-/// Large avatar with a camera badge: picked photo, or the name's first letter.
+/// Large avatar with a camera badge: picked photo, the saved [imageUrl], or
+/// the name's first letter.
 class ProfileAvatar extends StatelessWidget {
   const ProfileAvatar({
     super.key,
     required this.name,
     required this.imagePath,
     required this.onTap,
+    this.imageUrl,
   });
 
   static const double _letterRatio = 0.38;
@@ -24,6 +27,7 @@ class ProfileAvatar extends StatelessWidget {
   final String name;
   final String? imagePath;
   final VoidCallback onTap;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class ProfileAvatar extends StatelessWidget {
     final surface = context.scheme.surface;
     final trimmed = name.trim();
     final path = imagePath;
+    final url = imageUrl;
     return GestureDetector(
       onTap: onTap,
       child: SizedBox.square(
@@ -55,19 +60,26 @@ class ProfileAvatar extends StatelessWidget {
                       height: AppSizes.profileAvatar,
                       fit: BoxFit.cover,
                     )
-                  : trimmed.isEmpty
-                      ? Icon(
-                          LucideIcons.user,
-                          size: AppSizes.iconXl,
-                          color: colors.brand,
+                  : url != null && url.isNotEmpty
+                      ? CachedNetworkImage(
+                          imageUrl: url,
+                          width: AppSizes.profileAvatar,
+                          height: AppSizes.profileAvatar,
+                          fit: BoxFit.cover,
                         )
-                      : Text(
-                          trimmed.characters.first,
-                          style: context.text.headlineMedium?.copyWith(
-                            color: colors.brand,
-                            fontSize: AppSizes.profileAvatar * _letterRatio,
-                          ),
-                        ),
+                      : trimmed.isEmpty
+                          ? Icon(
+                              LucideIcons.user,
+                              size: AppSizes.iconXl,
+                              color: colors.brand,
+                            )
+                          : Text(
+                              trimmed.characters.first,
+                              style: context.text.headlineMedium?.copyWith(
+                                color: colors.brand,
+                                fontSize: AppSizes.profileAvatar * _letterRatio,
+                              ),
+                            ),
             ),
             PositionedDirectional(
               bottom: AppSpacing.xs / 2,

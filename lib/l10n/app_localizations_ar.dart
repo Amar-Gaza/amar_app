@@ -1531,10 +1531,10 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get driverNavOrders => 'المهام';
+  String get driverNavOrders => 'طلباتي';
 
   @override
-  String get driverNavWallet => 'الأرباح';
+  String get driverNavWallet => 'الرصيد';
 
   @override
   String get driverGreeting => 'صباح الخير';
@@ -1877,4 +1877,223 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get transferUpload => 'رفع صورة الإشعار';
+
+  @override
+  String get failureAppSetup => 'التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.';
+
+  @override
+  String get failureDuplicateRequest =>
+      'أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.';
+
+  @override
+  String get failureQuoteChanged =>
+      'أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.';
+
+  @override
+  String get failureNoQuoteYet => 'لم يحدد المتجر السعر بعد.';
+
+  @override
+  String get failureNotTransferOrder =>
+      'هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.';
+
+  @override
+  String get failureServer => 'حدث خلل في الخادم. حاول مرة أخرى بعد قليل.';
+
+  @override
+  String get failureTemporary => 'عطل مؤقت. حاول مرة أخرى.';
+
+  @override
+  String get failureTimeout =>
+      'استغرق الاتصال وقتاً طويلاً. تأكد من الإنترنت وحاول مرة أخرى.';
+
+  @override
+  String get failureSecureConnection =>
+      'تعذّر إنشاء اتصال آمن بالخادم. تأكد من الشبكة وحاول مجدداً.';
+
+  @override
+  String get failureInvalidResponse =>
+      'وصل رد غير متوقع من الخادم. حاول مرة أخرى لاحقاً.';
+
+  @override
+  String get driverToggleOnline => 'تبديل الاتصال';
+
+  @override
+  String get driverLocationUpdating => 'جاري تحديث موقعك…';
+
+  @override
+  String get driverLocationUpdated => 'موقعك محدّث';
+
+  @override
+  String get driverHeroOrders => 'طلبات';
+
+  @override
+  String get driverHeroHours => 'ساعات';
+
+  @override
+  String get driverHeroRating => 'تقييم';
+
+  @override
+  String get driverAvailableOrders => 'الطلبات المتاحة';
+
+  @override
+  String get driverNoAvailableTitle => 'لا توجد طلبات متاحة';
+
+  @override
+  String get driverNoAvailableHint =>
+      'سيصلك إشعار عند وجود طلبات جديدة في منطقتك';
+
+  @override
+  String get driverNewBadge => 'جديد';
+
+  @override
+  String get driverYourFee => 'أجرتك';
+
+  @override
+  String get driverAcceptOrder => 'قبول الطلب';
+
+  @override
+  String get driverYourTask => 'مهمتك الحالية';
+
+  @override
+  String get driverInProgress => 'جارية';
+
+  @override
+  String get driverNextStep => 'الخطوة التالية';
+
+  @override
+  String get driverContinueTask => 'متابعة المهمة';
+
+  @override
+  String get driverOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get driverOfflineMessage =>
+      'شغّل زر الاتصال بالأعلى لتستقبل الطلبات القريبة منك';
+
+  @override
+  String get driverNowOnline => 'أنت متصل الآن';
+
+  @override
+  String get driverNowOffline => 'تم إيقاف العمل';
+
+  @override
+  String driverCashAmount(String amount) {
+    return 'نقداً $amount';
+  }
+
+  @override
+  String get driverYesterday => 'أمس';
+
+  @override
+  String get driverCompleted => 'مكتملة';
+
+  @override
+  String get driverCancelled => 'ملغية';
+
+  @override
+  String get driverFilterAll => 'الكل';
+
+  @override
+  String get driverFilterCompleted => 'مكتمل';
+
+  @override
+  String get driverFilterCancelled => 'ملغي';
+
+  @override
+  String get driverCashDue => 'يجب التسوية';
+
+  @override
+  String get driverNoCash => 'لا يوجد نقد';
+
+  @override
+  String get driverHandCash => 'سلّم النقد للإدارة قبل نهاية اليوم';
+
+  @override
+  String get driverTotalEarnings => 'إجمالي الأرباح';
+
+  @override
+  String get driverTransactions => 'المعاملات';
+
+  @override
+  String get driverCashSettlement => 'تسوية نقدية';
+
+  @override
+  String get driverLicenseVehicle => 'الرخصة والمركبة';
+
+  @override
+  String get driverEditProfile => 'تعديل الملف';
+
+  @override
+  String get driverLanguage => 'اللغة';
+
+  @override
+  String get driverVehicleMotorcycle => 'دراجة نارية';
+
+  @override
+  String get driverVehicleCar => 'سيارة';
+
+  @override
+  String get driverVehicleBicycle => 'دراجة هوائية';
+
+  @override
+  String get driverVehicleVan => 'فان';
+
+  @override
+  String get driverVehicleTukTuk => 'توك توك';
+
+  @override
+  String get driverVehicleOnFoot => 'سيراً على الأقدام';
+
+  @override
+  String driverCashLimitValue(String amount) {
+    return 'حد النقد $amount';
+  }
+
+  @override
+  String driverOrdersCount(String count) {
+    return 'الطلبات: $count';
+  }
+
+  @override
+  String driverAccountSubtitle(String phone) {
+    return 'سائق عَمَار · $phone';
+  }
+
+  @override
+  String get driverHintAccepted => 'توجّه إلى المتجر لاستلام الطلب';
+
+  @override
+  String get driverHintPickedUp => 'توجّه إلى عنوان العميل';
+
+  @override
+  String get driverHintOnTheWay => 'في طريقك للعميل';
+
+  @override
+  String get driverHintArrived => 'سلّم الطلب للعميل';
+
+  @override
+  String get driverTakePhoto => 'التقط صورة للطلب';
+
+  @override
+  String get driverPhotoAttached => 'تم إرفاق الصورة';
+
+  @override
+  String get driverAskCode => 'اطلب من العميل رمز التسليم';
+
+  @override
+  String get driverMessage => 'رسالة';
+
+  @override
+  String get driverCall => 'اتصال';
+
+  @override
+  String get driverStore => 'المتجر';
+
+  @override
+  String get driverOrderDetails => 'تفاصيل الطلب';
+
+  @override
+  String driverContactSubtitle(String role, String order) {
+    return '$role · $order';
+  }
 }

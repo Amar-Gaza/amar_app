@@ -10,6 +10,16 @@ abstract final class Validators {
     return '${AppDefaults.dialCode}$local';
   }
 
+  /// National form with the leading zero (0599100001). Driver accounts are
+  /// stored this way, and login compares the phone exactly.
+  static String localPhone(String input) {
+    final digits = input.replaceAll(RegExp(r'[^0-9]'), '');
+    final code = AppDefaults.dialCode.replaceAll(RegExp(r'[^0-9]'), '');
+    final national =
+        digits.startsWith(code) ? digits.substring(code.length) : digits;
+    return national.startsWith('0') ? national : '0$national';
+  }
+
   static FieldIssue? phone(String input) =>
       ApiRules.phonePattern.hasMatch(normalizePhone(input))
           ? null

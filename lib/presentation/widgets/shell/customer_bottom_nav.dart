@@ -297,6 +297,7 @@ class _CustomerBottomNavState
                 bottom: bottomInset,
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   for (final (tab, icon, label) in items)
                     Expanded(
@@ -304,14 +305,13 @@ class _CustomerBottomNavState
                         final count = cart.count;
 
                         return Semantics(
-                          selected:
-                          tab == widget.current,
+                          selected: tab == widget.current,
                           button: true,
                           child: NavItem(
                             icon: icon,
                             label: label,
-                            selected:
-                            tab == widget.current,
+                            selected: tab == widget.current,
+                            floatingSelection: true,
                             badge:
                             tab == CustomerTab.cart
                                 ? count

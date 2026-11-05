@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../data/models/api/paged.dart';
 import '../../data/models/masar/masar_models.dart';
@@ -84,6 +85,12 @@ class ApiClient {
       throw error is ApiFailure
           ? error
           : const ApiFailure(code: ApiErrorCodes.serverError);
+    } on ApiFailure {
+      rethrow;
+    } on Object catch (e, stack) {
+      // A success reply whose data does not match the model.
+      if (kDebugMode) debugPrint('$method $path parse failed: $e\n$stack');
+      throw const ApiFailure(code: ApiErrorCodes.invalidResponse);
     }
   }
 

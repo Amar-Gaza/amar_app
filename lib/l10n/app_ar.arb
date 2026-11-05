@@ -981,8 +981,8 @@
       }
     }
   },
-  "driverNavOrders": "المهام",
-  "driverNavWallet": "الأرباح",
+  "driverNavOrders": "طلباتي",
+  "driverNavWallet": "الرصيد",
   "driverGreeting": "صباح الخير",
   "driverOnline": "متصل",
   "driverOffline": "غير متصل",
@@ -1106,5 +1106,110 @@
   "transferHolder": "صاحب الحساب",
   "transferAccount": "رقم الحساب",
   "transferFixNeeded": "يلزم تصحيح الإشعار",
-  "transferUpload": "رفع صورة الإشعار"
+  "transferUpload": "رفع صورة الإشعار",
+  "failureAppSetup": "التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.",
+  "failureDuplicateRequest": "أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.",
+  "failureQuoteChanged": "أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.",
+  "failureNoQuoteYet": "لم يحدد المتجر السعر بعد.",
+  "failureNotTransferOrder": "هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.",
+  "failureServer": "حدث خلل في الخادم. حاول مرة أخرى بعد قليل.",
+  "failureTemporary": "عطل مؤقت. حاول مرة أخرى.",
+  "failureTimeout": "استغرق الاتصال وقتاً طويلاً. تأكد من الإنترنت وحاول مرة أخرى.",
+  "failureSecureConnection": "تعذّر إنشاء اتصال آمن بالخادم. تأكد من الشبكة وحاول مجدداً.",
+  "failureInvalidResponse": "وصل رد غير متوقع من الخادم. حاول مرة أخرى لاحقاً.",
+  "driverToggleOnline": "تبديل الاتصال",
+  "driverLocationUpdating": "جاري تحديث موقعك…",
+  "driverLocationUpdated": "موقعك محدّث",
+  "driverHeroOrders": "طلبات",
+  "driverHeroHours": "ساعات",
+  "driverHeroRating": "تقييم",
+  "driverAvailableOrders": "الطلبات المتاحة",
+  "driverNoAvailableTitle": "لا توجد طلبات متاحة",
+  "driverNoAvailableHint": "سيصلك إشعار عند وجود طلبات جديدة في منطقتك",
+  "driverNewBadge": "جديد",
+  "driverYourFee": "أجرتك",
+  "driverAcceptOrder": "قبول الطلب",
+  "driverYourTask": "مهمتك الحالية",
+  "driverInProgress": "جارية",
+  "driverNextStep": "الخطوة التالية",
+  "driverContinueTask": "متابعة المهمة",
+  "driverOfflineTitle": "أنت غير متصل",
+  "driverOfflineMessage": "شغّل زر الاتصال بالأعلى لتستقبل الطلبات القريبة منك",
+  "driverNowOnline": "أنت متصل الآن",
+  "driverNowOffline": "تم إيقاف العمل",
+  "driverCashAmount": "نقداً {amount}",
+  "@driverCashAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "driverYesterday": "أمس",
+  "driverCompleted": "مكتملة",
+  "driverCancelled": "ملغية",
+  "driverFilterAll": "الكل",
+  "driverFilterCompleted": "مكتمل",
+  "driverFilterCancelled": "ملغي",
+  "driverCashDue": "يجب التسوية",
+  "driverNoCash": "لا يوجد نقد",
+  "driverHandCash": "سلّم النقد للإدارة قبل نهاية اليوم",
+  "driverTotalEarnings": "إجمالي الأرباح",
+  "driverTransactions": "المعاملات",
+  "driverCashSettlement": "تسوية نقدية",
+  "driverLicenseVehicle": "الرخصة والمركبة",
+  "driverEditProfile": "تعديل الملف",
+  "driverLanguage": "اللغة",
+  "driverVehicleMotorcycle": "دراجة نارية",
+  "driverVehicleCar": "سيارة",
+  "driverVehicleBicycle": "دراجة هوائية",
+  "driverVehicleVan": "فان",
+  "driverVehicleTukTuk": "توك توك",
+  "driverVehicleOnFoot": "سيراً على الأقدام",
+  "driverCashLimitValue": "حد النقد {amount}",
+  "@driverCashLimitValue": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "driverOrdersCount": "الطلبات: {count}",
+  "@driverOrdersCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "driverAccountSubtitle": "سائق عَمَار · {phone}",
+  "@driverAccountSubtitle": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "driverHintAccepted": "توجّه إلى المتجر لاستلام الطلب",
+  "driverHintPickedUp": "توجّه إلى عنوان العميل",
+  "driverHintOnTheWay": "في طريقك للعميل",
+  "driverHintArrived": "سلّم الطلب للعميل",
+  "driverTakePhoto": "التقط صورة للطلب",
+  "driverPhotoAttached": "تم إرفاق الصورة",
+  "driverAskCode": "اطلب من العميل رمز التسليم",
+  "driverMessage": "رسالة",
+  "driverCall": "اتصال",
+  "driverStore": "المتجر",
+  "driverOrderDetails": "تفاصيل الطلب",
+  "driverContactSubtitle": "{role} · {order}",
+  "@driverContactSubtitle": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      },
+      "order": {
+        "type": "String"
+      }
+    }
+  }
 }
