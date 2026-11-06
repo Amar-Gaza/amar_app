@@ -918,7 +918,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String cartLinesCount(int count) {
-    return '$count items in the cart';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items in the cart',
+      one: '1 item in the cart',
+    );
+    return '$_temp0';
   }
 
   @override

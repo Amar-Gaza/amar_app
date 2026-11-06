@@ -1781,7 +1781,7 @@ abstract class AppLocalizations {
   /// No description provided for @cartLinesCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} عناصر في السلة'**
+  /// **'{count, plural, =0{السلة فارغة} =1{عنصر واحد في السلة} =2{عنصران في السلة} few{{count} عناصر في السلة} many{{count} عنصراً في السلة} other{{count} عنصر في السلة}}'**
   String cartLinesCount(int count);
 
   /// No description provided for @cartClear.

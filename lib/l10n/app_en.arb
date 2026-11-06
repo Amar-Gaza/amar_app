@@ -381,7 +381,7 @@
   "cartEmptyTitle": "Your cart is empty",
   "cartEmptyMessage": "Add products from the stores and they will appear here.",
   "cartVendorFallback": "Store",
-  "cartLinesCount": "{count} items in the cart",
+  "cartLinesCount": "{count, plural, =1{1 item in the cart} other{{count} items in the cart}}",
   "@cartLinesCount": {
     "placeholders": {
       "count": {

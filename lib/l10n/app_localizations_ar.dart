@@ -903,7 +903,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String cartLinesCount(int count) {
-    return '$count عناصر في السلة';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عنصر في السلة',
+      many: '$count عنصراً في السلة',
+      few: '$count عناصر في السلة',
+      two: 'عنصران في السلة',
+      one: 'عنصر واحد في السلة',
+      zero: 'السلة فارغة',
+    );
+    return '$_temp0';
   }
 
   @override
