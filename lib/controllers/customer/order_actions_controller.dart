@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../core/constants/api_query.dart';
 import '../../core/network/api_failure.dart';
 import '../../data/models/api/cancel_reason.dart';
 import '../../data/models/masar/masar_models.dart';
@@ -77,8 +78,27 @@ class OrderActionsController extends GetxController {
     if (current == null) return false;
     final value =
         await _run(() => _orders.approveOffer(orderId, offerId: current.id));
-    if (value != null) offer.value = value;
-    return value != null;
+    if (value != null) {
+      offer.value = value;
+      return true;
+    }
+    final error = failure.value;
+    if (error != null &&
+        (error.hasReason(ApiErrorCodes.offerChanged) ||
+            error.hasReason(ApiErrorCodes.offerExpired))) {
+      await _refreshOffer();
+    }
+    return false;
+  }
+
+  /// Shows the store's latest offer while keeping the failure banner, so
+  /// the customer reads why and answers the new price.
+  Future<void> _refreshOffer() async {
+    try {
+      offer.value = await _orders.offer(orderId);
+    } on ApiFailure {
+      // The banner already explains the conflict; retry stays available.
+    }
   }
 
   Future<bool> rejectOffer(String? why) async {

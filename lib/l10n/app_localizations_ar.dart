@@ -603,7 +603,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String orderItemsCount(int count) {
-    return '$count عناصر';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عنصر',
+      many: '$count عنصراً',
+      few: '$count عناصر',
+      two: 'عنصران',
+      one: 'عنصر واحد',
+      zero: 'لا عناصر',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -791,8 +801,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get productCategory => 'الفئة';
 
   @override
-  String get productIndicativePrice =>
-      'السعر المبدئي، يعتمده الخادم عند التسعير';
+  String get productIndicativePrice => 'سعر مبدئي، ويؤكد المتجر السعر النهائي';
 
   @override
   String get productPriceAfterInspection => 'السعر النهائي بعد المعاينة';
@@ -848,7 +857,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get quantityLabel => 'الكمية';
 
   @override
-  String get quantityServerPriced => 'يُعاد التسعير من الخادم';
+  String get quantityServerPriced => 'يُحسب السعر النهائي عند الطلب';
 
   @override
   String quantityStock(int count) {
@@ -860,7 +869,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quantityPriceNote =>
-      'الأسعار تقديرية، والخادم يحسب السعر النهائي عند طلب التسعيرة.';
+      'الأسعار مبدئية، والسعر النهائي يظهر في ملخص التكلفة.';
 
   @override
   String get commonContinue => 'متابعة';
@@ -872,7 +881,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkoutStepDelivery => 'التوصيل';
 
   @override
-  String get checkoutStepQuote => 'التسعيرة';
+  String get checkoutStepQuote => 'التكلفة';
 
   @override
   String get checkoutStepConfirm => 'التأكيد';
@@ -907,7 +916,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cartNoOptions => 'بدون خيارات';
 
   @override
-  String get cartPriceByServer => 'السعر يعتمد من التسعيرة';
+  String get cartPriceByServer => 'السعر النهائي في ملخص التكلفة';
 
   @override
   String cartQty(int qty) {
@@ -916,7 +925,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cartTotalNote =>
-      'لا نعرض إجمالياً معتمداً قبل طلب التسعيرة. الخادم يسعّر كل سطر وخياراته.';
+      'يظهر الإجمالي في ملخص التكلفة بعد اختيار العنوان وطريقة الدفع.';
 
   @override
   String get cartTotalLabel => 'الإجمالي';
@@ -940,7 +949,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deliveryTime => 'موعد التوصيل';
 
   @override
-  String get deliveryRequestQuote => 'طلب التسعيرة';
+  String get deliveryRequestQuote => 'عرض التكلفة';
 
   @override
   String get scheduleNow => 'الآن';
@@ -1032,7 +1041,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get addressZoneNote =>
-      'إذا كانت النقطة خارج منطقة الخدمة سيرفض الخادم حفظ العنوان.';
+      'إذا كانت النقطة خارج منطقة الخدمة فلن يُحفظ العنوان.';
 
   @override
   String get addressSave => 'حفظ العنوان';
@@ -1077,7 +1086,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get couponCheckNote =>
-      'التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في التسعيرة.';
+      'التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في ملخص التكلفة.';
 
   @override
   String get couponInvalidTitle => 'الكوبون غير صالح';
@@ -1087,7 +1096,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get couponValidMessage =>
-      'سيُرسل الرمز مع طلب التسعيرة ليحسب الخادم الخصم النهائي.';
+      'سيُطبَّق الرمز، ويظهر الخصم النهائي في ملخص التكلفة.';
 
   @override
   String get couponValue => 'القيمة';
@@ -1113,18 +1122,19 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get quoteTitle => 'التسعيرة';
+  String get quoteTitle => 'ملخص التكلفة';
 
   @override
   String quoteValidFor(String time) {
-    return 'التسعيرة صالحة لمدة $time';
+    return 'التكلفة المبدئية صالحة لمدة $time';
   }
 
   @override
-  String get quoteValidHint => 'بعد انتهاء المدة يلزم طلب تسعيرة جديدة.';
+  String get quoteValidHint =>
+      'قد يراجع المتجر السعر بعد إرسال الطلب، وأي تغيير يصلك لتوافق عليه أولاً.';
 
   @override
-  String get quoteDetailsTitle => 'تفاصيل التسعيرة';
+  String get quoteDetailsTitle => 'تفاصيل التكلفة';
 
   @override
   String get quoteItemsTotal => 'إجمالي المنتجات';
@@ -1145,17 +1155,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get quoteReview => 'مراجعة الطلب';
 
   @override
-  String get quoteExpiredTitle => 'انتهت صلاحية التسعيرة';
+  String get quoteExpiredTitle => 'انتهت مدة التكلفة المبدئية';
 
   @override
-  String get quoteUsedTitle => 'التسعيرة مستخدمة مسبقاً';
+  String get quoteUsedTitle => 'تم استخدام هذا الملخص مسبقاً';
 
   @override
   String get quoteExpiredMessage =>
       'الأسعار تتغير، اطلب تسعيرة جديدة للمتابعة.';
 
   @override
-  String get quoteRefresh => 'طلب تسعيرة جديدة';
+  String get quoteRefresh => 'إعادة حساب التكلفة';
 
   @override
   String get quoteBackToCart => 'العودة';
@@ -1171,7 +1181,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String reviewConfirm(String total) {
-    return 'تأكيد الطلب · $total';
+    return 'إرسال الطلب · $total';
   }
 
   @override
@@ -1890,6 +1900,14 @@ class AppLocalizationsAr extends AppLocalizations {
       'أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.';
 
   @override
+  String get failureOfferChanged =>
+      'تغيّر سعر العرض. راجع السعر الجديد ثم وافق من جديد.';
+
+  @override
+  String get failureOfferExpired =>
+      'انتهت مدة هذا العرض. انتظر عرضاً جديداً من المتجر.';
+
+  @override
   String get failureNoQuoteYet => 'لم يحدد المتجر السعر بعد.';
 
   @override
@@ -2096,4 +2114,75 @@ class AppLocalizationsAr extends AppLocalizations {
   String driverContactSubtitle(String role, String order) {
     return '$role · $order';
   }
+
+  @override
+  String get orderHintAwaitingPricing =>
+      'يراجع المتجر طلبك ليحدد السعر النهائي، وسيصلك لتوافق عليه.';
+
+  @override
+  String get orderHintPriced =>
+      'وصل السعر النهائي، راجعه ووافق عليه ليكمل طلبك.';
+
+  @override
+  String get orderHintAwaitingPayment =>
+      'حوّل المبلغ وارفع صورة الإيصال ليكمل طلبك.';
+
+  @override
+  String get orderHintPaymentReview =>
+      'نراجع إيصال التحويل، وبعد التأكد يصل طلبك للمتجر.';
+
+  @override
+  String get orderHintAwaitingVendor =>
+      'وصل طلبك للمتجر، وينتظر أن يقبله ويبدأ تجهيزه.';
+
+  @override
+  String get orderHintPreparing => 'يجهّز المتجر طلبك الآن.';
+
+  @override
+  String get orderHintPending => 'طلبك جاهز، ونبحث عن سائق لتوصيله.';
+
+  @override
+  String get orderHintAccepted => 'قبل السائق طلبك وهو في طريقه للمتجر.';
+
+  @override
+  String get orderHintPickedUp => 'استلم السائق طلبك من المتجر.';
+
+  @override
+  String get orderHintOnTheWay => 'السائق في الطريق إليك.';
+
+  @override
+  String get orderHintArrived => 'وصل السائق، جهّز رمز التسليم.';
+
+  @override
+  String get orderHintServiceRequested =>
+      'وصل طلبك للمتجر، وسيؤكد موعد الزيارة.';
+
+  @override
+  String get orderHintServiceInspection =>
+      'سيرسل المتجر السعر وموعد الزيارة، وتوافق عليهما قبل البدء.';
+
+  @override
+  String get orderHintServiceQuoted =>
+      'وصل سعر الخدمة وموعد الزيارة، وافق عليهما أو ارفض.';
+
+  @override
+  String get orderHintServiceScheduled => 'تم تأكيد موعد الزيارة.';
+
+  @override
+  String get orderHintTechnicianOnWay => 'الفني في الطريق إليك.';
+
+  @override
+  String get orderHintServiceInProgress => 'الفني يعمل على طلبك الآن.';
+
+  @override
+  String get offerLabelSent => 'بانتظار موافقتك';
+
+  @override
+  String get offerLabelAccepted => 'تمت الموافقة';
+
+  @override
+  String get offerLabelRejected => 'مرفوض';
+
+  @override
+  String get offerLabelExpired => 'منتهي';
 }

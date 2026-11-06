@@ -491,7 +491,7 @@
       }
     }
   },
-  "orderItemsCount": "{count} عناصر",
+  "orderItemsCount": "{count, plural, =0{لا عناصر} =1{عنصر واحد} =2{عنصران} few{{count} عناصر} many{{count} عنصراً} other{{count} عنصر}}",
   "@orderItemsCount": {
     "placeholders": {
       "count": {
@@ -620,7 +620,7 @@
   "productUnavailableNow": "غير متوفر حالياً",
   "productVendor": "المتجر",
   "productCategory": "الفئة",
-  "productIndicativePrice": "السعر المبدئي، يعتمده الخادم عند التسعير",
+  "productIndicativePrice": "سعر مبدئي، ويؤكد المتجر السعر النهائي",
   "productPriceAfterInspection": "السعر النهائي بعد المعاينة",
   "productOptionsTitle": "خيارات المنتج",
   "productOptionsHint": "حدد المواصفات المطلوبة",
@@ -651,7 +651,7 @@
   "optionsContinue": "متابعة لاختيار الكمية",
   "quantityTitle": "الكمية",
   "quantityLabel": "الكمية",
-  "quantityServerPriced": "يُعاد التسعير من الخادم",
+  "quantityServerPriced": "يُحسب السعر النهائي عند الطلب",
   "quantityStock": "المتوفر: {count}",
   "@quantityStock": {
     "placeholders": {
@@ -661,11 +661,11 @@
     }
   },
   "quantityStockHint": "لا يمكن تجاوز الكمية المتوفرة.",
-  "quantityPriceNote": "الأسعار تقديرية، والخادم يحسب السعر النهائي عند طلب التسعيرة.",
+  "quantityPriceNote": "الأسعار مبدئية، والسعر النهائي يظهر في ملخص التكلفة.",
   "commonContinue": "متابعة",
   "checkoutStepCart": "السلة",
   "checkoutStepDelivery": "التوصيل",
-  "checkoutStepQuote": "التسعيرة",
+  "checkoutStepQuote": "التكلفة",
   "checkoutStepConfirm": "التأكيد",
   "checkoutPayment": "طريقة الدفع",
   "paymentCashOnDelivery": "الدفع عند الاستلام",
@@ -683,7 +683,7 @@
   "cartClear": "تفريغ السلة",
   "cartRemove": "حذف",
   "cartNoOptions": "بدون خيارات",
-  "cartPriceByServer": "السعر يعتمد من التسعيرة",
+  "cartPriceByServer": "السعر النهائي في ملخص التكلفة",
   "cartQty": "الكمية: {qty}",
   "@cartQty": {
     "placeholders": {
@@ -692,7 +692,7 @@
       }
     }
   },
-  "cartTotalNote": "لا نعرض إجمالياً معتمداً قبل طلب التسعيرة. الخادم يسعّر كل سطر وخياراته.",
+  "cartTotalNote": "يظهر الإجمالي في ملخص التكلفة بعد اختيار العنوان وطريقة الدفع.",
   "cartTotalLabel": "الإجمالي",
   "cartTotalLater": "يُحسب في الخطوة التالية",
   "deliveryTitle": "الاستلام والتوصيل",
@@ -700,7 +700,7 @@
   "deliveryAddress": "عنوان التوصيل",
   "deliveryChooseAddress": "اختر العنوان",
   "deliveryTime": "موعد التوصيل",
-  "deliveryRequestQuote": "طلب التسعيرة",
+  "deliveryRequestQuote": "عرض التكلفة",
   "scheduleNow": "الآن",
   "schedulePick": "تحديد موعد",
   "detailsTitle": "تفاصيل إضافية",
@@ -743,7 +743,7 @@
   "addressDetails": "تفاصيل إضافية",
   "addressDetailsHint": "الشارع، المبنى، الطابق...",
   "addressMakeDefault": "تعيين كعنوان افتراضي",
-  "addressZoneNote": "إذا كانت النقطة خارج منطقة الخدمة سيرفض الخادم حفظ العنوان.",
+  "addressZoneNote": "إذا كانت النقطة خارج منطقة الخدمة فلن يُحفظ العنوان.",
   "addressSave": "حفظ العنوان",
   "locationServiceOff": "خدمة الموقع متوقفة. فعّلها ثم حاول مجدداً.",
   "locationDenied": "نحتاج إذن الموقع لتحديد العنوان.",
@@ -757,10 +757,10 @@
   "couponCodeLabel": "رمز الكوبون",
   "couponCodeHint": "AMAR30",
   "couponCheck": "تحقق",
-  "couponCheckNote": "التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في التسعيرة.",
+  "couponCheckNote": "التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في ملخص التكلفة.",
   "couponInvalidTitle": "الكوبون غير صالح",
   "couponValidTitle": "الكوبون صالح",
-  "couponValidMessage": "سيُرسل الرمز مع طلب التسعيرة ليحسب الخادم الخصم النهائي.",
+  "couponValidMessage": "سيُطبَّق الرمز، ويظهر الخصم النهائي في ملخص التكلفة.",
   "couponValue": "القيمة",
   "couponMaxDiscount": "أقصى خصم",
   "couponMinTotal": "الحد الأدنى للطلب",
@@ -775,8 +775,8 @@
       }
     }
   },
-  "quoteTitle": "التسعيرة",
-  "quoteValidFor": "التسعيرة صالحة لمدة {time}",
+  "quoteTitle": "ملخص التكلفة",
+  "quoteValidFor": "التكلفة المبدئية صالحة لمدة {time}",
   "@quoteValidFor": {
     "placeholders": {
       "time": {
@@ -784,23 +784,23 @@
       }
     }
   },
-  "quoteValidHint": "بعد انتهاء المدة يلزم طلب تسعيرة جديدة.",
-  "quoteDetailsTitle": "تفاصيل التسعيرة",
+  "quoteValidHint": "قد يراجع المتجر السعر بعد إرسال الطلب، وأي تغيير يصلك لتوافق عليه أولاً.",
+  "quoteDetailsTitle": "تفاصيل التكلفة",
   "quoteItemsTotal": "إجمالي المنتجات",
   "quoteDeliveryFee": "رسوم التوصيل",
   "quoteDiscount": "الخصم",
   "quoteTotal": "الإجمالي النهائي",
   "quoteDistance": "المسافة",
   "quoteReview": "مراجعة الطلب",
-  "quoteExpiredTitle": "انتهت صلاحية التسعيرة",
-  "quoteUsedTitle": "التسعيرة مستخدمة مسبقاً",
+  "quoteExpiredTitle": "انتهت مدة التكلفة المبدئية",
+  "quoteUsedTitle": "تم استخدام هذا الملخص مسبقاً",
   "quoteExpiredMessage": "الأسعار تتغير، اطلب تسعيرة جديدة للمتابعة.",
-  "quoteRefresh": "طلب تسعيرة جديدة",
+  "quoteRefresh": "إعادة حساب التكلفة",
   "quoteBackToCart": "العودة",
   "reviewTitle": "مراجعة الطلب",
   "reviewProducts": "المنتجات",
   "reviewDeliveryPayment": "التوصيل والدفع",
-  "reviewConfirm": "تأكيد الطلب · {total}",
+  "reviewConfirm": "إرسال الطلب · {total}",
   "@reviewConfirm": {
     "placeholders": {
       "total": {
@@ -1110,6 +1110,8 @@
   "failureAppSetup": "التطبيق غير مهيأ بشكل صحيح. تواصل مع الدعم.",
   "failureDuplicateRequest": "أُرسل هذا الطلب من قبل. حدّث الصفحة وتحقق منه.",
   "failureQuoteChanged": "أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.",
+  "failureOfferChanged": "تغيّر سعر العرض. راجع السعر الجديد ثم وافق من جديد.",
+  "failureOfferExpired": "انتهت مدة هذا العرض. انتظر عرضاً جديداً من المتجر.",
   "failureNoQuoteYet": "لم يحدد المتجر السعر بعد.",
   "failureNotTransferOrder": "هذا الطلب مدفوع نقداً ولا يحتاج إشعار تحويل.",
   "failureServer": "حدث خلل في الخادم. حاول مرة أخرى بعد قليل.",
@@ -1211,5 +1213,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "orderHintAwaitingPricing": "يراجع المتجر طلبك ليحدد السعر النهائي، وسيصلك لتوافق عليه.",
+  "orderHintPriced": "وصل السعر النهائي، راجعه ووافق عليه ليكمل طلبك.",
+  "orderHintAwaitingPayment": "حوّل المبلغ وارفع صورة الإيصال ليكمل طلبك.",
+  "orderHintPaymentReview": "نراجع إيصال التحويل، وبعد التأكد يصل طلبك للمتجر.",
+  "orderHintAwaitingVendor": "وصل طلبك للمتجر، وينتظر أن يقبله ويبدأ تجهيزه.",
+  "orderHintPreparing": "يجهّز المتجر طلبك الآن.",
+  "orderHintPending": "طلبك جاهز، ونبحث عن سائق لتوصيله.",
+  "orderHintAccepted": "قبل السائق طلبك وهو في طريقه للمتجر.",
+  "orderHintPickedUp": "استلم السائق طلبك من المتجر.",
+  "orderHintOnTheWay": "السائق في الطريق إليك.",
+  "orderHintArrived": "وصل السائق، جهّز رمز التسليم.",
+  "orderHintServiceRequested": "وصل طلبك للمتجر، وسيؤكد موعد الزيارة.",
+  "orderHintServiceInspection": "سيرسل المتجر السعر وموعد الزيارة، وتوافق عليهما قبل البدء.",
+  "orderHintServiceQuoted": "وصل سعر الخدمة وموعد الزيارة، وافق عليهما أو ارفض.",
+  "orderHintServiceScheduled": "تم تأكيد موعد الزيارة.",
+  "orderHintTechnicianOnWay": "الفني في الطريق إليك.",
+  "orderHintServiceInProgress": "الفني يعمل على طلبك الآن.",
+  "offerLabelSent": "بانتظار موافقتك",
+  "offerLabelAccepted": "تمت الموافقة",
+  "offerLabelRejected": "مرفوض",
+  "offerLabelExpired": "منتهي"
 }

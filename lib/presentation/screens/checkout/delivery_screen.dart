@@ -262,7 +262,9 @@ class DeliveryScreen extends GetView<CheckoutController> {
 
                   CheckoutRow(
                     icon: LucideIcons.calendarClock,
-                    title: l10n.deliveryTime,
+                    title: controller.isService
+                        ? l10n.serviceQuoteVisit
+                        : l10n.deliveryTime,
                     value: schedule == null
                         ? controller.isService
                         ? l10n.scheduleChoose

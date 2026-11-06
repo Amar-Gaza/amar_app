@@ -134,7 +134,7 @@ class OrderDetailsController extends GetxController {
     } on ApiFailure catch (e) {
       quoteFailure.value = e;
       // quote_changed: show the vendor's new price for a fresh answer.
-      if (e.code == ApiErrorCodes.quoteChanged) await _loadServiceQuote();
+      if (e.hasReason(ApiErrorCodes.quoteChanged)) await _loadServiceQuote();
     } finally {
       isAnsweringQuote.value = false;
     }

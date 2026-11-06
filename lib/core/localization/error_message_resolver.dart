@@ -15,9 +15,22 @@ abstract final class ErrorMessageResolver {
     ApiErrorCodes.emptyResponse,
   };
 
-  /// Order: the server's reason for the first invalid field, then the
-  /// server's own (localized) message, then a local text by error code.
+  /// Conflict reasons with their own text; the server message for a 409
+  /// is a generic "conflicts with the current state".
+  static const Set<String> _conflictReasons = {
+    ApiErrorCodes.offerChanged,
+    ApiErrorCodes.offerExpired,
+    ApiErrorCodes.quoteChanged,
+  };
+
+  /// Order: a known conflict reason, then the server's reason for the first
+  /// invalid field, then the server's own (localized) message, then a local
+  /// text by error code.
   static String resolve(ApiFailure failure, AppLocalizations l10n) {
+    final reason = failure.reason;
+    if (reason != null && _conflictReasons.contains(reason)) {
+      return byCode(reason, l10n);
+    }
     if (failure.isValidation) {
       final field = failure.firstFieldError;
       if (field != null && field.isNotEmpty) return field;
@@ -49,6 +62,8 @@ abstract final class ErrorMessageResolver {
         ApiErrorCodes.quoteExpired => l10n.errorQuoteExpired,
         ApiErrorCodes.quoteUsed => l10n.errorQuoteUsed,
         ApiErrorCodes.quoteChanged => l10n.failureQuoteChanged,
+        ApiErrorCodes.offerChanged => l10n.failureOfferChanged,
+        ApiErrorCodes.offerExpired => l10n.failureOfferExpired,
         ApiErrorCodes.noQuoteYet => l10n.failureNoQuoteYet,
         ApiErrorCodes.notATransferOrder => l10n.failureNotTransferOrder,
         ApiErrorCodes.validationFailed => l10n.errorValidationFailed,

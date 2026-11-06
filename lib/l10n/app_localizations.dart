@@ -1259,7 +1259,7 @@ abstract class AppLocalizations {
   /// No description provided for @orderItemsCount.
   ///
   /// In ar, this message translates to:
-  /// **'{count} عناصر'**
+  /// **'{count, plural, =0{لا عناصر} =1{عنصر واحد} =2{عنصران} few{{count} عناصر} many{{count} عنصراً} other{{count} عنصر}}'**
   String orderItemsCount(int count);
 
   /// No description provided for @ordersScopeActive.
@@ -1595,7 +1595,7 @@ abstract class AppLocalizations {
   /// No description provided for @productIndicativePrice.
   ///
   /// In ar, this message translates to:
-  /// **'السعر المبدئي، يعتمده الخادم عند التسعير'**
+  /// **'سعر مبدئي، ويؤكد المتجر السعر النهائي'**
   String get productIndicativePrice;
 
   /// No description provided for @productPriceAfterInspection.
@@ -1697,7 +1697,7 @@ abstract class AppLocalizations {
   /// No description provided for @quantityServerPriced.
   ///
   /// In ar, this message translates to:
-  /// **'يُعاد التسعير من الخادم'**
+  /// **'يُحسب السعر النهائي عند الطلب'**
   String get quantityServerPriced;
 
   /// No description provided for @quantityStock.
@@ -1715,7 +1715,7 @@ abstract class AppLocalizations {
   /// No description provided for @quantityPriceNote.
   ///
   /// In ar, this message translates to:
-  /// **'الأسعار تقديرية، والخادم يحسب السعر النهائي عند طلب التسعيرة.'**
+  /// **'الأسعار مبدئية، والسعر النهائي يظهر في ملخص التكلفة.'**
   String get quantityPriceNote;
 
   /// No description provided for @commonContinue.
@@ -1739,7 +1739,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkoutStepQuote.
   ///
   /// In ar, this message translates to:
-  /// **'التسعيرة'**
+  /// **'التكلفة'**
   String get checkoutStepQuote;
 
   /// No description provided for @checkoutStepConfirm.
@@ -1805,7 +1805,7 @@ abstract class AppLocalizations {
   /// No description provided for @cartPriceByServer.
   ///
   /// In ar, this message translates to:
-  /// **'السعر يعتمد من التسعيرة'**
+  /// **'السعر النهائي في ملخص التكلفة'**
   String get cartPriceByServer;
 
   /// No description provided for @cartQty.
@@ -1817,7 +1817,7 @@ abstract class AppLocalizations {
   /// No description provided for @cartTotalNote.
   ///
   /// In ar, this message translates to:
-  /// **'لا نعرض إجمالياً معتمداً قبل طلب التسعيرة. الخادم يسعّر كل سطر وخياراته.'**
+  /// **'يظهر الإجمالي في ملخص التكلفة بعد اختيار العنوان وطريقة الدفع.'**
   String get cartTotalNote;
 
   /// No description provided for @cartTotalLabel.
@@ -1865,7 +1865,7 @@ abstract class AppLocalizations {
   /// No description provided for @deliveryRequestQuote.
   ///
   /// In ar, this message translates to:
-  /// **'طلب التسعيرة'**
+  /// **'عرض التكلفة'**
   String get deliveryRequestQuote;
 
   /// No description provided for @scheduleNow.
@@ -2039,7 +2039,7 @@ abstract class AppLocalizations {
   /// No description provided for @addressZoneNote.
   ///
   /// In ar, this message translates to:
-  /// **'إذا كانت النقطة خارج منطقة الخدمة سيرفض الخادم حفظ العنوان.'**
+  /// **'إذا كانت النقطة خارج منطقة الخدمة فلن يُحفظ العنوان.'**
   String get addressZoneNote;
 
   /// No description provided for @addressSave.
@@ -2123,7 +2123,7 @@ abstract class AppLocalizations {
   /// No description provided for @couponCheckNote.
   ///
   /// In ar, this message translates to:
-  /// **'التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في التسعيرة.'**
+  /// **'التحقق يؤكد صلاحية الرمز فقط، وقيمة الخصم النهائية تظهر في ملخص التكلفة.'**
   String get couponCheckNote;
 
   /// No description provided for @couponInvalidTitle.
@@ -2141,7 +2141,7 @@ abstract class AppLocalizations {
   /// No description provided for @couponValidMessage.
   ///
   /// In ar, this message translates to:
-  /// **'سيُرسل الرمز مع طلب التسعيرة ليحسب الخادم الخصم النهائي.'**
+  /// **'سيُطبَّق الرمز، ويظهر الخصم النهائي في ملخص التكلفة.'**
   String get couponValidMessage;
 
   /// No description provided for @couponValue.
@@ -2189,25 +2189,25 @@ abstract class AppLocalizations {
   /// No description provided for @quoteTitle.
   ///
   /// In ar, this message translates to:
-  /// **'التسعيرة'**
+  /// **'ملخص التكلفة'**
   String get quoteTitle;
 
   /// No description provided for @quoteValidFor.
   ///
   /// In ar, this message translates to:
-  /// **'التسعيرة صالحة لمدة {time}'**
+  /// **'التكلفة المبدئية صالحة لمدة {time}'**
   String quoteValidFor(String time);
 
   /// No description provided for @quoteValidHint.
   ///
   /// In ar, this message translates to:
-  /// **'بعد انتهاء المدة يلزم طلب تسعيرة جديدة.'**
+  /// **'قد يراجع المتجر السعر بعد إرسال الطلب، وأي تغيير يصلك لتوافق عليه أولاً.'**
   String get quoteValidHint;
 
   /// No description provided for @quoteDetailsTitle.
   ///
   /// In ar, this message translates to:
-  /// **'تفاصيل التسعيرة'**
+  /// **'تفاصيل التكلفة'**
   String get quoteDetailsTitle;
 
   /// No description provided for @quoteItemsTotal.
@@ -2249,13 +2249,13 @@ abstract class AppLocalizations {
   /// No description provided for @quoteExpiredTitle.
   ///
   /// In ar, this message translates to:
-  /// **'انتهت صلاحية التسعيرة'**
+  /// **'انتهت مدة التكلفة المبدئية'**
   String get quoteExpiredTitle;
 
   /// No description provided for @quoteUsedTitle.
   ///
   /// In ar, this message translates to:
-  /// **'التسعيرة مستخدمة مسبقاً'**
+  /// **'تم استخدام هذا الملخص مسبقاً'**
   String get quoteUsedTitle;
 
   /// No description provided for @quoteExpiredMessage.
@@ -2267,7 +2267,7 @@ abstract class AppLocalizations {
   /// No description provided for @quoteRefresh.
   ///
   /// In ar, this message translates to:
-  /// **'طلب تسعيرة جديدة'**
+  /// **'إعادة حساب التكلفة'**
   String get quoteRefresh;
 
   /// No description provided for @quoteBackToCart.
@@ -2297,7 +2297,7 @@ abstract class AppLocalizations {
   /// No description provided for @reviewConfirm.
   ///
   /// In ar, this message translates to:
-  /// **'تأكيد الطلب · {total}'**
+  /// **'إرسال الطلب · {total}'**
   String reviewConfirm(String total);
 
   /// No description provided for @placeFailedTitle.
@@ -3656,6 +3656,18 @@ abstract class AppLocalizations {
   /// **'أرسل المتجر سعراً جديداً. راجعه ثم وافق من جديد.'**
   String get failureQuoteChanged;
 
+  /// No description provided for @failureOfferChanged.
+  ///
+  /// In ar, this message translates to:
+  /// **'تغيّر سعر العرض. راجع السعر الجديد ثم وافق من جديد.'**
+  String get failureOfferChanged;
+
+  /// No description provided for @failureOfferExpired.
+  ///
+  /// In ar, this message translates to:
+  /// **'انتهت مدة هذا العرض. انتظر عرضاً جديداً من المتجر.'**
+  String get failureOfferExpired;
+
   /// No description provided for @failureNoQuoteYet.
   ///
   /// In ar, this message translates to:
@@ -4039,6 +4051,132 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'{role} · {order}'**
   String driverContactSubtitle(String role, String order);
+
+  /// No description provided for @orderHintAwaitingPricing.
+  ///
+  /// In ar, this message translates to:
+  /// **'يراجع المتجر طلبك ليحدد السعر النهائي، وسيصلك لتوافق عليه.'**
+  String get orderHintAwaitingPricing;
+
+  /// No description provided for @orderHintPriced.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل السعر النهائي، راجعه ووافق عليه ليكمل طلبك.'**
+  String get orderHintPriced;
+
+  /// No description provided for @orderHintAwaitingPayment.
+  ///
+  /// In ar, this message translates to:
+  /// **'حوّل المبلغ وارفع صورة الإيصال ليكمل طلبك.'**
+  String get orderHintAwaitingPayment;
+
+  /// No description provided for @orderHintPaymentReview.
+  ///
+  /// In ar, this message translates to:
+  /// **'نراجع إيصال التحويل، وبعد التأكد يصل طلبك للمتجر.'**
+  String get orderHintPaymentReview;
+
+  /// No description provided for @orderHintAwaitingVendor.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل طلبك للمتجر، وينتظر أن يقبله ويبدأ تجهيزه.'**
+  String get orderHintAwaitingVendor;
+
+  /// No description provided for @orderHintPreparing.
+  ///
+  /// In ar, this message translates to:
+  /// **'يجهّز المتجر طلبك الآن.'**
+  String get orderHintPreparing;
+
+  /// No description provided for @orderHintPending.
+  ///
+  /// In ar, this message translates to:
+  /// **'طلبك جاهز، ونبحث عن سائق لتوصيله.'**
+  String get orderHintPending;
+
+  /// No description provided for @orderHintAccepted.
+  ///
+  /// In ar, this message translates to:
+  /// **'قبل السائق طلبك وهو في طريقه للمتجر.'**
+  String get orderHintAccepted;
+
+  /// No description provided for @orderHintPickedUp.
+  ///
+  /// In ar, this message translates to:
+  /// **'استلم السائق طلبك من المتجر.'**
+  String get orderHintPickedUp;
+
+  /// No description provided for @orderHintOnTheWay.
+  ///
+  /// In ar, this message translates to:
+  /// **'السائق في الطريق إليك.'**
+  String get orderHintOnTheWay;
+
+  /// No description provided for @orderHintArrived.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل السائق، جهّز رمز التسليم.'**
+  String get orderHintArrived;
+
+  /// No description provided for @orderHintServiceRequested.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل طلبك للمتجر، وسيؤكد موعد الزيارة.'**
+  String get orderHintServiceRequested;
+
+  /// No description provided for @orderHintServiceInspection.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيرسل المتجر السعر وموعد الزيارة، وتوافق عليهما قبل البدء.'**
+  String get orderHintServiceInspection;
+
+  /// No description provided for @orderHintServiceQuoted.
+  ///
+  /// In ar, this message translates to:
+  /// **'وصل سعر الخدمة وموعد الزيارة، وافق عليهما أو ارفض.'**
+  String get orderHintServiceQuoted;
+
+  /// No description provided for @orderHintServiceScheduled.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تأكيد موعد الزيارة.'**
+  String get orderHintServiceScheduled;
+
+  /// No description provided for @orderHintTechnicianOnWay.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفني في الطريق إليك.'**
+  String get orderHintTechnicianOnWay;
+
+  /// No description provided for @orderHintServiceInProgress.
+  ///
+  /// In ar, this message translates to:
+  /// **'الفني يعمل على طلبك الآن.'**
+  String get orderHintServiceInProgress;
+
+  /// No description provided for @offerLabelSent.
+  ///
+  /// In ar, this message translates to:
+  /// **'بانتظار موافقتك'**
+  String get offerLabelSent;
+
+  /// No description provided for @offerLabelAccepted.
+  ///
+  /// In ar, this message translates to:
+  /// **'تمت الموافقة'**
+  String get offerLabelAccepted;
+
+  /// No description provided for @offerLabelRejected.
+  ///
+  /// In ar, this message translates to:
+  /// **'مرفوض'**
+  String get offerLabelRejected;
+
+  /// No description provided for @offerLabelExpired.
+  ///
+  /// In ar, this message translates to:
+  /// **'منتهي'**
+  String get offerLabelExpired;
 }
 
 class _AppLocalizationsDelegate
