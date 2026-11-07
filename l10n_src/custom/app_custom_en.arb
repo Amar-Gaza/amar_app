@@ -232,7 +232,7 @@
   "productUnavailableNow": "Currently unavailable",
   "productVendor": "Store",
   "productCategory": "Category",
-  "productIndicativePrice": "Estimated price; the store confirms the final price",
+  "productIndicativePrice": "Price",
   "productPriceAfterInspection": "Final price after inspection",
   "productOptionsTitle": "Product options",
   "productOptionsHint": "Choose the required specifications",
@@ -263,7 +263,7 @@
   "optionsContinue": "Continue to quantity",
   "quantityTitle": "Quantity",
   "quantityLabel": "Quantity",
-  "quantityServerPriced": "Final price is calculated when you order",
+  "quantityServerPriced": "Delivery is calculated from your address",
   "quantityStock": "In stock: {count}",
   "@quantityStock": {
     "placeholders": {
@@ -273,7 +273,7 @@
     }
   },
   "quantityStockHint": "You cannot exceed the available stock.",
-  "quantityPriceNote": "Prices are estimates; the final price shows in the cost summary.",
+  "quantityPriceNote": "The product price is fixed; delivery shows in the cost summary.",
   "commonContinue": "Continue",
   "checkoutStepCart": "Cart",
   "checkoutStepDelivery": "Delivery",
@@ -295,7 +295,7 @@
   "cartClear": "Clear cart",
   "cartRemove": "Remove",
   "cartNoOptions": "No options",
-  "cartPriceByServer": "Final price in the cost summary",
+  "cartPriceByServer": "Delivery is added in the cost summary",
   "cartQty": "Qty: {qty}",
   "@cartQty": {
     "placeholders": {
@@ -394,7 +394,8 @@
       }
     }
   },
-  "quoteValidHint": "The store may review the price after you send the order; any change needs your approval first.",
+  "quoteValidHint": "This is the final amount; after you send it the store starts preparing your order.",
+  "quoteServiceHint": "The store may set the final price after inspection; any change needs your approval first.",
   "quoteDetailsTitle": "Cost details",
   "quoteItemsTotal": "Items total",
   "quoteDeliveryFee": "Delivery fee",

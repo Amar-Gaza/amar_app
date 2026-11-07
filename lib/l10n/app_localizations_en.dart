@@ -814,8 +814,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productCategory => 'Category';
 
   @override
-  String get productIndicativePrice =>
-      'Estimated price; the store confirms the final price';
+  String get productIndicativePrice => 'Price';
 
   @override
   String get productPriceAfterInspection => 'Final price after inspection';
@@ -871,7 +870,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quantityLabel => 'Quantity';
 
   @override
-  String get quantityServerPriced => 'Final price is calculated when you order';
+  String get quantityServerPriced => 'Delivery is calculated from your address';
 
   @override
   String quantityStock(int count) {
@@ -883,7 +882,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quantityPriceNote =>
-      'Prices are estimates; the final price shows in the cost summary.';
+      'The product price is fixed; delivery shows in the cost summary.';
 
   @override
   String get commonContinue => 'Continue';
@@ -937,7 +936,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cartNoOptions => 'No options';
 
   @override
-  String get cartPriceByServer => 'Final price in the cost summary';
+  String get cartPriceByServer => 'Delivery is added in the cost summary';
 
   @override
   String cartQty(int qty) {
@@ -1155,7 +1154,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quoteValidHint =>
-      'The store may review the price after you send the order; any change needs your approval first.';
+      'This is the final amount; after you send it the store starts preparing your order.';
+
+  @override
+  String get quoteServiceHint =>
+      'The store may set the final price after inspection; any change needs your approval first.';
 
   @override
   String get quoteDetailsTitle => 'Cost details';

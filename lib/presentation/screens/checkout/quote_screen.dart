@@ -53,7 +53,9 @@ class QuoteScreen extends GetView<CheckoutController> {
                       DurationFormatter.clock(
                           controller.quoteSecondsLeft.value),
                     ),
-                    message: l10n.quoteValidHint,
+                    message: controller.isService
+                        ? l10n.quoteServiceHint
+                        : l10n.quoteValidHint,
                   ),
                   const SizedBox(height: AppSpacing.md),
                   PriceCard(

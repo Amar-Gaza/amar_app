@@ -801,7 +801,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get productCategory => 'الفئة';
 
   @override
-  String get productIndicativePrice => 'سعر مبدئي، ويؤكد المتجر السعر النهائي';
+  String get productIndicativePrice => 'السعر';
 
   @override
   String get productPriceAfterInspection => 'السعر النهائي بعد المعاينة';
@@ -857,7 +857,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get quantityLabel => 'الكمية';
 
   @override
-  String get quantityServerPriced => 'يُحسب السعر النهائي عند الطلب';
+  String get quantityServerPriced => 'رسوم التوصيل تُحسب حسب عنوانك';
 
   @override
   String quantityStock(int count) {
@@ -869,7 +869,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quantityPriceNote =>
-      'الأسعار مبدئية، والسعر النهائي يظهر في ملخص التكلفة.';
+      'سعر المنتج ثابت، ورسوم التوصيل تظهر في ملخص التكلفة.';
 
   @override
   String get commonContinue => 'متابعة';
@@ -926,7 +926,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get cartNoOptions => 'بدون خيارات';
 
   @override
-  String get cartPriceByServer => 'السعر النهائي في ملخص التكلفة';
+  String get cartPriceByServer => 'التوصيل يُحسب في ملخص التكلفة';
 
   @override
   String cartQty(int qty) {
@@ -1141,7 +1141,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quoteValidHint =>
-      'قد يراجع المتجر السعر بعد إرسال الطلب، وأي تغيير يصلك لتوافق عليه أولاً.';
+      'هذا هو المبلغ النهائي، وبعد الإرسال يبدأ المتجر بتجهيز طلبك مباشرة.';
+
+  @override
+  String get quoteServiceHint =>
+      'قد يحدد المتجر السعر النهائي بعد المعاينة، وأي تغيير يصلك لتوافق عليه أولاً.';
 
   @override
   String get quoteDetailsTitle => 'تفاصيل التكلفة';

@@ -5,6 +5,7 @@ import '../../core/constants/app_defaults.dart';
 import '../../core/network/api_failure.dart';
 import '../../data/models/masar/masar_models.dart';
 import '../../data/services/customer/order_service.dart';
+import 'shell_controller.dart';
 
 /// Orders tab: one list per scope, paged.
 class OrdersController extends GetxController {
@@ -25,11 +26,26 @@ class OrdersController extends GetxController {
   final RxBool hasMore = false.obs;
   final Rxn<ApiFailure> failure = Rxn<ApiFailure>();
   int _page = 1;
+  bool _reloadQueued = false;
 
   @override
   void onInit() {
     super.onInit();
     load();
+    if (Get.isRegistered<ShellController>()) {
+      ever<CustomerTab>(Get.find<ShellController>().tab, (tab) {
+        if (tab == CustomerTab.orders) load();
+      });
+    }
+  }
+
+  /// Called after an order is placed: show it in the active list at once.
+  Future<void> showNewOrder() async {
+    if (scope.value != OrderScope.active) {
+      scope.value = OrderScope.active;
+      items.clear();
+    }
+    await load();
   }
 
   Future<void> selectScope(String value) async {
@@ -40,7 +56,10 @@ class OrdersController extends GetxController {
   }
 
   Future<void> load() async {
-    if (isLoading.value) return;
+    if (isLoading.value) {
+      _reloadQueued = true;
+      return;
+    }
     isLoading.value = true;
     failure.value = null;
     try {
@@ -56,6 +75,10 @@ class OrdersController extends GetxController {
       failure.value = e;
     } finally {
       isLoading.value = false;
+    }
+    if (_reloadQueued) {
+      _reloadQueued = false;
+      await load();
     }
   }
 

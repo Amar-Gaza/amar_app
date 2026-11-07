@@ -1595,7 +1595,7 @@ abstract class AppLocalizations {
   /// No description provided for @productIndicativePrice.
   ///
   /// In ar, this message translates to:
-  /// **'سعر مبدئي، ويؤكد المتجر السعر النهائي'**
+  /// **'السعر'**
   String get productIndicativePrice;
 
   /// No description provided for @productPriceAfterInspection.
@@ -1697,7 +1697,7 @@ abstract class AppLocalizations {
   /// No description provided for @quantityServerPriced.
   ///
   /// In ar, this message translates to:
-  /// **'يُحسب السعر النهائي عند الطلب'**
+  /// **'رسوم التوصيل تُحسب حسب عنوانك'**
   String get quantityServerPriced;
 
   /// No description provided for @quantityStock.
@@ -1715,7 +1715,7 @@ abstract class AppLocalizations {
   /// No description provided for @quantityPriceNote.
   ///
   /// In ar, this message translates to:
-  /// **'الأسعار مبدئية، والسعر النهائي يظهر في ملخص التكلفة.'**
+  /// **'سعر المنتج ثابت، ورسوم التوصيل تظهر في ملخص التكلفة.'**
   String get quantityPriceNote;
 
   /// No description provided for @commonContinue.
@@ -1805,7 +1805,7 @@ abstract class AppLocalizations {
   /// No description provided for @cartPriceByServer.
   ///
   /// In ar, this message translates to:
-  /// **'السعر النهائي في ملخص التكلفة'**
+  /// **'التوصيل يُحسب في ملخص التكلفة'**
   String get cartPriceByServer;
 
   /// No description provided for @cartQty.
@@ -2201,8 +2201,14 @@ abstract class AppLocalizations {
   /// No description provided for @quoteValidHint.
   ///
   /// In ar, this message translates to:
-  /// **'قد يراجع المتجر السعر بعد إرسال الطلب، وأي تغيير يصلك لتوافق عليه أولاً.'**
+  /// **'هذا هو المبلغ النهائي، وبعد الإرسال يبدأ المتجر بتجهيز طلبك مباشرة.'**
   String get quoteValidHint;
+
+  /// No description provided for @quoteServiceHint.
+  ///
+  /// In ar, this message translates to:
+  /// **'قد يحدد المتجر السعر النهائي بعد المعاينة، وأي تغيير يصلك لتوافق عليه أولاً.'**
+  String get quoteServiceHint;
 
   /// No description provided for @quoteDetailsTitle.
   ///

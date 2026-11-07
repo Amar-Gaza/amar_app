@@ -620,7 +620,7 @@
   "productUnavailableNow": "غير متوفر حالياً",
   "productVendor": "المتجر",
   "productCategory": "الفئة",
-  "productIndicativePrice": "سعر مبدئي، ويؤكد المتجر السعر النهائي",
+  "productIndicativePrice": "السعر",
   "productPriceAfterInspection": "السعر النهائي بعد المعاينة",
   "productOptionsTitle": "خيارات المنتج",
   "productOptionsHint": "حدد المواصفات المطلوبة",
@@ -651,7 +651,7 @@
   "optionsContinue": "متابعة لاختيار الكمية",
   "quantityTitle": "الكمية",
   "quantityLabel": "الكمية",
-  "quantityServerPriced": "يُحسب السعر النهائي عند الطلب",
+  "quantityServerPriced": "رسوم التوصيل تُحسب حسب عنوانك",
   "quantityStock": "المتوفر: {count}",
   "@quantityStock": {
     "placeholders": {
@@ -661,7 +661,7 @@
     }
   },
   "quantityStockHint": "لا يمكن تجاوز الكمية المتوفرة.",
-  "quantityPriceNote": "الأسعار مبدئية، والسعر النهائي يظهر في ملخص التكلفة.",
+  "quantityPriceNote": "سعر المنتج ثابت، ورسوم التوصيل تظهر في ملخص التكلفة.",
   "commonContinue": "متابعة",
   "checkoutStepCart": "السلة",
   "checkoutStepDelivery": "التوصيل",
@@ -683,7 +683,7 @@
   "cartClear": "تفريغ السلة",
   "cartRemove": "حذف",
   "cartNoOptions": "بدون خيارات",
-  "cartPriceByServer": "السعر النهائي في ملخص التكلفة",
+  "cartPriceByServer": "التوصيل يُحسب في ملخص التكلفة",
   "cartQty": "الكمية: {qty}",
   "@cartQty": {
     "placeholders": {
@@ -784,7 +784,8 @@
       }
     }
   },
-  "quoteValidHint": "قد يراجع المتجر السعر بعد إرسال الطلب، وأي تغيير يصلك لتوافق عليه أولاً.",
+  "quoteValidHint": "هذا هو المبلغ النهائي، وبعد الإرسال يبدأ المتجر بتجهيز طلبك مباشرة.",
+  "quoteServiceHint": "قد يحدد المتجر السعر النهائي بعد المعاينة، وأي تغيير يصلك لتوافق عليه أولاً.",
   "quoteDetailsTitle": "تفاصيل التكلفة",
   "quoteItemsTotal": "إجمالي المنتجات",
   "quoteDeliveryFee": "رسوم التوصيل",
