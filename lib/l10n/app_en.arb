@@ -957,5 +957,6 @@
   "offerLabelSent": "Awaiting your approval",
   "offerLabelAccepted": "Approved",
   "offerLabelRejected": "Rejected",
-  "offerLabelExpired": "Expired"
+  "offerLabelExpired": "Expired",
+  "pushView": "View"
 }

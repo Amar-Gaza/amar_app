@@ -4183,6 +4183,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'منتهي'**
   String get offerLabelExpired;
+
+  /// No description provided for @pushView.
+  ///
+  /// In ar, this message translates to:
+  /// **'عرض'**
+  String get pushView;
 }
 
 class _AppLocalizationsDelegate

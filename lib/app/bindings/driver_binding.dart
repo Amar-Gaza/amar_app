@@ -89,6 +89,7 @@ class DriverNotificationsBinding extends Bindings {
   void dependencies() => Get.lazyPut<NotificationsController>(
         () => NotificationsController(
           Get.find<NotificationService>(tag: SessionRole.driver.name),
+          role: SessionRole.driver,
         ),
         tag: driverTag,
       );

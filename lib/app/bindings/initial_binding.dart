@@ -5,6 +5,7 @@ import '../../controllers/customer/cart_controller.dart';
 import '../../controllers/driver/driver_session_controller.dart';
 import '../../controllers/shared/app_config_controller.dart';
 import '../../controllers/shared/connectivity_controller.dart';
+import '../../controllers/shared/push_controller.dart';
 import '../../controllers/shared/session_controller.dart';
 import '../../core/localization/locale_controller.dart';
 import '../../core/network/api_client.dart';
@@ -158,6 +159,18 @@ class InitialBinding extends Bindings {
       permanent: true,
     );
 
+    final push = Get.put<PushController>(
+      PushController(
+        profile: profile,
+        driverProfile: Get.find<DriverProfileService>(),
+        customerInbox: Get.find<NotificationService>(),
+        driverInbox: Get.find<NotificationService>(
+          tag: SessionRole.driver.name,
+        ),
+      ),
+      permanent: true,
+    );
+
     Get.put<SessionController>(
       SessionController(
         tokens,
@@ -167,6 +180,7 @@ class InitialBinding extends Bindings {
         preferences: _prefs,
         cart: Get.find<CartController>(),
         location: Get.find<DeviceLocationService>(),
+        push: push,
       ),
       permanent: true,
     );
@@ -178,6 +192,7 @@ class InitialBinding extends Bindings {
         Get.find<DriverProfileService>(),
         AppConfigService(client),
         events,
+        push: push,
       ),
       permanent: true,
     );
