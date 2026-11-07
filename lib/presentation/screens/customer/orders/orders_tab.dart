@@ -55,8 +55,6 @@ class OrdersTab extends GetView<OrdersController> {
                 message: l10n.ordersEmptyMessage,
                 actionLabel: l10n.ordersExplore,
                 onAction: () => shell.select(CustomerTab.home),
-                secondaryLabel: l10n.commonRefresh,
-                onSecondary: controller.load,
               );
             }
             return RefreshIndicator(

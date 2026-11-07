@@ -25,6 +25,7 @@ import '../../widgets/orders/route_card.dart';
 import '../../widgets/orders/section_card.dart';
 import '../../widgets/orders/service_quote_card.dart';
 import '../../widgets/orders/status_chip.dart';
+import '../../widgets/orders/status_hint.dart';
 import '../../widgets/orders/status_progress.dart';
 import '../../widgets/orders/timeline_list.dart';
 import '../../widgets/orders/transfer_receipt_card.dart';
@@ -111,6 +112,8 @@ class OrderDetailsScreen extends GetView<OrderDetailsController> {
                   step: controller.progress.$2 + 1,
                   total: controller.progress.$1,
                 ),
+              const SizedBox(height: AppSpacing.sm),
+              StatusHint(statusKey: order.status.key),
               const SizedBox(height: AppSpacing.md),
               if (controller.openQuote case final quote?) ...[
                 ServiceQuoteCard(quote: quote, controller: controller),
@@ -226,7 +229,9 @@ class OrderDetailsScreen extends GetView<OrderDetailsController> {
                   ),
                   if (order.scheduledFor != null)
                     LabelValueRow(
-                      label: l10n.deliveryTime,
+                      label: OrderStatusKeys.isService(order.status.key)
+                          ? l10n.serviceQuoteVisit
+                          : l10n.deliveryTime,
                       value: DateFormatter.dayMonthTime(
                         order.scheduledFor!,
                         locale,

@@ -30,6 +30,16 @@ class ApiFailure implements Exception {
   final int? statusCode;
   final Map<String, dynamic>? details;
 
+  /// Why a 409 `conflict` happened (offer_changed, offer_expired,
+  /// quote_changed, ...). The server sends it in `details.reason`.
+  String? get reason {
+    final value = details?['reason'];
+    return value is String && value.isNotEmpty ? value : null;
+  }
+
+  /// True when [value] is the error code or the conflict reason.
+  bool hasReason(String value) => code == value || reason == value;
+
   bool get isValidation => code == ApiErrorCodes.validationFailed;
   bool get isConnectivity => ApiErrorCodes.isConnectivity(code);
   bool get isUnavailable => ApiErrorCodes.isUnavailable(code);

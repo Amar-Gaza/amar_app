@@ -112,7 +112,10 @@ class _OfferScreenState extends State<OfferScreen> {
             const SizedBox(height: AppSpacing.md),
             SectionCard(
               title: l10n.reviewProducts,
-              trailing: CodeChip(label: offer.status, tone: StateTone.info),
+              trailing: CodeChip(
+                label: _offerLabel(l10n, offer.status),
+                tone: StateTone.info,
+              ),
               children: [
                 for (final item in offer.items)
                   Padding(
@@ -238,3 +241,12 @@ class _OfferScreenState extends State<OfferScreen> {
     });
   }
 }
+
+/// Customer-facing name of an offer status; unknown keys show as sent.
+String _offerLabel(AppLocalizations l10n, String status) => switch (status) {
+      OfferStatus.sent => l10n.offerLabelSent,
+      OfferStatus.accepted => l10n.offerLabelAccepted,
+      OfferStatus.rejected => l10n.offerLabelRejected,
+      OfferStatus.expired => l10n.offerLabelExpired,
+      _ => status,
+    };

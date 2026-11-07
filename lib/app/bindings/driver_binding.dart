@@ -10,6 +10,7 @@ import '../../controllers/driver/driver_session_controller.dart';
 import '../../controllers/driver/driver_wallet_controller.dart';
 import '../../core/localization/locale_controller.dart';
 import '../../core/storage/secure_token_storage.dart';
+import '../../data/models/masar/masar_models.dart';
 import '../../data/services/driver/driver_location_service.dart';
 import '../../data/services/driver/driver_order_service.dart';
 import '../../data/services/driver/driver_profile_service.dart';
@@ -54,15 +55,21 @@ class DriverShellBinding extends Bindings {
 
 class DriverOrderBinding extends Bindings {
   @override
-  void dependencies() => Get.lazyPut<DriverOrderController>(
-        () => DriverOrderController(
-          Get.find<DriverOrderService>(),
-          Get.find<UploadService>(),
-          Get.find<DriverLocationController>(),
-          Get.find<DriverSessionController>(),
-          Get.arguments as int,
-        ),
-      );
+  void dependencies() {
+    // An available offer comes as the list item (its details return 404
+    // until accepted); an own order comes as its id.
+    final arg = Get.arguments;
+    Get.lazyPut<DriverOrderController>(
+      () => DriverOrderController(
+        Get.find<DriverOrderService>(),
+        Get.find<UploadService>(),
+        Get.find<DriverLocationController>(),
+        Get.find<DriverSessionController>(),
+        arg is DriverOrder ? arg.id : arg as int,
+        initial: arg is DriverOrder ? arg : null,
+      ),
+    );
+  }
 }
 
 class DriverProfileBinding extends Bindings {

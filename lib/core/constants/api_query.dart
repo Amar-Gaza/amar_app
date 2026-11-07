@@ -35,6 +35,9 @@ abstract final class OrderActions {
 /// Offer.status values.
 abstract final class OfferStatus {
   static const String sent = 'sent';
+  static const String accepted = 'accepted';
+  static const String rejected = 'rejected';
+  static const String expired = 'expired';
 }
 
 /// Driver NextAction.action values.
@@ -88,6 +91,9 @@ abstract final class ApiModules {
 /// Payment method keys from AppConfig.payment_methods.
 abstract final class PaymentMethods {
   static const String cashOnDelivery = 'cash_on_delivery';
+
+  /// What quotes and orders echo back for [cashOnDelivery].
+  static const String cash = 'cash';
   static const String bankTransfer = 'bank_transfer';
 }
 
@@ -154,6 +160,8 @@ abstract final class ApiErrorCodes {
   static const String quoteExpired = 'quote_expired';
   static const String quoteUsed = 'quote_used';
   static const String quoteChanged = 'quote_changed';
+  static const String offerChanged = 'offer_changed';
+  static const String offerExpired = 'offer_expired';
   static const String outOfZone = 'out_of_zone';
   static const String alreadyTaken = 'already_taken';
   static const String invalidTransition = 'invalid_transition';

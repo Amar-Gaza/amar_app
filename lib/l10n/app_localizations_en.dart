@@ -617,7 +617,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String orderItemsCount(int count) {
-    return '$count items';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+      zero: 'No items',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -807,8 +814,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get productCategory => 'Category';
 
   @override
-  String get productIndicativePrice =>
-      'Indicative price, confirmed by the server';
+  String get productIndicativePrice => 'Price';
 
   @override
   String get productPriceAfterInspection => 'Final price after inspection';
@@ -864,7 +870,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quantityLabel => 'Quantity';
 
   @override
-  String get quantityServerPriced => 'Repriced by the server';
+  String get quantityServerPriced => 'Delivery is calculated from your address';
 
   @override
   String quantityStock(int count) {
@@ -876,7 +882,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quantityPriceNote =>
-      'Prices are indicative; the server calculates the final price at quote time.';
+      'The product price is fixed; delivery shows in the cost summary.';
 
   @override
   String get commonContinue => 'Continue';
@@ -888,7 +894,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkoutStepDelivery => 'Delivery';
 
   @override
-  String get checkoutStepQuote => 'Quote';
+  String get checkoutStepQuote => 'Cost';
 
   @override
   String get checkoutStepConfirm => 'Confirm';
@@ -911,7 +917,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String cartLinesCount(int count) {
-    return '$count items in the cart';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items in the cart',
+      one: '1 item in the cart',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -924,7 +936,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cartNoOptions => 'No options';
 
   @override
-  String get cartPriceByServer => 'Price confirmed by the quote';
+  String get cartPriceByServer => 'Delivery is added in the cost summary';
 
   @override
   String cartQty(int qty) {
@@ -933,7 +945,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartTotalNote =>
-      'No confirmed total before the quote. The server prices every line and option.';
+      'The total shows in the cost summary after you pick the address and payment.';
 
   @override
   String get cartTotalLabel => 'Total';
@@ -957,7 +969,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deliveryTime => 'Delivery time';
 
   @override
-  String get deliveryRequestQuote => 'Get a quote';
+  String get deliveryRequestQuote => 'See the cost';
 
   @override
   String get scheduleNow => 'Now';
@@ -1049,7 +1061,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addressZoneNote =>
-      'Addresses outside the service area are rejected by the server.';
+      'Addresses outside the service area cannot be saved.';
 
   @override
   String get addressSave => 'Save address';
@@ -1097,7 +1109,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couponCheckNote =>
-      'Checking only confirms the code; the final discount shows in the quote.';
+      'Checking only confirms the code; the final discount shows in the cost summary.';
 
   @override
   String get couponInvalidTitle => 'Invalid coupon';
@@ -1107,7 +1119,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couponValidMessage =>
-      'The code is sent with the quote so the server applies the final discount.';
+      'The code will be applied; the final discount shows in the cost summary.';
 
   @override
   String get couponValue => 'Value';
@@ -1133,18 +1145,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get quoteTitle => 'Quote';
+  String get quoteTitle => 'Cost summary';
 
   @override
   String quoteValidFor(String time) {
-    return 'Quote valid for $time';
+    return 'Estimated cost valid for $time';
   }
 
   @override
-  String get quoteValidHint => 'After it expires you need a new quote.';
+  String get quoteValidHint =>
+      'This is the final amount; after you send it the store starts preparing your order.';
 
   @override
-  String get quoteDetailsTitle => 'Price details';
+  String get quoteServiceHint =>
+      'The store may set the final price after inspection; any change needs your approval first.';
+
+  @override
+  String get quoteDetailsTitle => 'Cost details';
 
   @override
   String get quoteItemsTotal => 'Items total';
@@ -1165,17 +1182,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get quoteReview => 'Review order';
 
   @override
-  String get quoteExpiredTitle => 'The quote has expired';
+  String get quoteExpiredTitle => 'The estimated cost has expired';
 
   @override
-  String get quoteUsedTitle => 'The quote was already used';
+  String get quoteUsedTitle => 'This summary was already used';
 
   @override
   String get quoteExpiredMessage =>
       'Prices change; request a new quote to continue.';
 
   @override
-  String get quoteRefresh => 'Get a new quote';
+  String get quoteRefresh => 'Recalculate cost';
 
   @override
   String get quoteBackToCart => 'Go back';
@@ -1191,7 +1208,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String reviewConfirm(String total) {
-    return 'Confirm order · $total';
+    return 'Send order · $total';
   }
 
   @override
@@ -1914,6 +1931,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'The store sent a new price. Review it and accept again.';
 
   @override
+  String get failureOfferChanged =>
+      'The offer price changed. Review the new price and approve again.';
+
+  @override
+  String get failureOfferExpired =>
+      'This offer has expired. Wait for a new offer from the store.';
+
+  @override
   String get failureNoQuoteYet => 'The store has not set the price yet.';
 
   @override
@@ -2122,4 +2147,79 @@ class AppLocalizationsEn extends AppLocalizations {
   String driverContactSubtitle(String role, String order) {
     return '$role · $order';
   }
+
+  @override
+  String get orderHintAwaitingPricing =>
+      'The store is reviewing your order to set the final price; you will approve it.';
+
+  @override
+  String get orderHintPriced =>
+      'The final price is ready. Review and approve it to continue.';
+
+  @override
+  String get orderHintAwaitingPayment =>
+      'Transfer the amount and upload the receipt to continue.';
+
+  @override
+  String get orderHintPaymentReview =>
+      'We are checking your receipt; then your order goes to the store.';
+
+  @override
+  String get orderHintAwaitingVendor =>
+      'Your order reached the store and is waiting for it to accept and start preparing.';
+
+  @override
+  String get orderHintPreparing => 'The store is preparing your order.';
+
+  @override
+  String get orderHintPending =>
+      'Your order is ready; we are finding a driver.';
+
+  @override
+  String get orderHintAccepted =>
+      'A driver accepted your order and is heading to the store.';
+
+  @override
+  String get orderHintPickedUp => 'The driver picked up your order.';
+
+  @override
+  String get orderHintOnTheWay => 'The driver is on the way to you.';
+
+  @override
+  String get orderHintArrived =>
+      'The driver has arrived. Have your delivery code ready.';
+
+  @override
+  String get orderHintServiceRequested =>
+      'Your request reached the store; it will confirm the visit time.';
+
+  @override
+  String get orderHintServiceInspection =>
+      'The store will send the price and visit time for your approval.';
+
+  @override
+  String get orderHintServiceQuoted =>
+      'The price and visit time are ready. Approve or reject them.';
+
+  @override
+  String get orderHintServiceScheduled => 'The visit time is confirmed.';
+
+  @override
+  String get orderHintTechnicianOnWay => 'The technician is on the way.';
+
+  @override
+  String get orderHintServiceInProgress =>
+      'The technician is working on your request.';
+
+  @override
+  String get offerLabelSent => 'Awaiting your approval';
+
+  @override
+  String get offerLabelAccepted => 'Approved';
+
+  @override
+  String get offerLabelRejected => 'Rejected';
+
+  @override
+  String get offerLabelExpired => 'Expired';
 }

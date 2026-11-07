@@ -111,5 +111,7 @@ abstract final class PriceLineKeys {
     'discount',
     'coupon',
     'total',
+    // Delivery fee clamped to its min/max; already inside delivery_fee.
+    'min_max',
   };
 }
