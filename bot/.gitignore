@@ -1,0 +1,5 @@
+.dart_tool/
+build/
+data/
+env/*.json
+!env/*.example.json
