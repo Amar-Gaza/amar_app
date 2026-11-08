@@ -122,7 +122,14 @@ class AmarBot {
     if (s.step == Step.details && text != null) {
       return _onDetails(chatId, s, text == T.skip ? null : text);
     }
-    if (s.step == Step.location) return _tg.send(chatId, T.askLocation);
+    if (s.step == Step.location) {
+      final point = text == null ? null : parseCoordinates(text);
+      if (point != null) {
+        return _onLocation(
+            chatId, s, {'latitude': point.$1, 'longitude': point.$2});
+      }
+      return _tg.send(chatId, T.askLocation);
+    }
     return _tg.send(chatId, T.unknown, markup: _menu);
   }
 
@@ -547,4 +554,16 @@ String normalizePhone(String raw) {
   if (digits.startsWith('00')) return '+${digits.substring(2)}';
   if (digits.startsWith('0')) return '+970${digits.substring(1)}';
   return '+$digits';
+}
+
+/// Reads "lat, lng" from typed text or a maps link (Telegram Desktop and
+/// Web cannot share a location). Returns null when nothing valid is found.
+(double, double)? parseCoordinates(String text) {
+  final match =
+      RegExp(r'(-?\d{1,2}\.\d+)\s*,\s*(-?\d{1,3}\.\d+)').firstMatch(text);
+  if (match == null) return null;
+  final lat = double.parse(match.group(1)!);
+  final lng = double.parse(match.group(2)!);
+  if (lat.abs() > 90 || lng.abs() > 180) return null;
+  return (lat, lng);
 }

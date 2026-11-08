@@ -42,7 +42,9 @@ abstract final class T {
 
   static const pickAddress =
       'وين نوصلك؟ اختار عنوان محفوظ أو ابعت موقعك من زر «إرسال موقعي».';
-  static const askLocation = 'ابعت موقعك من زر «إرسال موقعي» تحت 👇';
+  static const askLocation = 'ابعت موقعك من زر «إرسال موقعي» تحت 👇\n'
+      'من الكمبيوتر الزر ما بيشتغل: ابعت رابط خرائط جوجل أو الإحداثيات '
+      'مثل: 31.5017, 34.4668';
   static const askDetails =
       'اكتب وصف للعنوان (الحي، أقرب معلم، رقم العمارة)، أو اضغط تخطي.';
   static const skip = 'تخطي';
