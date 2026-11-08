@@ -1,6 +1,11 @@
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
+import '../../core/network/ai_gateway_client.dart';
+import '../../data/services/shared/ai_speech_service.dart';
+
+import '../../controllers/customer/ai_task_controller.dart';
 import '../../controllers/customer/cart_controller.dart';
 import '../../controllers/driver/driver_session_controller.dart';
 import '../../controllers/shared/app_config_controller.dart';
@@ -45,6 +50,10 @@ class InitialBinding extends Bindings {
 
     final auth = AuthService(client);
     final profile = ProfileService(client);
+
+    Get.put<AiGatewayClient>(AiGatewayClient(tokens), permanent: true);
+    Get.put<AiSpeechService>(AiSpeechService(), permanent: true);
+    Get.put<AiTaskController>(AiTaskController(), permanent: true);
 
     Get.put<AppPreferences>(
       _prefs,

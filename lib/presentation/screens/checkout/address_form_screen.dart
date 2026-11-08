@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -23,8 +22,7 @@ import '../../widgets/common/info_banner.dart';
 import '../../widgets/common/primary_button.dart';
 import '../../widgets/common/state_tone.dart';
 
-class AddressFormScreen
-    extends GetView<AddressFormController> {
+class AddressFormScreen extends GetView<AddressFormController> {
   const AddressFormScreen({super.key});
 
   static const double _mapHeight = 220;
@@ -37,9 +35,9 @@ class AddressFormScreen
       AppRoutes.mapPicker,
       arguments: hasPosition
           ? PickedLocation(
-        lat: controller.lat.value!,
-        lng: controller.lng.value!,
-      )
+              lat: controller.lat.value!,
+              lng: controller.lng.value!,
+            )
           : null,
     );
 
@@ -55,17 +53,14 @@ class AddressFormScreen
 
     return Scaffold(
       appBar: AppTopBar(
-        title: controller.isEditing
-            ? l10n.addressEditTitle
-            : l10n.addressNewTitle,
+        title:
+            controller.isEditing ? l10n.addressEditTitle : l10n.addressNewTitle,
       ),
       body: ListView(
-        padding:
-        const EdgeInsets.all(AppSpacing.lg),
+        padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
           Obx(() {
-            final issue =
-                controller.locationIssue.value;
+            final issue = controller.locationIssue.value;
 
             return Container(
               height: _mapHeight,
@@ -74,89 +69,63 @@ class AddressFormScreen
                 borderRadius: AppRadius.lgAll,
               ),
               child: Column(
-                mainAxisAlignment:
-                MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircleAvatar(
-                    radius:
-                    AppSizes.iconTileSm / 2,
+                    radius: AppSizes.iconTileSm / 2,
                     backgroundColor: colors.brand,
                     child: controller.isLocating.value
                         ? SizedBox.square(
-                      dimension:
-                      AppSizes.iconSm,
-                      child:
-                      CircularProgressIndicator(
-                        strokeWidth:
-                        AppSizes.loaderStroke,
-                        color: colors.onBrand,
-                      ),
-                    )
+                            dimension: AppSizes.iconSm,
+                            child: CircularProgressIndicator(
+                              strokeWidth: AppSizes.loaderStroke,
+                              color: colors.onBrand,
+                            ),
+                          )
                         : Icon(
-                      LucideIcons.mapPin,
-                      color: colors.onBrand,
-                    ),
+                            LucideIcons.mapPin,
+                            color: colors.onBrand,
+                          ),
                   ),
-
                   const SizedBox(
                     height: AppSpacing.sm,
                   ),
-
                   Text(
-                    controller
-                        .addressUnavailable.value
-                        ? l10n
-                        .locationAddressUnavailable
+                    controller.addressUnavailable.value
+                        ? l10n.locationAddressUnavailable
                         : controller.hasPosition
-                        ? l10n.addressLocated
-                        : issue != null
-                        ? LocationIssueText
-                        .of(l10n, issue)
-                        : l10n
-                        .addressLocating,
+                            ? l10n.addressLocated
+                            : issue != null
+                                ? LocationIssueText.of(l10n, issue)
+                                : l10n.addressLocating,
                     textAlign: TextAlign.center,
                     style: context.text.titleSmall,
                   ),
-
                   if (controller.hasPosition)
                     Text(
                       '${controller.lat.value!.toStringAsFixed(_coordDigits)}, '
-                          '${controller.lng.value!.toStringAsFixed(_coordDigits)}',
-                      textDirection:
-                      TextDirection.ltr,
-                      style: context.text.labelSmall
-                          ?.copyWith(
+                      '${controller.lng.value!.toStringAsFixed(_coordDigits)}',
+                      textDirection: TextDirection.ltr,
+                      style: context.text.labelSmall?.copyWith(
                         color: colors.mutedText,
                       ),
                     ),
-
                   TextButton.icon(
-                    onPressed: issue ==
-                        LocationIssue.deniedForever
+                    onPressed: issue == LocationIssue.deniedForever
                         ? controller.openSettings
-                        : issue ==
-                        LocationIssue
-                            .serviceDisabled
-                        ? controller
-                        .openLocationSettings
-                        : controller.locate,
+                        : issue == LocationIssue.serviceDisabled
+                            ? controller.openLocationSettings
+                            : controller.locate,
                     icon: const Icon(
                       LucideIcons.locateFixed,
                     ),
                     label: Text(
-                      issue ==
-                          LocationIssue
-                              .deniedForever ||
-                          issue ==
-                              LocationIssue
-                                  .serviceDisabled
-                          ? l10n
-                          .locationOpenSettings
-                          : l10n
-                          .addressUseMyLocation,
+                      issue == LocationIssue.deniedForever ||
+                              issue == LocationIssue.serviceDisabled
+                          ? l10n.locationOpenSettings
+                          : l10n.addressUseMyLocation,
                     ),
                   ),
-
                   if (AppEnv.hasMaps)
                     TextButton.icon(
                       onPressed: _pickOnMap,
@@ -171,65 +140,52 @@ class AddressFormScreen
               ),
             );
           }),
-
           Obx(
-                () => controller.positionMissing.value
+            () => controller.positionMissing.value
                 ? Padding(
-              padding:
-              const EdgeInsets.only(
-                top: AppSpacing.sm,
-              ),
-              child: InfoBanner(
-                icon: LucideIcons.mapPin,
-                tone: StateTone.warning,
-                title:
-                l10n.addressPickOnMap,
-              ),
-            )
+                    padding: const EdgeInsets.only(
+                      top: AppSpacing.sm,
+                    ),
+                    child: InfoBanner(
+                      icon: LucideIcons.mapPin,
+                      tone: StateTone.warning,
+                      title: l10n.addressPickOnMap,
+                    ),
+                  )
                 : const SizedBox.shrink(),
           ),
-
           const SizedBox(
             height: AppSpacing.lg,
           ),
-
           Obx(
-                () => AppTextField(
+            () => AppTextField(
               controller: controller.label,
               label: l10n.addressLabel,
               hint: l10n.addressLabelHint,
-              maxLength:
-              AppDefaults.addressLabelMax,
-              errorText:
-              controller.labelMissing.value
+              maxLength: AppDefaults.addressLabelMax,
+              errorText: controller.labelMissing.value
                   ? l10n.addressLabelRequired
                   : null,
             ),
           ),
-
           const SizedBox(
             height: AppSpacing.sm,
           ),
-
           AppTextField(
             controller: controller.details,
             label: l10n.addressDetails,
             hint: l10n.addressDetailsHint,
-            maxLength:
-            AppDefaults.addressDetailsMax,
+            maxLength: AppDefaults.addressDetailsMax,
           ),
-
           const SizedBox(
             height: AppSpacing.sm,
           ),
-
           Obx(
-                () => SwitchListTile(
+            () => SwitchListTile(
               contentPadding: EdgeInsets.zero,
               value: controller.isDefault.value,
               onChanged: (value) {
-                controller.isDefault.value =
-                    value;
+                controller.isDefault.value = value;
               },
               title: Text(
                 l10n.addressMakeDefault,
@@ -237,20 +193,16 @@ class AddressFormScreen
               ),
             ),
           ),
-
           const SizedBox(
             height: AppSpacing.sm,
           ),
-
           InfoBanner(
             icon: LucideIcons.mapPin,
             tone: StateTone.warning,
             title: l10n.addressZoneNote,
           ),
-
           Obx(() {
-            final failure =
-                controller.failure.value;
+            final failure = controller.failure.value;
 
             if (failure == null) {
               return const SizedBox.shrink();
@@ -267,16 +219,13 @@ class AddressFormScreen
           }),
         ],
       ),
-
       bottomNavigationBar: BottomActionBar(
         child: Obx(
-              () => PrimaryButton(
+          () => PrimaryButton(
             label: l10n.addressSave,
-            isLoading:
-            controller.isSaving.value,
+            isLoading: controller.isSaving.value,
             onPressed: () async {
-              final created =
-              await controller.save();
+              final created = await controller.save();
 
               if (created != null) {
                 Get.back(result: created);

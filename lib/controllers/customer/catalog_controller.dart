@@ -16,11 +16,11 @@ import '../../data/services/shared/device_location_service.dart';
 /// Home data: unified categories, products and the two provider sections.
 class CatalogController extends GetxController {
   CatalogController(
-      this._service,
-      this._orders,
-      this._addresses,
-      this._location,
-      );
+    this._service,
+    this._orders,
+    this._addresses,
+    this._location,
+  );
 
   final CatalogService _service;
   final OrderService _orders;
@@ -38,9 +38,9 @@ class CatalogController extends GetxController {
 
   bool get isEmpty =>
       categories.isEmpty &&
-          products.isEmpty &&
-          stores.isEmpty &&
-          companies.isEmpty;
+      products.isEmpty &&
+      stores.isEmpty &&
+      companies.isEmpty;
 
   List<ProviderEntry> providers(String kind) =>
       kind == ProductKinds.service ? companies : stores;
@@ -58,8 +58,7 @@ class CatalogController extends GetxController {
       final saved = await _addresses.list();
 
       address.value =
-          saved.firstWhereOrNull((a) => a.isDefault) ??
-              saved.firstOrNull;
+          saved.firstWhereOrNull((a) => a.isDefault) ?? saved.firstOrNull;
     } on ApiFailure {
       // The line keeps its prompt; nothing else depends on it.
     }
@@ -77,19 +76,19 @@ class CatalogController extends GetxController {
       final results = await Future.wait<List<Object>>([
         _service.categories(),
         _optional(
-              () async =>
-          (await _service.vendors(
+          () async => (await _service.vendors(
             perPage: AppDefaults.catalogPageMax,
-          )).items,
+          ))
+              .items,
         ),
         _optional(() => _items(ProductKinds.product)),
         _optional(() => _items(ProductKinds.service)),
         _optional(
-              () async =>
-          (await _orders.list(
+          () async => (await _orders.list(
             scope: OrderScope.active,
             perPage: AppDefaults.activeOrderPreview,
-          )).items,
+          ))
+              .items,
         ),
       ]);
 
@@ -113,8 +112,7 @@ class CatalogController extends GetxController {
         ProviderEntry.build(vendors, serviceItems),
       );
 
-      activeOrder.value =
-          results[4].cast<OrderSummary>().firstOrNull;
+      activeOrder.value = results[4].cast<OrderSummary>().firstOrNull;
     } on ApiFailure catch (e) {
       failure.value = e;
     } finally {
@@ -122,17 +120,17 @@ class CatalogController extends GetxController {
     }
   }
 
-  Future<List<Product>> _items(String kind) async =>
-      (await _service.products(
+  Future<List<Product>> _items(String kind) async => (await _service.products(
         kind: kind,
         perPage: AppDefaults.catalogPageMax,
-      )).items;
+      ))
+          .items;
 
   /// Everything but categories is secondary on home: a module the project has
   /// disabled hides its section instead of failing the whole screen.
   Future<List<T>> _optional<T>(
-      Future<List<T>> Function() request,
-      ) async {
+    Future<List<T>> Function() request,
+  ) async {
     try {
       return await request();
     } on ApiFailure catch (e) {

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:get/get.dart';
@@ -9,10 +8,10 @@ import '../../data/services/shared/device_location_service.dart';
 
 class MapPickerController extends GetxController {
   MapPickerController(
-      this._location,
-      this.initial, {
-        this.autoLocate = true,
-      });
+    this._location,
+    this.initial, {
+    this.autoLocate = true,
+  });
 
   final DeviceLocationService _location;
   final PickedLocation? initial;
@@ -20,36 +19,31 @@ class MapPickerController extends GetxController {
 
   static bool _isInGaza(PickedLocation? point) =>
       point != null &&
-          point.lat >= 31.20 &&
-          point.lat <= 31.63 &&
-          point.lng >= 34.15 &&
-          point.lng <= 34.62;
+      point.lat >= 31.20 &&
+      point.lat <= 31.63 &&
+      point.lng >= 34.15 &&
+      point.lng <= 34.62;
 
   late final PickedLocation _start = initial ??
       (_isInGaza(_location.currentPoint.value)
           ? _location.currentPoint.value!
           : const PickedLocation(
-        lat: AppDefaults.mapDefaultLat,
-        lng: AppDefaults.mapDefaultLng,
-      ));
+              lat: AppDefaults.mapDefaultLat,
+              lng: AppDefaults.mapDefaultLng,
+            ));
 
   late final Rx<PickedLocation> _point = _start.obs;
 
   late final RxBool hasSelection =
-      (initial != null ||
-          _isInGaza(_location.currentPoint.value))
-          .obs;
+      (initial != null || _isInGaza(_location.currentPoint.value)).obs;
 
   PickedLocation get point => _point.value;
 
-  bool get canConfirm =>
-      hasSelection.value && !isDragging.value;
+  bool get canConfirm => hasSelection.value && !isDragging.value;
 
-  final Rxn<PickedLocation> located =
-  Rxn<PickedLocation>();
+  final Rxn<PickedLocation> located = Rxn<PickedLocation>();
 
-  final Rxn<ResolvedLocation> address =
-  Rxn<ResolvedLocation>();
+  final Rxn<ResolvedLocation> address = Rxn<ResolvedLocation>();
 
   final Rxn<LocationIssue> issue = Rxn<LocationIssue>();
 
@@ -92,8 +86,8 @@ class MapPickerController extends GetxController {
   }
 
   Future<void> _resolveAddress(
-      PickedLocation selected,
-      ) async {
+    PickedLocation selected,
+  ) async {
     final request = ++_addressVersion;
 
     isResolving.value = true;
@@ -101,8 +95,7 @@ class MapPickerController extends GetxController {
     address.value = null;
 
     try {
-      final result =
-      await _location.resolveAddress(selected);
+      final result = await _location.resolveAddress(selected);
 
       if (request == _addressVersion) {
         address.value = result;
@@ -152,11 +145,9 @@ class MapPickerController extends GetxController {
     }
   }
 
-  Future<bool> openSettings() =>
-      _location.openSettings();
+  Future<bool> openSettings() => _location.openSettings();
 
-  Future<bool> openLocationSettings() =>
-      _location.openLocationSettings();
+  Future<bool> openLocationSettings() => _location.openLocationSettings();
 
   @override
   void onClose() {

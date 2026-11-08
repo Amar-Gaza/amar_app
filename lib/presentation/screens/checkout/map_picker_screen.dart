@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
@@ -23,16 +22,13 @@ class MapPickerScreen extends StatefulWidget {
   const MapPickerScreen({super.key});
 
   @override
-  State<MapPickerScreen> createState() =>
-      _MapPickerScreenState();
+  State<MapPickerScreen> createState() => _MapPickerScreenState();
 }
 
 class _MapPickerScreenState extends State<MapPickerScreen> {
-  final MapPickerController _picker =
-  Get.find<MapPickerController>();
+  final MapPickerController _picker = Get.find<MapPickerController>();
 
-  final TextEditingController _search =
-  TextEditingController();
+  final TextEditingController _search = TextEditingController();
 
   GoogleMapController? _map;
   late final Worker _gpsWorker;
@@ -49,7 +45,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
     _gpsWorker = ever<PickedLocation?>(
       _picker.located,
-          (point) {
+      (point) {
         if (point != null) {
           _moveTo(point);
         }
@@ -143,8 +139,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
       if (found == null) {
         if (mounted) {
           setState(() {
-            _searchError =
-            'لم نعثر على الموقع داخل قطاع غزة. '
+            _searchError = 'لم نعثر على الموقع داخل قطاع غزة. '
                 'جرّب اسم شارع أو حي آخر.';
           });
         }
@@ -241,45 +236,36 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                 children: [
                   Material(
                     elevation: 3,
-                    borderRadius:
-                    BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(14),
                     child: TextField(
                       controller: _search,
-                      textInputAction:
-                      TextInputAction.search,
-                      onSubmitted: (_) =>
-                          _searchPlace(),
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (_) => _searchPlace(),
                       decoration: InputDecoration(
-                        hintText:
-                        'ابحث عن شارع أو منطقة في قطاع غزة',
+                        hintText: 'ابحث عن شارع أو منطقة في قطاع غزة',
                         prefixIcon: const Icon(
                           LucideIcons.search,
                         ),
                         suffixIcon: IconButton(
-                          onPressed: _searching
-                              ? null
-                              : _searchPlace,
+                          onPressed: _searching ? null : _searchPlace,
                           icon: _searching
                               ? const SizedBox.square(
-                            dimension: 20,
-                            child:
-                            CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          )
+                                  dimension: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
                               : const Icon(
-                            LucideIcons.arrowLeft,
-                          ),
+                                  LucideIcons.arrowLeft,
+                                ),
                         ),
                         border: InputBorder.none,
-                        contentPadding:
-                        const EdgeInsets.symmetric(
+                        contentPadding: const EdgeInsets.symmetric(
                           vertical: 14,
                         ),
                       ),
                     ),
                   ),
-
                   if (_searchError != null)
                     Padding(
                       padding: const EdgeInsets.only(
@@ -287,11 +273,9 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                       ),
                       child: Material(
                         color: Colors.white,
-                        borderRadius:
-                        BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10),
                         child: Padding(
-                          padding:
-                          const EdgeInsets.all(
+                          padding: const EdgeInsets.all(
                             AppSpacing.sm,
                           ),
                           child: Text(
@@ -313,21 +297,16 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
             bottom: AppSpacing.lg,
             end: AppSpacing.lg,
             child: Obx(
-                  () => SquareIconButton(
+              () => SquareIconButton(
                 icon: LucideIcons.locateFixed,
                 tooltip: l10n.addressUseMyLocation,
-                onPressed:
-                _picker.isLocating.value
+                onPressed: _picker.isLocating.value
                     ? null
-                    : _picker.issue.value ==
-                    LocationIssue.deniedForever
-                    ? _picker.openSettings
-                    : _picker.issue.value ==
-                    LocationIssue
-                        .serviceDisabled
-                    ? _picker
-                    .openLocationSettings
-                    : _picker.locate,
+                    : _picker.issue.value == LocationIssue.deniedForever
+                        ? _picker.openSettings
+                        : _picker.issue.value == LocationIssue.serviceDisabled
+                            ? _picker.openLocationSettings
+                            : _picker.locate,
               ),
             ),
           ),
@@ -338,15 +317,14 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
             start: AppSpacing.lg,
             child: Material(
               elevation: 2,
-              borderRadius:
-              BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10),
               child: Padding(
                 padding: const EdgeInsets.all(
                   AppSpacing.sm,
                 ),
                 child: Text(
                   '${_selected.lat.toStringAsFixed(6)}, '
-                      '${_selected.lng.toStringAsFixed(6)}',
+                  '${_selected.lng.toStringAsFixed(6)}',
                   textDirection: TextDirection.ltr,
                 ),
               ),

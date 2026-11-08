@@ -8,4 +8,5 @@ abstract final class StorageKeys {
   static const String activeCustomerId = 'active_customer_id';
   static const String customerCart = 'customer_cart_v1';
   static const String customerLocation = 'customer_location_v1';
+  static const String customerAiChat = 'customer_ai_chat_v1';
 }

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -29,23 +28,17 @@ class AddressPickerScreen extends StatefulWidget {
   const AddressPickerScreen({super.key});
 
   @override
-  State<AddressPickerScreen> createState() =>
-      _AddressPickerScreenState();
+  State<AddressPickerScreen> createState() => _AddressPickerScreenState();
 }
 
-class _AddressPickerScreenState
-    extends State<AddressPickerScreen> {
-  final CheckoutController _checkout =
-  Get.find<CheckoutController>();
+class _AddressPickerScreenState extends State<AddressPickerScreen> {
+  final CheckoutController _checkout = Get.find<CheckoutController>();
 
-  final DeviceLocationService _location =
-  Get.find<DeviceLocationService>();
+  final DeviceLocationService _location = Get.find<DeviceLocationService>();
 
-  final TextEditingController _search =
-  TextEditingController();
+  final TextEditingController _search = TextEditingController();
 
-  late final String _tag =
-      'delivery-point-${identityHashCode(this)}';
+  late final String _tag = 'delivery-point-${identityHashCode(this)}';
 
   late final MapPickerController _picker;
   late final Worker _follow;
@@ -72,9 +65,9 @@ class _AddressPickerScreenState
 
     final PickedLocation? initial = saved != null
         ? PickedLocation(
-      lat: saved.lat,
-      lng: saved.lng,
-    )
+            lat: saved.lat,
+            lng: saved.lng,
+          )
         : (withinGaza ? devicePoint : null);
 
     _picker = Get.put<MapPickerController>(
@@ -92,7 +85,7 @@ class _AddressPickerScreenState
 
     _follow = ever<PickedLocation?>(
       _picker.located,
-          (point) {
+      (point) {
         if (point != null) {
           unawaited(_moveTo(point));
         }
@@ -185,8 +178,7 @@ class _AddressPickerScreenState
 
       if (match == null) {
         setState(() {
-          _searchError =
-          'لم نجد هذا الموقع داخل قطاع غزة. '
+          _searchError = 'لم نجد هذا الموقع داخل قطاع غزة. '
               'جرّب اسم حي أو شارع آخر.';
         });
         return;
@@ -216,8 +208,7 @@ class _AddressPickerScreenState
   }
 
   Future<void> _addAddress() async {
-    if (_addingAddress ||
-        _checkout.isSavingDeliveryLocation.value) {
+    if (_addingAddress || _checkout.isSavingDeliveryLocation.value) {
       return;
     }
 
@@ -256,8 +247,7 @@ class _AddressPickerScreenState
   }
 
   Future<void> _confirm() async {
-    if (_addingAddress ||
-        _checkout.isSavingDeliveryLocation.value) {
+    if (_addingAddress || _checkout.isSavingDeliveryLocation.value) {
       return;
     }
 
@@ -270,19 +260,15 @@ class _AddressPickerScreenState
     final resolved = _picker.address.value;
     final current = _checkout.address.value;
 
-    Address? saved = current != null &&
-        current.lat == point.lat &&
-        current.lng == point.lng
-        ? current
-        : _checkout.addresses.firstWhereOrNull(
-          (item) =>
-      item.lat == point.lat &&
-          item.lng == point.lng,
-    );
+    Address? saved =
+        current != null && current.lat == point.lat && current.lng == point.lng
+            ? current
+            : _checkout.addresses.firstWhereOrNull(
+                (item) => item.lat == point.lat && item.lng == point.lng,
+              );
 
     if (saved == null) {
-      final resolvedLabel =
-          resolved?.label.trim() ?? '';
+      final resolvedLabel = resolved?.label.trim() ?? '';
 
       final label = resolvedLabel.isEmpty
           ? AppLocalizations.of(context).deliveryAddress
@@ -348,9 +334,8 @@ class _AddressPickerScreenState
                   // Full-width interactive map.
                   Positioned.fill(
                     child: Obx(
-                          () => AbsorbPointer(
-                        absorbing: _checkout
-                            .isSavingDeliveryLocation.value,
+                      () => AbsorbPointer(
+                        absorbing: _checkout.isSavingDeliveryLocation.value,
                         child: GoogleMap(
                           initialCameraPosition: CameraPosition(
                             target: LatLng(
@@ -362,15 +347,13 @@ class _AddressPickerScreenState
                           onMapCreated: (map) {
                             _map = map;
 
-                            final gpsPoint =
-                                _picker.located.value;
+                            final gpsPoint = _picker.located.value;
 
                             if (gpsPoint != null) {
                               unawaited(_moveTo(gpsPoint));
                             }
                           },
-                          onCameraMoveStarted:
-                          _picker.beginManualSelection,
+                          onCameraMoveStarted: _picker.beginManualSelection,
                           onCameraMove: _cameraMoved,
                           onCameraIdle: _cameraIdle,
                           onTap: (point) {
@@ -414,8 +397,7 @@ class _AddressPickerScreenState
                     child: SafeArea(
                       bottom: false,
                       child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.stretch,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Material(
                             elevation: 3,
@@ -423,48 +405,43 @@ class _AddressPickerScreenState
                             borderRadius: AppRadius.lgAll,
                             child: TextField(
                               controller: _search,
-                              textInputAction:
-                              TextInputAction.search,
+                              textInputAction: TextInputAction.search,
                               onSubmitted: (_) {
                                 unawaited(_searchPlace());
                               },
                               decoration: InputDecoration(
-                                hintText:
-                                'ابحث عن منطقة أو شارع في قطاع غزة',
+                                hintText: 'ابحث عن منطقة أو شارع في قطاع غزة',
                                 prefixIcon: const Icon(
                                   LucideIcons.search,
                                 ),
                                 suffixIcon: _searching
                                     ? const Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: SizedBox.square(
-                                    dimension: 18,
-                                    child:
-                                    CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                )
+                                        padding: EdgeInsets.all(12),
+                                        child: SizedBox.square(
+                                          dimension: 18,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        ),
+                                      )
                                     : IconButton(
-                                  icon: const Icon(
-                                    LucideIcons.search,
-                                  ),
-                                  onPressed: _searchPlace,
-                                ),
+                                        icon: const Icon(
+                                          LucideIcons.search,
+                                        ),
+                                        onPressed: _searchPlace,
+                                      ),
                               ),
                             ),
                           ),
 
                           if (_searchError != null)
                             Padding(
-                              padding:
-                              const EdgeInsets.only(top: 8),
+                              padding: const EdgeInsets.only(top: 8),
                               child: Material(
                                 color: context.scheme.surface,
                                 borderRadius: AppRadius.lgAll,
                                 child: Padding(
-                                  padding:
-                                  const EdgeInsets.all(12),
+                                  padding: const EdgeInsets.all(12),
                                   child: Text(_searchError!),
                                 ),
                               ),
@@ -487,7 +464,7 @@ class _AddressPickerScreenState
                                 ),
                                 child: Column(
                                   crossAxisAlignment:
-                                  CrossAxisAlignment.stretch,
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     Text(
                                       _picker.address.value?.label ??
@@ -496,22 +473,17 @@ class _AddressPickerScreenState
                                               : l10n.addressPickOnMap),
                                       style: context.text.titleSmall,
                                     ),
-
                                     if (_picker.hasSelection.value)
                                       Text(
                                         '${_picker.point.lat.toStringAsFixed(6)}, '
-                                            '${_picker.point.lng.toStringAsFixed(6)}',
-                                        textDirection:
-                                        TextDirection.ltr,
+                                        '${_picker.point.lng.toStringAsFixed(6)}',
+                                        textDirection: TextDirection.ltr,
                                         style: context.text.labelSmall,
                                       ),
-
-                                    if (_picker
-                                        .addressUnavailable.value)
+                                    if (_picker.addressUnavailable.value)
                                       Text(
                                         l10n.locationAddressUnavailable,
                                       ),
-
                                     if (issue != null)
                                       Text(
                                         LocationIssueText.of(
@@ -537,16 +509,16 @@ class _AddressPickerScreenState
                       width: 200,
                       height: 56,
                       child: Obx(
-                            () => FilledButton.icon(
+                        () => FilledButton.icon(
                           onPressed: _picker.isLocating.value
                               ? null
                               : _picker.issue.value ==
-                              LocationIssue.deniedForever
-                              ? _picker.openSettings
-                              : _picker.issue.value ==
-                              LocationIssue.serviceDisabled
-                              ? _picker.openLocationSettings
-                              : _picker.locate,
+                                      LocationIssue.deniedForever
+                                  ? _picker.openSettings
+                                  : _picker.issue.value ==
+                                          LocationIssue.serviceDisabled
+                                      ? _picker.openLocationSettings
+                                      : _picker.locate,
                           icon: const Icon(
                             LucideIcons.locateFixed,
                             size: 20,
@@ -580,8 +552,7 @@ class _AddressPickerScreenState
                 children: [
                   for (final item in _checkout.addresses)
                     Padding(
-                      padding:
-                      const EdgeInsetsDirectional.only(
+                      padding: const EdgeInsetsDirectional.only(
                         end: AppSpacing.sm,
                       ),
                       child: ChoiceChip(
@@ -591,19 +562,18 @@ class _AddressPickerScreenState
                         selected: _picker.hasSelection.value &&
                             item.lat == _picker.point.lat &&
                             item.lng == _picker.point.lng,
-                        onSelected: _checkout
-                            .isSavingDeliveryLocation.value
+                        onSelected: _checkout.isSavingDeliveryLocation.value
                             ? null
                             : (_) {
-                          unawaited(
-                            _moveTo(
-                              PickedLocation(
-                                lat: item.lat,
-                                lng: item.lng,
-                              ),
-                            ),
-                          );
-                        },
+                                unawaited(
+                                  _moveTo(
+                                    PickedLocation(
+                                      lat: item.lat,
+                                      lng: item.lng,
+                                    ),
+                                  ),
+                                );
+                              },
                       ),
                     ),
                 ],
@@ -613,12 +583,11 @@ class _AddressPickerScreenState
 
           // Add another address.
           Obx(
-                () => TextButton.icon(
-              onPressed: _checkout
-                  .isSavingDeliveryLocation.value ||
-                  _addingAddress
-                  ? null
-                  : _addAddress,
+            () => TextButton.icon(
+              onPressed:
+                  _checkout.isSavingDeliveryLocation.value || _addingAddress
+                      ? null
+                      : _addAddress,
               icon: const Icon(
                 LucideIcons.plus,
               ),
@@ -627,8 +596,7 @@ class _AddressPickerScreenState
           ),
 
           Obx(() {
-            final failure =
-                _checkout.addressesFailure.value;
+            final failure = _checkout.addressesFailure.value;
 
             if (failure == null) {
               return const SizedBox.shrink();
@@ -638,8 +606,7 @@ class _AddressPickerScreenState
           }),
 
           Obx(() {
-            final failure =
-                _checkout.deliveryLocationFailure.value;
+            final failure = _checkout.deliveryLocationFailure.value;
 
             if (failure == null) {
               return const SizedBox.shrink();
@@ -649,17 +616,15 @@ class _AddressPickerScreenState
           }),
         ],
       ),
-
       bottomNavigationBar: BottomActionBar(
         child: Obx(
-              () => PrimaryButton(
+          () => PrimaryButton(
             label: l10n.addressUse,
-            isLoading:
-            _checkout.isSavingDeliveryLocation.value,
-            onPressed: _addingAddress ||
-                _checkout.isSavingDeliveryLocation.value
-                ? null
-                : _confirm,
+            isLoading: _checkout.isSavingDeliveryLocation.value,
+            onPressed:
+                _addingAddress || _checkout.isSavingDeliveryLocation.value
+                    ? null
+                    : _confirm,
           ),
         ),
       ),

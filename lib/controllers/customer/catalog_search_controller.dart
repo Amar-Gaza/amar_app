@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -6,32 +8,59 @@ import '../../data/models/masar/masar_models.dart';
 import '../../data/services/customer/catalog_service.dart';
 import '../shared/paged_list_controller.dart';
 
-/// Product search (GET /products?q=). Nothing is fetched until a query.
 class CatalogSearchController extends PagedListController<Product> {
-  CatalogSearchController(this._service);
+  CatalogSearchController(
+    this._service, {
+    this.initialQuery,
+    this.initialKind,
+  });
+
+  final String? initialQuery;
+  final String? initialKind;
 
   final CatalogService _service;
+
   final TextEditingController input = TextEditingController();
+
   final RxString query = ''.obs;
 
   bool get hasQuery => query.value.trim().isNotEmpty;
 
   @override
+  void onInit() {
+    super.onInit();
+
+    final value = initialQuery?.trim();
+
+    if (value != null && value.isNotEmpty) {
+      input.text = value;
+      unawaited(submit(value));
+    }
+  }
+
+  @override
   bool get loadOnInit => false;
 
   @override
-  Future<Paged<Product>> fetch(int page, int perPage) => _service.products(
+  Future<Paged<Product>> fetch(
+    int page,
+    int perPage,
+  ) =>
+      _service.products(
         search: query.value.trim(),
+        kind: initialKind,
         page: page,
         perPage: perPage,
       );
 
   Future<void> submit([String? value]) async {
     query.value = value ?? input.text;
+
     if (!hasQuery) {
       items.clear();
       return;
     }
+
     await load();
   }
 

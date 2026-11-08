@@ -12,15 +12,25 @@ import '../routes/route_args.dart';
 
 class SearchBinding extends Bindings {
   @override
-  void dependencies() => Get.lazyPut<CatalogSearchController>(
-        () => CatalogSearchController(Get.find<CatalogService>()),
-      );
+  void dependencies() {
+    final args = Get.arguments;
+
+    Get.lazyPut<CatalogSearchController>(
+      () => CatalogSearchController(
+        Get.find<CatalogService>(),
+        initialQuery: args is AiSearchArgs ? args.query : null,
+        initialKind: args is AiSearchArgs ? args.kind : null,
+      ),
+    );
+  }
 }
 
 class CategoriesBinding extends Bindings {
   @override
   void dependencies() => Get.lazyPut<CategoriesController>(
-        () => CategoriesController(Get.find<CatalogService>()),
+        () => CategoriesController(
+          Get.find<CatalogService>(),
+        ),
       );
 }
 
@@ -54,12 +64,11 @@ class ProductsBinding extends Bindings {
       );
 }
 
-/// The product controller is tagged by id so options and quantity screens
-/// pushed on top share it.
 class ProductBinding extends Bindings {
   @override
   void dependencies() {
     final args = Get.arguments as ProductArgs;
+
     Get.put<ProductController>(
       ProductController(
         Get.find<CatalogService>(),

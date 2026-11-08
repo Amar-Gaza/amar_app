@@ -43,17 +43,17 @@ class ResolvedLocation {
   String get label {
     final parts = languageCode == 'ar'
         ? [
-      city,
-      neighborhood,
-      street,
-      buildingNumber,
-    ]
+            city,
+            neighborhood,
+            street,
+            buildingNumber,
+          ]
         : [
-      city,
-      neighborhood,
-      buildingNumber,
-      street,
-    ];
+            city,
+            neighborhood,
+            buildingNumber,
+            street,
+          ];
 
     return parts
         .where((part) => part.isNotEmpty)
@@ -72,8 +72,7 @@ class DeviceLocationService {
   }) : _preferences = preferences {
     _customerId = preferences?.activeCustomerId;
 
-    languageCode.value =
-        preferences?.locale ?? AppDefaults.defaultLocale;
+    languageCode.value = preferences?.locale ?? AppDefaults.defaultLocale;
 
     _restore();
   }
@@ -84,14 +83,11 @@ class DeviceLocationService {
 
   final Map<String, ResolvedLocation> _savedAddresses = {};
 
-  final Rxn<PickedLocation> currentPoint =
-  Rxn<PickedLocation>();
+  final Rxn<PickedLocation> currentPoint = Rxn<PickedLocation>();
 
-  final Rxn<ResolvedLocation> resolvedLocation =
-  Rxn<ResolvedLocation>();
+  final Rxn<ResolvedLocation> resolvedLocation = Rxn<ResolvedLocation>();
 
-  final RxString languageCode =
-      AppDefaults.defaultLocale.obs;
+  final RxString languageCode = AppDefaults.defaultLocale.obs;
 
   final RxBool isLocating = false.obs;
   final RxBool addressUnavailable = false.obs;
@@ -192,11 +188,9 @@ class DeviceLocationService {
       }
     }
 
-    resolvedLocation.value =
-    _savedAddresses[languageCode.value];
+    resolvedLocation.value = _savedAddresses[languageCode.value];
 
-    addressUnavailable.value =
-        resolvedLocation.value == null;
+    addressUnavailable.value = resolvedLocation.value == null;
   }
 
   void _persist() {
@@ -219,8 +213,7 @@ class DeviceLocationService {
                 'city': entry.value.city,
                 'neighborhood': entry.value.neighborhood,
                 'street': entry.value.street,
-                'building_number':
-                entry.value.buildingNumber,
+                'building_number': entry.value.buildingNumber,
               },
           },
         },
@@ -293,8 +286,8 @@ class DeviceLocationService {
   }
 
   Future<Position> _position(
-      LocationAccuracy accuracy,
-      ) =>
+    LocationAccuracy accuracy,
+  ) =>
       Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(
           accuracy: accuracy,
@@ -302,33 +295,29 @@ class DeviceLocationService {
         ),
       ).timeout(AppDurations.locationFix);
 
-  Future<bool> openSettings() =>
-      Geolocator.openAppSettings();
+  Future<bool> openSettings() => Geolocator.openAppSettings();
 
-  Future<bool> openLocationSettings() =>
-      Geolocator.openLocationSettings();
+  Future<bool> openLocationSettings() => Geolocator.openLocationSettings();
 
   void confirmPoint(
-      PickedLocation point, {
-        ResolvedLocation? address,
-      }) {
+    PickedLocation point, {
+    ResolvedLocation? address,
+  }) {
     ++_selectionVersion;
     _manualSelection = true;
 
     final previous = currentPoint.value;
 
-    if (previous?.lat != point.lat ||
-        previous?.lng != point.lng) {
+    if (previous?.lat != point.lat || previous?.lng != point.lng) {
       _savedAddresses.clear();
     }
 
     currentPoint.value = point;
 
-    resolvedLocation.value =
-    address != null &&
-        address.point.lat == point.lat &&
-        address.point.lng == point.lng &&
-        address.languageCode == languageCode.value
+    resolvedLocation.value = address != null &&
+            address.point.lat == point.lat &&
+            address.point.lng == point.lng &&
+            address.languageCode == languageCode.value
         ? address
         : _savedAddresses[languageCode.value];
 
@@ -339,8 +328,7 @@ class DeviceLocationService {
     }
 
     issue.value = null;
-    addressUnavailable.value =
-        resolvedLocation.value == null;
+    addressUnavailable.value = resolvedLocation.value == null;
 
     isLocating.value = false;
 
@@ -445,8 +433,7 @@ class DeviceLocationService {
 
       rethrow;
     } on LocationAddressException {
-      if (version == _selectionVersion &&
-          resolvedLocation.value == null) {
+      if (version == _selectionVersion && resolvedLocation.value == null) {
         addressUnavailable.value = true;
       }
 
@@ -460,18 +447,18 @@ class DeviceLocationService {
 
   /// Pure preview: does not change confirmed coordinates.
   Future<ResolvedLocation> resolveAddress(
-      PickedLocation point,
-      ) async {
+    PickedLocation point,
+  ) async {
     final language = languageCode.value;
 
     // The native geocoder locale is global.
     // Serialize calls across screens.
     final task = _geocodeQueue.then(
-          (_) => _reverse(point, language),
+      (_) => _reverse(point, language),
     );
 
     _geocodeQueue = task.then<void>(
-          (_) {},
+      (_) {},
       onError: (Object _, StackTrace __) {},
     );
 
@@ -485,9 +472,9 @@ class DeviceLocationService {
   }
 
   Future<ResolvedLocation> _reverse(
-      PickedLocation point,
-      String language,
-      ) async {
+    PickedLocation point,
+    String language,
+  ) async {
     try {
       await setLocaleIdentifier(
         language == 'ar' ? 'ar_PS' : 'en_US',
@@ -507,12 +494,10 @@ class DeviceLocationService {
       String clean(String? value) =>
           (value ?? '').replaceAll(plusCode, '').trim();
 
-      String first(List<String?> values) => values
-          .map(clean)
-          .firstWhere(
+      String first(List<String?> values) => values.map(clean).firstWhere(
             (value) => value.isNotEmpty,
-        orElse: () => '',
-      );
+            orElse: () => '',
+          );
 
       ResolvedLocation? best;
       var bestScore = -1;
@@ -534,13 +519,11 @@ class DeviceLocationService {
           languageCode: language,
         );
 
-        final score =
-            (candidate.city.isNotEmpty ? 1 : 0) +
-                (candidate.neighborhood.isNotEmpty ? 2 : 0) +
-                (candidate.street.isNotEmpty ? 4 : 0);
+        final score = (candidate.city.isNotEmpty ? 1 : 0) +
+            (candidate.neighborhood.isNotEmpty ? 2 : 0) +
+            (candidate.street.isNotEmpty ? 4 : 0);
 
-        if (score > bestScore &&
-            candidate.label.isNotEmpty) {
+        if (score > bestScore && candidate.label.isNotEmpty) {
           best = candidate;
           bestScore = score;
         }

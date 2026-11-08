@@ -26,12 +26,10 @@ class CustomerBottomNav extends StatefulWidget {
   final ValueChanged<CustomerTab> onSelect;
 
   @override
-  State<CustomerBottomNav> createState() =>
-      _CustomerBottomNavState();
+  State<CustomerBottomNav> createState() => _CustomerBottomNavState();
 }
 
-class _CustomerBottomNavState
-    extends State<CustomerBottomNav>
+class _CustomerBottomNavState extends State<CustomerBottomNav>
     with SingleTickerProviderStateMixin {
   static const double _shadowAlpha = 0.11;
   static const double _highlightAlpha = 0.16;
@@ -46,15 +44,13 @@ class _CustomerBottomNavState
   bool _reduceMotion = false;
 
   NavMotionFrame get _frame => NavMotion.sample(
-    start: _start,
-    target: _targetTab.index.toDouble(),
-    progress: _motion.value,
-  );
+        start: _start,
+        target: _targetTab.index.toDouble(),
+        progress: _motion.value,
+      );
 
   CustomerTab get _visibleTab =>
-      _motion.value < NavMotion.iconSwitchAt
-          ? _originIcon
-          : _targetTab;
+      _motion.value < NavMotion.iconSwitchAt ? _originIcon : _targetTab;
 
   @override
   void initState() {
@@ -79,9 +75,7 @@ class _CustomerBottomNavState
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    _reduceMotion =
-        MediaQuery.maybeOf(context)?.disableAnimations ??
-            false;
+    _reduceMotion = MediaQuery.maybeOf(context)?.disableAnimations ?? false;
 
     if (_reduceMotion) {
       _motion.stop();
@@ -97,8 +91,8 @@ class _CustomerBottomNavState
 
   @override
   void didUpdateWidget(
-      covariant CustomerBottomNav oldWidget,
-      ) {
+    covariant CustomerBottomNav oldWidget,
+  ) {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.current == widget.current) return;
@@ -136,41 +130,38 @@ class _CustomerBottomNavState
     final colors = context.appColors;
     final cart = Get.find<CartController>();
 
-    final isRtl =
-        Directionality.of(context) == TextDirection.rtl;
+    final isRtl = Directionality.of(context) == TextDirection.rtl;
 
     final items = <(CustomerTab, IconData, String)>[
       (
-      CustomerTab.home,
-      LucideIcons.house,
-      l10n.navHome,
+        CustomerTab.home,
+        LucideIcons.house,
+        l10n.navHome,
       ),
       (
-      CustomerTab.orders,
-      LucideIcons.clipboardList,
-      l10n.navOrders,
+        CustomerTab.orders,
+        LucideIcons.clipboardList,
+        l10n.navOrders,
       ),
       (
-      CustomerTab.cart,
-      LucideIcons.shoppingCart,
-      l10n.navCart,
+        CustomerTab.cart,
+        LucideIcons.shoppingCart,
+        l10n.navCart,
       ),
       (
-      CustomerTab.account,
-      LucideIcons.user,
-      l10n.navAccount,
+        CustomerTab.account,
+        LucideIcons.user,
+        l10n.navAccount,
       ),
     ];
 
-    final bottomInset =
-        MediaQuery.paddingOf(context).bottom;
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
 
     return SizedBox(
       height: AppSizes.navHeight + bottomInset,
       child: LayoutBuilder(
         builder: (_, constraints) {
-          final tabWidth =
-              constraints.maxWidth / items.length;
+          final tabWidth = constraints.maxWidth / items.length;
 
           return AnimatedBuilder(
             animation: _motion,
@@ -178,9 +169,7 @@ class _CustomerBottomNavState
               final frame = _frame;
               final slot = frame.index + 0.5;
 
-              final center =
-                  (isRtl ? items.length - slot : slot) *
-                      tabWidth;
+              final center = (isRtl ? items.length - slot : slot) * tabWidth;
 
               final visibleTab = _visibleTab;
 
@@ -204,8 +193,7 @@ class _CustomerBottomNavState
                   child!,
                   Positioned(
                     top: -frame.lift,
-                    left:
-                    center - AppSizes.navBubble / 2,
+                    left: center - AppSizes.navBubble / 2,
                     child: IgnorePointer(
                       child: ExcludeSemantics(
                         child: Transform.scale(
@@ -216,51 +204,38 @@ class _CustomerBottomNavState
                             height: AppSizes.navBubble,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              gradient:
-                              colors.brandGradient,
-                              boxShadow:
-                              AppShadows.button(colors),
+                              gradient: colors.brandGradient,
+                              boxShadow: AppShadows.button(colors),
                             ),
                             child: Stack(
                               clipBehavior: Clip.none,
                               alignment: Alignment.center,
                               children: [
                                 Align(
-                                  alignment:
-                                  const Alignment(
+                                  alignment: const Alignment(
                                     -0.35,
                                     -0.65,
                                   ),
                                   child: Container(
-                                    width:
-                                    AppSizes.navBubble *
-                                        _highlightWidth,
+                                    width: AppSizes.navBubble * _highlightWidth,
                                     height:
-                                    AppSizes.navBubble *
-                                        _highlightHeight,
-                                    decoration:
-                                    BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(
+                                        AppSizes.navBubble * _highlightHeight,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
                                         AppSizes.navBubble,
                                       ),
-                                      color: colors
-                                          .onBrand
-                                          .withValues(
-                                        alpha:
-                                        _highlightAlpha,
+                                      color: colors.onBrand.withValues(
+                                        alpha: _highlightAlpha,
                                       ),
                                     ),
                                   ),
                                 ),
                                 AnimatedSwitcher(
-                                  duration:
-                                  _reduceMotion
+                                  duration: _reduceMotion
                                       ? Duration.zero
                                       : AppDurations.press,
                                   child: Icon(
-                                    items[visibleTab.index]
-                                        .$2,
+                                    items[visibleTab.index].$2,
                                     key: ValueKey(
                                       visibleTab,
                                     ),
@@ -268,17 +243,15 @@ class _CustomerBottomNavState
                                     color: colors.onBrand,
                                   ),
                                 ),
-                                if (visibleTab ==
-                                    CustomerTab.cart)
+                                if (visibleTab == CustomerTab.cart)
                                   Positioned(
                                     top: 0,
                                     right: 0,
                                     child: Obx(
-                                          () => cart.count > 0
+                                      () => cart.count > 0
                                           ? NavBadge(
-                                        count:
-                                        cart.count,
-                                      )
+                                              count: cart.count,
+                                            )
                                           : const SizedBox.shrink(),
                                     ),
                                   ),
@@ -312,12 +285,8 @@ class _CustomerBottomNavState
                             label: label,
                             selected: tab == widget.current,
                             floatingSelection: true,
-                            badge:
-                            tab == CustomerTab.cart
-                                ? count
-                                : 0,
-                            onTap: () =>
-                                widget.onSelect(tab),
+                            badge: tab == CustomerTab.cart ? count : 0,
+                            onTap: () => widget.onSelect(tab),
                           ),
                         );
                       }),

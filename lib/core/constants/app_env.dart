@@ -2,13 +2,26 @@ import 'package:flutter/foundation.dart';
 
 abstract final class AppEnv {
   static const String projectKey = String.fromEnvironment('AMAR_PROJECT_KEY');
+
   static const String devMember = String.fromEnvironment('AMAR_DEV_MEMBER');
+
   static const String mapsKey = String.fromEnvironment('AMAR_MAPS_KEY');
+
   static const bool hasMaps = mapsKey != '';
-  static const String appVersion =
-      String.fromEnvironment('AMAR_APP_VERSION', defaultValue: '1.0.0');
+
+  static const String appVersion = String.fromEnvironment(
+    'AMAR_APP_VERSION',
+    defaultValue: '1.0.0',
+  );
+
   static const String baseUrl = 'https://masar.toldpath.com/api';
 
+  static const String aiGatewayUrl = String.fromEnvironment(
+    'AMAR_AI_GATEWAY_URL',
+    defaultValue: 'https://amar-ai-gateway3.taghreedlouz7.workers.dev',
+  );
+
   static bool get isConfigured => projectKey.isNotEmpty;
+
   static bool get sendsDevMember => kDebugMode && devMember.isNotEmpty;
 }
