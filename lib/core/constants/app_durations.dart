@@ -17,4 +17,5 @@ abstract final class AppDurations {
   static const Duration fast = Duration(milliseconds: 200);
   static const Duration segment = Duration(milliseconds: 250);
   static const Duration blink = Duration(milliseconds: 700);
+  static const Duration pushBanner = Duration(seconds: 5);
 }

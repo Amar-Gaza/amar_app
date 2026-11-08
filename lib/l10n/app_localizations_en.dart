@@ -2222,4 +2222,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offerLabelExpired => 'Expired';
+
+  @override
+  String get pushView => 'View';
 }

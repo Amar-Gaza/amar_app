@@ -2199,4 +2199,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offerLabelExpired => 'منتهي';
+
+  @override
+  String get pushView => 'عرض';
 }

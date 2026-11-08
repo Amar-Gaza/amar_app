@@ -1235,5 +1235,6 @@
   "offerLabelSent": "بانتظار موافقتك",
   "offerLabelAccepted": "تمت الموافقة",
   "offerLabelRejected": "مرفوض",
-  "offerLabelExpired": "منتهي"
+  "offerLabelExpired": "منتهي",
+  "pushView": "عرض"
 }
