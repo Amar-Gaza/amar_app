@@ -46,10 +46,12 @@ class CatalogController extends GetxController {
       kind == ProductKinds.service ? companies : stores;
 
   @override
-  void onInit() {
-    super.onInit();
-    load();
-    loadAddress();
+  void onReady() {
+    super.onReady();
+    // HomeTab first finds this controller from inside Obx.build.
+    // Defer reactive updates until the first frame has completed.
+    unawaited(load());
+    unawaited(loadAddress());
   }
 
   /// The default address, or the first one, for the home location line.

@@ -70,7 +70,6 @@ class AiTaskOverlay extends StatelessWidget {
                     ),
                     IconButton(
                       icon: const Icon(Icons.receipt_long_outlined),
-                      tooltip: 'سجل الخطوات',
                       onPressed: () => Get.dialog<void>(
                         AlertDialog(
                           title: const Text('خطوات المساعد'),

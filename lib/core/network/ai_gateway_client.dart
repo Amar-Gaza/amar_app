@@ -37,6 +37,7 @@ class AiGatewayClient {
     required String locale,
     required List<Map<String, String>> history,
     required List<AiCatalogItem> lastResults,
+    Map<String, dynamic>? pendingForm,
   }) async {
     if (!AppEnv.aiGatewayUrl.startsWith('https://')) {
       throw const AiGatewayException(
@@ -59,6 +60,7 @@ class AiGatewayClient {
         '/v1/ai/chat',
         data: {
           'message': message,
+          if (pendingForm != null) 'pending_form': pendingForm,
           'locale': locale == 'en' ? 'en' : 'ar',
           'history': history.take(12).toList(),
           'last_results':

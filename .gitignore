@@ -15,3 +15,6 @@ GoogleService-Info.plist
 *.postman_environment.json
 environment.*.json
 ios/Flutter/Maps.xcconfig
+
+/android/.kotlin/errors/
+/.idea/caches/

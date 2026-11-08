@@ -1,0 +1,16 @@
+PASS All 354 baseline lib files retained
+PASS 348 unrelated lib files unchanged byte-for-byte from V8
+PASS Only six targeted Dart files can differ from V8
+PASS Every relative import/export/part resolves
+PASS Product vendor names parsed + saved
+PASS AI uses verified business identity, not numeric label
+PASS Cards have constrained action-button width
+PASS Top-level AI overlay does not use Tooltip
+PASS Home starts fetching after onInit build
+PASS Explicit address choice wins over default fallback
+PASS Changed vendor needs re-confirmation
+PASS Guided checkout never calls placeOrder()
+PASS Worker only makes Masar GET requests
+PASS Forms have allowlisted choice validation
+
+Static checks: 14/14 passed
