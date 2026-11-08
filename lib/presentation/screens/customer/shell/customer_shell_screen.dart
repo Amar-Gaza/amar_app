@@ -31,20 +31,24 @@ class CustomerShellScreen extends GetView<ShellController> {
                 child: OfflineBanner(),
               ),
             Expanded(
-              child: MediaQuery.removePadding(
-                context: context,
-                removeTop: connectivity.isOffline.value,
-                child: IndexedStack(
-                  index: controller.tab.value.index,
-                  children: [
-                    const HomeTab(),
-                    const OrdersTab(),
-                    if (controller.tab.value == CustomerTab.cart)
-                      const CartTab()
-                    else
-                      const SizedBox.shrink(),
-                    const AccountTab(),
-                  ],
+              // Read the body's MediaQuery (inside the Scaffold) so the tabs
+              // keep the bottom padding that extendBody adds for the nav bar.
+              child: Builder(
+                builder: (bodyContext) => MediaQuery.removePadding(
+                  context: bodyContext,
+                  removeTop: connectivity.isOffline.value,
+                  child: IndexedStack(
+                    index: controller.tab.value.index,
+                    children: [
+                      const HomeTab(),
+                      const OrdersTab(),
+                      if (controller.tab.value == CustomerTab.cart)
+                        const CartTab()
+                      else
+                        const SizedBox.shrink(),
+                      const AccountTab(),
+                    ],
+                  ),
                 ),
               ),
             ),
