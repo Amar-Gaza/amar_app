@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'geocoder.dart';
 import 'masar.dart';
 import 'store.dart';
 import 'telegram.dart';
@@ -11,7 +12,9 @@ import 'texts.dart';
 /// /start → share contact → OTP → vendor → product → qty → cart →
 /// address or location → quote → confirm → status updates.
 class AmarBot {
-  AmarBot(this._tg, this._api, this._store);
+  AmarBot(this._tg, this._api, this._store, this._geocoder);
+
+  final Geocoder _geocoder;
 
   final Telegram _tg;
   final Masar _api;
@@ -368,13 +371,29 @@ class AmarBot {
   }
 
   Future<void> _onDetails(int chatId, Session s, String? details) async {
-    final address = await _api.addAddress(
-      s.token!,
-      lat: s.lat!,
-      lng: s.lng!,
-      label: T.addressLabel,
-      details: details,
-    );
+    final place = await _geocoder.label(s.lat!, s.lng!);
+    final note = details?.trim();
+    final Map<String, dynamic> address;
+    try {
+      address = await _api.addAddress(
+        s.token!,
+        lat: s.lat!,
+        lng: s.lng!,
+        // Same label the app builds: "city، neighborhood، street".
+        label: place ?? T.addressLabel,
+        details: _joinOrNull([place, note]),
+      );
+    } on MasarFailure catch (e) {
+      // Out of zone or invalid point: ask for the location again instead
+      // of leaving the customer stuck on the description step.
+      s
+        ..lat = null
+        ..lng = null
+        ..step = Step.location;
+      await _tg.send(chatId, T.error(e.message));
+      return _tg.send(chatId, T.askLocation,
+          markup: Telegram.requestLocation(T.sendLocation, T.back));
+    }
     s
       ..addressId = address['id'] as int
       ..step = Step.idle;
@@ -493,11 +512,13 @@ class AmarBot {
             final status = order['status'] as Map? ?? const {};
             final key = status['key']?.toString() ?? '';
             if (key != s.watched[id]) {
-              s.watched[id] = key;
+              // Record the status only after the message went out, so a
+              // failed send is retried on the next poll instead of lost.
               await _tg.send(
                   chatId,
                   T.statusChanged(
                       order['code'].toString(), labelOf(status['label'])));
+              s.watched[id] = key;
               await _maybeOffer(chatId, s, token, order);
             }
             if (status['is_terminal'] == true) s.watched.remove(id);
@@ -546,6 +567,15 @@ class AmarBot {
       ]),
     );
   }
+}
+
+String? _joinOrNull(List<String?> parts) {
+  final text = parts
+      .whereType<String>()
+      .map((p) => p.trim())
+      .where((p) => p.isNotEmpty)
+      .join(' - ');
+  return text.isEmpty ? null : text;
 }
 
 /// Telegram shares numbers with the country code, often without "+".

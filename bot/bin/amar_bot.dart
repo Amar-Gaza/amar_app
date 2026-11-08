@@ -1,5 +1,6 @@
 import 'package:amar_bot/src/bot.dart';
 import 'package:amar_bot/src/config.dart';
+import 'package:amar_bot/src/geocoder.dart';
 import 'package:amar_bot/src/http_json.dart';
 import 'package:amar_bot/src/masar.dart';
 import 'package:amar_bot/src/store.dart';
@@ -13,6 +14,7 @@ Future<void> main(List<String> args) async {
     Telegram(config.telegramToken, http),
     Masar(config, http),
     SessionStore(config.dataDir),
+    Geocoder(http),
   );
   await bot.run();
 }

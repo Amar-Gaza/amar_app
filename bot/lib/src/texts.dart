@@ -48,7 +48,7 @@ abstract final class T {
   static const askDetails =
       'اكتب وصف للعنوان (الحي، أقرب معلم، رقم العمارة)، أو اضغط تخطي.';
   static const skip = 'تخطي';
-  static const addressLabel = 'تيليجرام';
+  static const addressLabel = 'عنوان التوصيل';
 
   static const quoting = 'لحظة، عم نحسب السعر...';
   static String quote(String lines, String total) =>
