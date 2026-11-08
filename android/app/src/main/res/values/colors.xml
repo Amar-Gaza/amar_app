@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand green (AppColorExtension.brand) tints the push notification icon. -->
+    <color name="notification_color">#14624A</color>
+</resources>

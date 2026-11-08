@@ -182,6 +182,8 @@ class PushController extends GetxService {
       ..showSnackBar(
         SnackBar(
           duration: AppDurations.pushBanner,
+          // A snack bar with an action stays until closed by default.
+          persist: false,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
