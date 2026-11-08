@@ -8,6 +8,7 @@ class AiCatalogItem {
     this.imageUrl = '',
     this.price = '',
     this.vendorId,
+    this.vendorName = '',
     this.category = '',
     this.address = '',
     this.isOpenNow,
@@ -20,6 +21,7 @@ class AiCatalogItem {
   final String imageUrl;
   final String price;
   final int? vendorId;
+  final String vendorName;
   final String category;
   final String address;
   final bool? isOpenNow;
@@ -56,6 +58,8 @@ class AiCatalogItem {
       imageUrl: json['image_url'] is String ? json['image_url'] as String : '',
       price: json['price'] is String ? json['price'] as String : '',
       vendorId: json['vendor_id'] is int ? json['vendor_id'] as int : null,
+      vendorName: json['vendor_name'] is String
+          ? (json['vendor_name'] as String).trim() : '',
       category: json['category'] is String ? json['category'] as String : '',
       address: json['address'] is String ? json['address'] as String : '',
       isOpenNow:
@@ -71,6 +75,7 @@ class AiCatalogItem {
         'image_url': imageUrl,
         'price': price,
         'vendor_id': vendorId,
+        'vendor_name': vendorName,
         'category': category,
         'address': address,
         'is_open_now': isOpenNow,
@@ -82,6 +87,7 @@ class AiCatalogItem {
         'name': name,
         'price': price,
         'category': category,
+        'vendor_name': vendorName,
         'is_open_now': isOpenNow,
       };
 }

@@ -1,3 +1,4 @@
+import 'ai_chat_form.dart';
 import 'ai_intent.dart';
 
 class AiChatMessage {
@@ -9,6 +10,8 @@ class AiChatMessage {
     this.suggestions = const [],
     this.canPrepareOrder = false,
     this.orderQuantity = 1,
+    this.form,
+    this.formAnswered = false,
   });
 
   final String role;
@@ -18,83 +21,63 @@ class AiChatMessage {
   final List<String> suggestions;
   final bool canPrepareOrder;
   final int orderQuantity;
+  final AiChatForm? form;
+  final bool formAnswered;
 
   bool get isUser => role == 'user';
 
+  AiChatMessage copyWith({bool? formAnswered}) => AiChatMessage(
+    role: role,
+    text: text,
+    createdAt: createdAt,
+    results: results,
+    suggestions: suggestions,
+    canPrepareOrder: canPrepareOrder,
+    orderQuantity: orderQuantity,
+    form: form,
+    formAnswered: formAnswered ?? this.formAnswered,
+  );
+
   Map<String, dynamic> toJson() => {
-        'role': role,
-        'text': text,
-        'created_at': createdAt.toIso8601String(),
-        'results': results.map((item) => item.toJson()).toList(),
-        'suggestions': suggestions,
-        'can_prepare_order': canPrepareOrder,
-        'order_quantity': orderQuantity,
-      };
+    'role': role, 'text': text, 'created_at': createdAt.toIso8601String(),
+    'results': results.map((e) => e.toJson()).toList(),
+    'suggestions': suggestions,
+    'can_prepare_order': canPrepareOrder,
+    'order_quantity': orderQuantity,
+    'form': form?.toJson(),
+    'form_answered': formAnswered,
+  };
 
-  factory AiChatMessage.fromJson(
-    Map<String, dynamic> json,
-  ) {
-    final role = json['role'] is String
-        ? json['role'] as String
+  factory AiChatMessage.fromJson(Map<String, dynamic> json) {
+    final role = json['role'] is String ? json['role'] as String
         : (json['user'] == true ? 'user' : 'assistant');
-
-    final text = json['text'];
-
-    if (!const {
-          'user',
-          'assistant',
-        }.contains(role) ||
-        text is! String ||
-        text.length > 2000) {
-      throw const FormatException(
-        'Invalid AI history',
-      );
+    final content = json['text'];
+    if (!const {'user','assistant'}.contains(role) ||
+        content is! String || content.length > 2000) {
+      throw const FormatException('Invalid AI chat message');
     }
-
     final results = <AiCatalogItem>[];
-    final rawResults = json['results'];
-
-    if (rawResults is List) {
-      for (final row in rawResults.take(8)) {
-        if (row is Map) {
-          try {
-            results.add(
-              AiCatalogItem.fromJson(
-                Map<String, dynamic>.from(row),
-              ),
-            );
-          } on FormatException {
-            // Keep valid saved entries.
-          }
-        }
-      }
+    for (final value in (json['results'] is List ? json['results'] as List : const []).take(8)) {
+      if (value is! Map) continue;
+      try { results.add(AiCatalogItem.fromJson(Map<String, dynamic>.from(value))); }
+      on FormatException { /* Ignore one corrupt record. */ }
     }
-
-    final suggestions = <String>[];
-
-    if (json['suggestions'] is List) {
-      for (final value in (json['suggestions'] as List).take(4)) {
-        if (value is String && value.length <= 100) {
-          suggestions.add(value);
-        }
-      }
+    AiChatForm? form;
+    if (json['form'] is Map) {
+      try { form = AiChatForm.fromJson(Map<String, dynamic>.from(json['form'] as Map)); }
+      catch (_) { /* Ignore a corrupt saved form. */ }
     }
-
     return AiChatMessage(
       role: role,
-      text: text,
-      createdAt: DateTime.tryParse(
-            json['created_at']?.toString() ?? '',
-          ) ??
-          DateTime.now(),
+      text: content,
+      createdAt: DateTime.tryParse('${json['created_at'] ?? ''}') ?? DateTime.now(),
       results: results,
-      suggestions: suggestions,
+      suggestions: (json['suggestions'] is List ? json['suggestions'] as List : const [])
+          .whereType<String>().take(4).toList(),
       canPrepareOrder: json['can_prepare_order'] == true,
-      orderQuantity: json['order_quantity'] is int &&
-              json['order_quantity'] >= 1 &&
-              json['order_quantity'] <= 20
-          ? json['order_quantity'] as int
-          : 1,
+      orderQuantity: json['order_quantity'] is int ? json['order_quantity'] as int : 1,
+      form: form,
+      formAnswered: json['form_answered'] == true,
     );
   }
 }

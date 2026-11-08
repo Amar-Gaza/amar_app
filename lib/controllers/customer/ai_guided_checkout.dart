@@ -24,6 +24,10 @@ class AiGuidedCheckout {
       AiCatalogItem suggestion, {
         required int quantity,
         required void Function(String) onProgress,
+        Map<String, List<String>>? selectedOptions,
+        int? preferredAddressId,
+        String? preferredPaymentMethod,
+        int? preferredPaymentGatewayId,
       }) async {
     final task = Get.find<AiTaskController>();
     final token = task.begin('تجهيز طلب: ${suggestion.name}');
@@ -53,6 +57,13 @@ class AiGuidedCheckout {
       if (product.vendorId == null) {
         return _fail(task, token, 'المنتج ليس مرتبطاً بمتجر صالح للطلب.');
       }
+      // The product might have moved to another store after the chat form.
+      // Never silently charge/quote a different vendor.
+      if (suggestion.vendorId != null &&
+          product.vendorId != suggestion.vendorId) {
+        return _fail(task, token,
+            'المتجر المرتبط بالمنتج تغيّر. اختار المنتج مرة ثانية من النتائج الحديثة.');
+      }
       if (product.stock != null && product.stock! < quantity) {
         return _fail(task, token, 'الكمية أكبر من المخزون المتاح.');
       }
@@ -64,25 +75,66 @@ class AiGuidedCheckout {
       await _visiblePause(task, token);
 
       final selections = <String, List<String>>{};
-      for (final option in product.options) {
-        task.question(token, 'اختار ${option.label} لـ ${product.name}');
-        final chosen = await _askProductOption(option, product.name);
-        task.check(token);
-        if (chosen == null) {
-          return _fail(task, token, 'توقفت المهمة عند اختيار ${option.label}. تقدر تعيد الطلب من الشات.');
+      // V8: Revalidate every saved chat-form answer against the newest
+      // real product details. Forms cannot inject made-up option keys.
+      if (selectedOptions != null) {
+        final allowedKeys = product.options.map((o) => o.key).toSet();
+        if (selectedOptions.keys.any((key) => !allowedKeys.contains(key))) {
+          return _fail(task, token, 'مواصفات المنتج تغيّرت. راجع الخيارات من جديد.');
         }
-        if (option.required && chosen.isEmpty) {
-          return _fail(task, token, 'خيار ${option.label} مطلوب لإكمال الطلب.');
+        for (final option in product.options) {
+          final chosen = selectedOptions[option.key] ?? <String>[];
+          if ((option.required && chosen.isEmpty) ||
+              (option.type != ProductOptionType.multi && chosen.length > 1) ||
+              chosen.length != chosen.toSet().length ||
+              chosen.any((id) => !option.choices.any((c) => c.key == id))) {
+            return _fail(task, token, 'خيار ${option.label} تغيّر أو لم يعد متاحاً.');
+          }
+          if (chosen.isNotEmpty) selections[option.key] = chosen;
         }
-        if (chosen.isNotEmpty) selections[option.key] = chosen;
-        task.resume(token, 'تم تحديد ${option.label}.');
+      } else {
+        // Backwards-compatible fallback for callers that don't use chat forms.
+        for (final option in product.options) {
+          task.question(token, 'اختار ${option.label} لـ ${product.name}');
+          final chosen = await _askProductOption(task, token, option, product.name);
+          task.check(token);
+          if (chosen == null) {
+            return _fail(task, token, 'توقفت المهمة عند اختيار ${option.label}.');
+          }
+          if (option.required && chosen.isEmpty) {
+            return _fail(task, token, 'خيار ${option.label} مطلوب لإكمال الطلب.');
+          }
+          if (chosen.isNotEmpty) selections[option.key] = chosen;
+          task.resume(token, 'تم تحديد ${option.label}.');
+        }
       }
 
       final cart = Get.find<CartController>();
+      // Preserve an existing service draft unless the user explicitly agrees.
+      // Service-to-service replacement was previously silent.
+      if (product.kind == 'service' && cart.service.value != null) {
+        task.question(token, 'في طلب خدمة آخر بالسلة. هل بدك تستبدله بالخدمة الجديدة؟');
+        final replaceExisting = await _askAiDialog<bool>(task, token, 
+          AlertDialog(
+            title: const Text('طلب خدمة سابق'),
+            content: const Text('لديك خدمة غير مكتملة. هل توافق على استبدالها بالخدمة الجديدة؟'),
+            actions: [
+              TextButton(onPressed: () => Get.back(result: false), child: const Text('احتفظ بالطلب السابق')),
+              FilledButton(onPressed: () => Get.back(result: true), child: const Text('استبدال الخدمة')),
+            ],
+          ),
+          barrierDismissible: false,
+        );
+        task.check(token);
+        if (replaceExisting != true) {
+          return _fail(task, token, 'احتفظت بالخدمة السابقة بدون تغيير.');
+        }
+        task.resume(token, 'وافقت على استبدال مسودة الخدمة القديمة.');
+      }
       // Never silently replace an unfinished service checkout with a product.
       if (product.kind != 'service' && cart.service.value != null) {
         task.question(token, 'هناك طلب خدمة غير مكتمل. هل نستبدله بطلب المنتج؟');
-        final replaceService = await Get.dialog<bool>(
+        final replaceService = await _askAiDialog<bool>(task, token, 
           AlertDialog(
             title: const Text('طلب خدمة قيد التجهيز'),
             content: const Text('اختيار المنتج الجديد سيُنهي تجهيز الخدمة الحالية. هل توافق؟'),
@@ -106,7 +158,7 @@ class AiGuidedCheckout {
       // Prevent replacing somebody's existing cart without informed consent.
       if (!service && cart.vendorId != null && cart.vendorId != product.vendorId) {
         task.question(token, 'السلة فيها منتجات من متجر مختلف. نستبدلها؟');
-        final replace = await Get.dialog<bool>(
+        final replace = await _askAiDialog<bool>(task, token, 
           AlertDialog(
             title: const Text('السلة من متجر مختلف'),
             content: const Text('عَمّار يسمح بمتجر واحد لكل طلب. هل توافق على استبدال محتويات السلة الحالية؟'),
@@ -128,7 +180,7 @@ class AiGuidedCheckout {
         // Even for the same vendor, avoid surprising the user by silently
         // mixing a new AI order with items from a previous shopping session.
         task.question(token, 'السلة فيها منتجات أخرى. نحتفظ فيها مع الطلب الجديد؟');
-        final choice = await Get.dialog<String>(
+        final choice = await _askAiDialog<String>(task, token, 
           AlertDialog(
             title: const Text('السلة فيها منتجات سابقة'),
             content: const Text('بدك تضيف المنتج الجديد للسلة الحالية، أو تجهز طلباً جديداً يحتوي هذا المنتج فقط؟'),
@@ -194,15 +246,24 @@ class AiGuidedCheckout {
       await checkout.refreshForAiDraft();
       task.check(token);
 
-      // The checkout controller chooses only the existing default address.
+      // The customer's previously selected address is verified against the
+      // live account addresses; never blindly trust a saved numeric ID.
       await _waitForAddressLoad(checkout, task, token);
-      if (checkout.address.value == null ||
-          (checkout.addresses.length > 1 &&
-              !checkout.addresses.any((address) => address.isDefault))) {
-        // If there are several addresses with no explicit default, force
-        // a new selection instead of silently using the first one.
-        if (checkout.addresses.length > 1 &&
-            !checkout.addresses.any((address) => address.isDefault)) {
+      if (preferredAddressId != null) {
+        final matching = checkout.addresses.where((a) => a.id == preferredAddressId);
+        if (matching.isNotEmpty) {
+          checkout.selectAddress(matching.first);
+        } else {
+          checkout.address.value = null;
+        }
+      }
+      final hasAmbiguousDefault = preferredAddressId == null &&
+          checkout.addresses.length > 1 &&
+          !checkout.addresses.any((address) => address.isDefault);
+      if (checkout.address.value == null || hasAmbiguousDefault) {
+        // A user explicitly selected an address in the chat form. Do not
+        // override it merely because none of the account addresses is default.
+        if (hasAmbiguousDefault) {
           checkout.address.value = null;
         }
         task.question(token, 'أي عنوان توصيل بدك نستخدم؟ اختاره من الشاشة.');
@@ -217,7 +278,7 @@ class AiGuidedCheckout {
       // Services must have an appointment; never fabricate one.
       if (service && checkout.scheduledFor.value == null) {
         task.question(token, 'متى بدك موعد الخدمة؟');
-        final when = await _askServiceAppointment();
+        final when = await _askServiceAppointment(task, token);
         task.check(token);
         if (when == null) {
           return _fail(task, token, 'الخدمة تحتاج موعداً قبل حساب السعر.');
@@ -226,11 +287,22 @@ class AiGuidedCheckout {
         task.resume(token, 'تم حفظ موعد الخدمة.');
       }
 
-      // If more than one payment method is valid, ask rather than guess.
+      // Re-verify the payment choice made in the chat form. No payment is
+      // performed and the customer must still confirm on the review screen.
       final payments = checkout.paymentOptions;
-      if (payments.length > 1 || checkout.paymentMethod.value.isEmpty) {
+      if (preferredPaymentMethod != null) {
+        final matching = payments.where((p) =>
+            p.method == preferredPaymentMethod &&
+            p.gateway?.id == preferredPaymentGatewayId);
+        if (matching.isEmpty) {
+          return _fail(task, token, 'طريقة الدفع المختارة لم تعد متاحة. اختار طريقة أخرى من شاشة التوصيل.');
+        }
+        checkout.setPayment(matching.first);
+      }
+      if (checkout.paymentMethod.value.isEmpty ||
+          (preferredPaymentMethod == null && payments.length > 1)) {
         task.question(token, 'أي طريقة دفع تفضل؟ الدفع الفعلي يبقى بإيدك.');
-        final chosen = await _askPaymentMethod(payments);
+        final chosen = await _askPaymentMethod(task, token, payments);
         task.check(token);
         if (chosen == null) {
           return _fail(task, token, 'لازم تختار طريقة الدفع قبل عرض السعر.');
@@ -286,6 +358,40 @@ class AiGuidedCheckout {
     return explanation;
   }
 
+  /// A stop request closes ONLY a dialog opened by this assistant.
+  Future<T?> _askAiDialog<T>(AiTaskController task, int token,
+      Widget dialog, {bool barrierDismissible = false}) async {
+    task.check(token);
+    task.attachDialogDismissal(() {
+      if (Get.isDialogOpen == true) Get.back<T>();
+    });
+    try {
+      return await Get.dialog<T>(dialog, barrierDismissible: barrierDismissible);
+    } finally {
+      task.attachDialogDismissal(null);
+    }
+  }
+
+  /// Date/time pickers are Flutter-owned dialogs, not Get.dialog widgets.
+  /// Dismiss only while the assistant is awaiting this modal.
+  Future<T?> _askNativeAiModal<T>(AiTaskController task, int token,
+      BuildContext context, Future<T?> Function() open) async {
+    task.check(token);
+    final navigator = Navigator.of(context, rootNavigator: true);
+    bool awaiting = true;
+    task.attachDialogDismissal(() {
+      if (awaiting && navigator.mounted && navigator.canPop()) {
+        navigator.pop();
+      }
+    });
+    try {
+      return await open();
+    } finally {
+      awaiting = false;
+      task.attachDialogDismissal(null);
+    }
+  }
+
   Future<void> _visiblePause(AiTaskController task, int token) async {
     await Future<void>.delayed(const Duration(milliseconds: 800));
     task.check(token);
@@ -336,6 +442,7 @@ class AiGuidedCheckout {
   }
 
   Future<List<String>?> _askProductOption(
+      AiTaskController task, int token,
       ProductOption option,
       String productName,
       ) async {
@@ -343,7 +450,7 @@ class AiGuidedCheckout {
       return option.required ? null : <String>[];
     }
     if (option.type != ProductOptionType.multi) {
-      return Get.dialog<List<String>>(
+      return _askAiDialog<List<String>>(task, token,
         AlertDialog(
           title: Text('اختار ${option.label}'),
           content: ConstrainedBox(
@@ -371,7 +478,7 @@ class AiGuidedCheckout {
     }
 
     final selected = <String>{};
-    return Get.dialog<List<String>>(
+    return _askAiDialog<List<String>>(task, token,
       StatefulBuilder(
         builder: (context, update) => AlertDialog(
           title: Text('اختار ${option.label}'),
@@ -411,29 +518,30 @@ class AiGuidedCheckout {
     );
   }
 
-  Future<DateTime?> _askServiceAppointment() async {
+  Future<DateTime?> _askServiceAppointment(AiTaskController task, int token) async {
     final context = Get.context;
     if (context == null) return null;
     final now = DateTime.now();
     final first = DateTime(now.year, now.month, now.day + 1);
-    final day = await showDatePicker(
+    final day = await _askNativeAiModal<DateTime>(task, token, context, () => showDatePicker(
       context: context,
       firstDate: first,
       lastDate: first.add(const Duration(days: 30)),
       initialDate: first,
-    );
+    ));
+    task.check(token);
     if (day == null || !context.mounted) return null;
-    final time = await showTimePicker(
+    final time = await _askNativeAiModal<TimeOfDay>(task, token, context, () => showTimePicker(
       context: context,
       initialTime: const TimeOfDay(hour: 10, minute: 0),
-    );
+    ));
     if (time == null) return null;
     return DateTime(day.year, day.month, day.day, time.hour, time.minute);
   }
 
-  Future<PaymentOption?> _askPaymentMethod(List<PaymentOption> options) async {
+  Future<PaymentOption?> _askPaymentMethod(AiTaskController task, int token, List<PaymentOption> options) async {
     if (options.isEmpty) return null;
-    return Get.dialog<PaymentOption>(
+    return _askAiDialog<PaymentOption>(task, token,
       AlertDialog(
         title: const Text('اختار طريقة الدفع (لا يوجد دفع الآن)'),
         content: Column(

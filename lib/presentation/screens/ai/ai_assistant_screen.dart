@@ -6,6 +6,7 @@ import '../../../controllers/customer/ai_chat_controller.dart';
 import '../../../core/localization/ai_labels.dart';
 import '../../../data/models/ai/ai_chat_message.dart';
 import '../../../data/models/ai/ai_intent.dart';
+import '../../widgets/ai/ai_chat_form_card.dart';
 
 class AiAssistantScreen extends GetView<AiChatController> {
   const AiAssistantScreen({
@@ -153,6 +154,7 @@ class AiAssistantScreen extends GetView<AiChatController> {
                       message: message,
                       onOpen: controller.openItem,
                       onPrepare: controller.prepareOrder,
+                      chat: controller,
                       onSuggestion: (suggestion) => controller.send(
                         suggestion,
                       ),
@@ -351,6 +353,12 @@ class AiAssistantScreen extends GetView<AiChatController> {
       return labels.noVoice;
     }
 
+    if (code == 'form_step_failed') {
+      return labels.isArabic
+          ? 'تعذّر إكمال الخطوة من السيرفر؛ راجع اتصال الإنترنت وجرب مرة ثانية.'
+          : 'Could not complete the step; please retry.';
+    }
+
     if (code == 'order_preparation_failed') {
       return labels.isArabic
           ? 'تعذّر تجهيز الطلب. راجع بيانات المنتج والسلة.'
@@ -367,9 +375,11 @@ class _MessageBubble extends StatelessWidget {
     required this.onOpen,
     required this.onPrepare,
     required this.onSuggestion,
+    required this.chat,
   });
 
   final AiChatMessage message;
+  final AiChatController chat;
 
   final void Function(
     AiCatalogItem,
@@ -425,6 +435,12 @@ class _MessageBubble extends StatelessWidget {
             if (message.results.isNotEmpty)
               ...message.results.asMap().entries.map((entry) {
                 final item = entry.value;
+                // V8.1 includes vendor_name. Older builds got it in the
+                // description; hide that duplicate text when the field exists.
+                final description = item.vendorName.isEmpty
+                    ? item.description
+                    : item.description.replaceFirst(
+                        RegExp(r'\s*\|\s*المتجر:\s*[^|]*$'), '').trim();
 
                 return Card(
                   clipBehavior: Clip.antiAlias,
@@ -482,14 +498,22 @@ class _MessageBubble extends StatelessWidget {
                                     context,
                                   ).textTheme.titleSmall,
                                 ),
-                                if (item.description.isNotEmpty)
+                                if (description.isNotEmpty)
                                   Text(
-                                    item.description,
+                                    description,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: Theme.of(
                                       context,
                                     ).textTheme.bodySmall,
+                                  ),
+                                if (item.vendorName.isNotEmpty)
+                                  Text(
+                                    'المتجر: ${item.vendorName}',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Theme.of(context).textTheme.labelSmall
+                                        ?.copyWith(fontWeight: FontWeight.w600),
                                   ),
                                 if (item.price.isNotEmpty)
                                   Text(
@@ -531,13 +555,21 @@ class _MessageBubble extends StatelessWidget {
                           if (message.canPrepareOrder &&
                               (item.type == 'product' ||
                                   item.type == 'service'))
-                            FilledButton.tonal(
-                              onPressed: () => onPrepare(
-                                item,
-                                message.orderQuantity,
-                              ),
-                              child: const Text(
-                                'جهّز الطلب',
+                            SizedBox(
+                              width: 112,
+                              child: FilledButton.tonal(
+                                style: FilledButton.styleFrom(
+                                  minimumSize: const Size(0, 44),
+                                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                                ),
+                                onPressed: () => onPrepare(
+                                  item,
+                                  message.orderQuantity,
+                                ),
+                                child: const FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text('اختار للطلب'),
+                                ),
                               ),
                             )
                           else
@@ -551,6 +583,17 @@ class _MessageBubble extends StatelessWidget {
                   ),
                 );
               }),
+
+            // Real, validated radio / checkbox / quantity forms inside chat.
+            if (message.form != null)
+              AiChatFormCard(
+                key: ValueKey(message.form!.id),
+                form: message.form!,
+                enabled: !message.formAnswered &&
+                    chat.isFormActive(message.form!.id) &&
+                    !chat.isSubmittingForm.value,
+                onSubmit: (answers) => chat.submitForm(message.form!.id, answers),
+              ),
 
             // Follow-up suggestions.
             if (message.suggestions.isNotEmpty)

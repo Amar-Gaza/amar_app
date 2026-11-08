@@ -16,6 +16,7 @@ class AiTaskController extends GetxController {
   final steps = <String>[].obs;
   final stepNumber = 0.obs;
   int _generation = 0;
+  void Function()? _dismissAiDialog;
 
   bool get busy => phase.value == AiTaskPhase.running ||
       phase.value == AiTaskPhase.waitingForUser;
@@ -64,6 +65,7 @@ class AiTaskController extends GetxController {
 
   void finish(int token, String text) {
     check(token);
+    _dismissAiDialog = null;
     detail.value = text;
     steps.add(text);
     phase.value = AiTaskPhase.readyForReview;
@@ -71,19 +73,32 @@ class AiTaskController extends GetxController {
 
   void fail(int token, String text) {
     if (token != _generation || phase.value == AiTaskPhase.stopped) return;
+    _dismissAiDialog = null;
     detail.value = text;
     phase.value = AiTaskPhase.failed;
+  }
+
+  /// Called only while an assistant-owned selection dialog is visible.
+  /// It is deliberately NOT used for payment or unrelated app screens.
+  void attachDialogDismissal(void Function()? dismiss) {
+    _dismissAiDialog = dismiss;
   }
 
   void stop() {
     if (!busy) return;
     _generation++;
+    final dismiss = _dismissAiDialog;
+    _dismissAiDialog = null;
+    if (dismiss != null) {
+      try { dismiss(); } catch (_) { /* Cancellation remains effective. */ }
+    }
     phase.value = AiTaskPhase.stopped;
     detail.value = 'تم إيقاف مهمة المساعد. التغييرات التي أُجريت في السلة لم تُلغَ تلقائياً.';
   }
 
   void dismiss() {
     if (busy) return;
+    _dismissAiDialog = null;
     phase.value = AiTaskPhase.idle;
     steps.clear();
     title.value = '';

@@ -1,0 +1,202 @@
+TAP version 13
+# Subtest: health reports v8 and revision
+ok 1 - health reports v8 and revision
+  ---
+  duration_ms: 17.703193
+  type: 'test'
+  ...
+# Subtest: unknown route is 404
+ok 2 - unknown route is 404
+  ---
+  duration_ms: 0.360001
+  type: 'test'
+  ...
+# Subtest: non-POST chat rejects
+ok 3 - non-POST chat rejects
+  ---
+  duration_ms: 0.534954
+  type: 'test'
+  ...
+# Subtest: non-JSON rejected
+ok 4 - non-JSON rejected
+  ---
+  duration_ms: 0.331808
+  type: 'test'
+  ...
+# Subtest: missing secret rejected
+ok 5 - missing secret rejected
+  ---
+  duration_ms: 0.723838
+  type: 'test'
+  ...
+# Subtest: missing authorization rejected
+ok 6 - missing authorization rejected
+  ---
+  duration_ms: 0.444248
+  type: 'test'
+  ...
+# Subtest: invalid JSON rejected
+ok 7 - invalid JSON rejected
+  ---
+  duration_ms: 0.662945
+  type: 'test'
+  ...
+# Subtest: empty message rejected
+ok 8 - empty message rejected
+  ---
+  duration_ms: 0.520021
+  type: 'test'
+  ...
+# Subtest: message above 2000 rejected
+ok 9 - message above 2000 rejected
+  ---
+  duration_ms: 0.904709
+  type: 'test'
+  ...
+# Subtest: raw payload above 16000 rejected
+ok 10 - raw payload above 16000 rejected
+  ---
+  duration_ms: 1.555096
+  type: 'test'
+  ...
+# Subtest: invalid user token rejected before Gemini
+ok 11 - invalid user token rejected before Gemini
+  ---
+  duration_ms: 0.974323
+  type: 'test'
+  ...
+# Subtest: Masar authentication outage is 502
+ok 12 - Masar authentication outage is 502
+  ---
+  duration_ms: 0.5199
+  type: 'test'
+  ...
+# Subtest: greeting replies locally
+ok 13 - greeting replies locally
+  ---
+  duration_ms: 2.067801
+  type: 'test'
+  ...
+# Subtest: prepare order breaker with Arabic quantity
+ok 14 - prepare order breaker with Arabic quantity
+  ---
+  duration_ms: 5.056406
+  type: 'test'
+  ...
+# Subtest: numeric quantity and verified vendor names
+ok 15 - numeric quantity and verified vendor names
+  ---
+  duration_ms: 6.94995
+  type: 'test'
+  ...
+# Subtest: default quantity 1
+ok 16 - default quantity 1
+  ---
+  duration_ms: 1.99716
+  type: 'test'
+  ...
+# Subtest: reject quantity 40 before search
+ok 17 - reject quantity 40 before search
+  ---
+  duration_ms: 0.613953
+  type: 'test'
+  ...
+# Subtest: not a service when searching a circuit breaker
+ok 18 - not a service when searching a circuit breaker
+  ---
+  duration_ms: 1.712702
+  type: 'test'
+  ...
+# Subtest: sanitary fixture voice variation
+ok 19 - sanitary fixture voice variation
+  ---
+  duration_ms: 2.38974
+  type: 'test'
+  ...
+# Subtest: real vendor fallback on individual endpoint outage
+ok 20 - real vendor fallback on individual endpoint outage
+  ---
+  duration_ms: 1.539342
+  type: 'test'
+  ...
+# Subtest: catalog failure reported as 502
+ok 21 - catalog failure reported as 502
+  ---
+  duration_ms: 0.740312
+  type: 'test'
+  ...
+# Subtest: no match does not fabricate product
+ok 22 - no match does not fabricate product
+  ---
+  duration_ms: 1.16517
+  type: 'test'
+  ...
+# Subtest: show cart
+ok 23 - show cart
+  ---
+  duration_ms: 0.504608
+  type: 'test'
+  ...
+# Subtest: open home
+ok 24 - open home
+  ---
+  duration_ms: 0.502115
+  type: 'test'
+  ...
+# Subtest: browse categories
+ok 25 - browse categories
+  ---
+  duration_ms: 1.077128
+  type: 'test'
+  ...
+# Subtest: vendor search uses verified names
+ok 26 - vendor search uses verified names
+  ---
+  duration_ms: 1.591781
+  type: 'test'
+  ...
+# Subtest: open second result verifies it against Masar
+ok 27 - open second result verifies it against Masar
+  ---
+  duration_ms: 0.969656
+  type: 'test'
+  ...
+# Subtest: open invalid result requests clarification
+ok 28 - open invalid result requests clarification
+  ---
+  duration_ms: 0.917097
+  type: 'test'
+  ...
+# Subtest: multiturn Gemini response preserves pending form
+ok 29 - multiturn Gemini response preserves pending form
+  ---
+  duration_ms: 1.8711
+  type: 'test'
+  ...
+# Subtest: malformed model reply rejected
+ok 30 - malformed model reply rejected
+  ---
+  duration_ms: 0.9116
+  type: 'test'
+  ...
+# Subtest: model rate limit reported without unsafe fallback
+ok 31 - model rate limit reported without unsafe fallback
+  ---
+  duration_ms: 0.910448
+  type: 'test'
+  ...
+# Subtest: no Masar order/payment write across representative intents
+ok 32 - no Masar order/payment write across representative intents
+  ---
+  duration_ms: 4.488973
+  type: 'test'
+  ...
+1..32
+# tests 32
+# suites 0
+# pass 32
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 137.320104
