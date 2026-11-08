@@ -13,6 +13,7 @@ import '../../data/services/customer/auth_service.dart';
 import '../../data/services/customer/profile_service.dart';
 import '../../data/services/shared/device_location_service.dart';
 import '../customer/cart_controller.dart';
+import 'push_controller.dart';
 
 class SessionController extends GetxController {
   SessionController(
@@ -23,9 +24,11 @@ class SessionController extends GetxController {
     AppPreferences? preferences,
     CartController? cart,
     DeviceLocationService? location,
+    PushController? push,
   })  : _preferences = preferences,
         _cart = cart,
-        _location = location;
+        _location = location,
+        _push = push;
 
   final SecureTokenStorage _tokens;
   final AuthService _auth;
@@ -35,6 +38,7 @@ class SessionController extends GetxController {
   final AppPreferences? _preferences;
   final CartController? _cart;
   final DeviceLocationService? _location;
+  final PushController? _push;
 
   final Rxn<User> user = Rxn<User>();
   final RxBool isAuthenticated = false.obs;
@@ -78,6 +82,7 @@ class SessionController extends GetxController {
       await _activateLocalCustomer(user.value!.id);
 
       isAuthenticated.value = true;
+      unawaited(_push?.register(SessionRole.customer));
 
       return true;
     } on ApiFailure catch (failure) {
@@ -86,6 +91,7 @@ class SessionController extends GetxController {
       final keep = failure.code != ApiErrorCodes.unauthenticated;
 
       isAuthenticated.value = keep;
+      if (keep) unawaited(_push?.register(SessionRole.customer));
 
       return keep;
     }
@@ -104,6 +110,7 @@ class SessionController extends GetxController {
 
     user.value = signedIn;
     isAuthenticated.value = true;
+    unawaited(_push?.register(SessionRole.customer));
   }
 
   void updateUser(User updated) {
@@ -111,6 +118,8 @@ class SessionController extends GetxController {
   }
 
   Future<void> signOut() async {
+    // Before logout, while the token still authenticates.
+    await _push?.unregister(SessionRole.customer);
     try {
       await _auth.logout();
     } on ApiFailure {
@@ -120,7 +129,7 @@ class SessionController extends GetxController {
 
     await _clear();
 
-    Get.offAllNamed<void>(AppRoutes.phone);
+    unawaited(Get.offAllNamed<void>(AppRoutes.phone));
   }
 
   Future<void> deleteAccount() async {
@@ -144,10 +153,11 @@ class SessionController extends GetxController {
 
     await _clear();
 
-    Get.offAllNamed<void>(AppRoutes.phone);
+    unawaited(Get.offAllNamed<void>(AppRoutes.phone));
   }
 
   Future<void> _clear() async {
+    _push?.forget(SessionRole.customer);
     await _tokens.clear(SessionRole.customer);
 
     await _activateLocalCustomer(null);

@@ -200,7 +200,7 @@
       }
     }
   },
-  "orderItemsCount": "{count} items",
+  "orderItemsCount": "{count, plural, =0{No items} =1{1 item} other{{count} items}}",
   "@orderItemsCount": {
     "placeholders": {
       "count": {
@@ -329,7 +329,7 @@
   "productUnavailableNow": "Currently unavailable",
   "productVendor": "Store",
   "productCategory": "Category",
-  "productIndicativePrice": "Indicative price, confirmed by the server",
+  "productIndicativePrice": "Price",
   "productPriceAfterInspection": "Final price after inspection",
   "productOptionsTitle": "Product options",
   "productOptionsHint": "Choose the required specifications",
@@ -360,7 +360,7 @@
   "optionsContinue": "Continue to quantity",
   "quantityTitle": "Quantity",
   "quantityLabel": "Quantity",
-  "quantityServerPriced": "Repriced by the server",
+  "quantityServerPriced": "Delivery is calculated from your address",
   "quantityStock": "In stock: {count}",
   "@quantityStock": {
     "placeholders": {
@@ -370,18 +370,18 @@
     }
   },
   "quantityStockHint": "You cannot exceed the available stock.",
-  "quantityPriceNote": "Prices are indicative; the server calculates the final price at quote time.",
+  "quantityPriceNote": "The product price is fixed; delivery shows in the cost summary.",
   "commonContinue": "Continue",
   "checkoutStepCart": "Cart",
   "checkoutStepDelivery": "Delivery",
-  "checkoutStepQuote": "Quote",
+  "checkoutStepQuote": "Cost",
   "checkoutStepConfirm": "Confirm",
   "checkoutPayment": "Payment method",
   "paymentCashOnDelivery": "Cash on delivery",
   "cartEmptyTitle": "Your cart is empty",
   "cartEmptyMessage": "Add products from the stores and they will appear here.",
   "cartVendorFallback": "Store",
-  "cartLinesCount": "{count} items in the cart",
+  "cartLinesCount": "{count, plural, =1{1 item in the cart} other{{count} items in the cart}}",
   "@cartLinesCount": {
     "placeholders": {
       "count": {
@@ -392,7 +392,7 @@
   "cartClear": "Clear cart",
   "cartRemove": "Remove",
   "cartNoOptions": "No options",
-  "cartPriceByServer": "Price confirmed by the quote",
+  "cartPriceByServer": "Delivery is added in the cost summary",
   "cartQty": "Qty: {qty}",
   "@cartQty": {
     "placeholders": {
@@ -401,7 +401,7 @@
       }
     }
   },
-  "cartTotalNote": "No confirmed total before the quote. The server prices every line and option.",
+  "cartTotalNote": "The total shows in the cost summary after you pick the address and payment.",
   "cartTotalLabel": "Total",
   "cartTotalLater": "Calculated next",
   "deliveryTitle": "Pickup and delivery",
@@ -409,7 +409,7 @@
   "deliveryAddress": "Delivery address",
   "deliveryChooseAddress": "Choose address",
   "deliveryTime": "Delivery time",
-  "deliveryRequestQuote": "Get a quote",
+  "deliveryRequestQuote": "See the cost",
   "scheduleNow": "Now",
   "schedulePick": "Pick a time",
   "detailsTitle": "Additional details",
@@ -452,7 +452,7 @@
   "addressDetails": "More details",
   "addressDetailsHint": "Street, building, floor...",
   "addressMakeDefault": "Set as default",
-  "addressZoneNote": "Addresses outside the service area are rejected by the server.",
+  "addressZoneNote": "Addresses outside the service area cannot be saved.",
   "addressSave": "Save address",
   "locationServiceOff": "Location services are off. Turn them on and try again.",
   "locationDenied": "We need location permission to set the address.",
@@ -466,10 +466,10 @@
   "couponCodeLabel": "Coupon code",
   "couponCodeHint": "AMAR30",
   "couponCheck": "Check",
-  "couponCheckNote": "Checking only confirms the code; the final discount shows in the quote.",
+  "couponCheckNote": "Checking only confirms the code; the final discount shows in the cost summary.",
   "couponInvalidTitle": "Invalid coupon",
   "couponValidTitle": "Coupon is valid",
-  "couponValidMessage": "The code is sent with the quote so the server applies the final discount.",
+  "couponValidMessage": "The code will be applied; the final discount shows in the cost summary.",
   "couponValue": "Value",
   "couponMaxDiscount": "Max discount",
   "couponMinTotal": "Minimum order",
@@ -484,8 +484,8 @@
       }
     }
   },
-  "quoteTitle": "Quote",
-  "quoteValidFor": "Quote valid for {time}",
+  "quoteTitle": "Cost summary",
+  "quoteValidFor": "Estimated cost valid for {time}",
   "@quoteValidFor": {
     "placeholders": {
       "time": {
@@ -493,23 +493,24 @@
       }
     }
   },
-  "quoteValidHint": "After it expires you need a new quote.",
-  "quoteDetailsTitle": "Price details",
+  "quoteValidHint": "This is the final amount; after you send it the store starts preparing your order.",
+  "quoteServiceHint": "The store may set the final price after inspection; any change needs your approval first.",
+  "quoteDetailsTitle": "Cost details",
   "quoteItemsTotal": "Items total",
   "quoteDeliveryFee": "Delivery fee",
   "quoteDiscount": "Discount",
   "quoteTotal": "Total",
   "quoteDistance": "Distance",
   "quoteReview": "Review order",
-  "quoteExpiredTitle": "The quote has expired",
-  "quoteUsedTitle": "The quote was already used",
+  "quoteExpiredTitle": "The estimated cost has expired",
+  "quoteUsedTitle": "This summary was already used",
   "quoteExpiredMessage": "Prices change; request a new quote to continue.",
-  "quoteRefresh": "Get a new quote",
+  "quoteRefresh": "Recalculate cost",
   "quoteBackToCart": "Go back",
   "reviewTitle": "Review order",
   "reviewProducts": "Products",
   "reviewDeliveryPayment": "Delivery and payment",
-  "reviewConfirm": "Confirm order · {total}",
+  "reviewConfirm": "Send order · {total}",
   "@reviewConfirm": {
     "placeholders": {
       "total": {
@@ -819,6 +820,8 @@
   "failureAppSetup": "The app is not set up correctly. Please contact support.",
   "failureDuplicateRequest": "This request was already sent. Refresh and check it.",
   "failureQuoteChanged": "The store sent a new price. Review it and accept again.",
+  "failureOfferChanged": "The offer price changed. Review the new price and approve again.",
+  "failureOfferExpired": "This offer has expired. Wait for a new offer from the store.",
   "failureNoQuoteYet": "The store has not set the price yet.",
   "failureNotTransferOrder": "This order is paid in cash and needs no transfer receipt.",
   "failureServer": "The server ran into a problem. Please try again shortly.",
@@ -882,5 +885,78 @@
   "driverCall": "Call",
   "driverStore": "Store",
   "driverOrderDetails": "Order details",
-  "driverContactSubtitle": "{role} · {order}"
+  "driverContactSubtitle": "{role} · {order}",
+  "orderHintAwaitingPricing": "The store is reviewing your order to set the final price; you will approve it.",
+  "@orderHintAwaitingPricing": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintPriced": "The final price is ready. Review and approve it to continue.",
+  "@orderHintPriced": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintAwaitingPayment": "Transfer the amount and upload the receipt to continue.",
+  "@orderHintAwaitingPayment": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintPaymentReview": "We are checking your receipt; then your order goes to the store.",
+  "@orderHintPaymentReview": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintAwaitingVendor": "Your order reached the store and is waiting for it to accept and start preparing.",
+  "@orderHintAwaitingVendor": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintPreparing": "The store is preparing your order.",
+  "@orderHintPreparing": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintPending": "Your order is ready; we are finding a driver.",
+  "@orderHintPending": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintAccepted": "A driver accepted your order and is heading to the store.",
+  "@orderHintAccepted": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintPickedUp": "The driver picked up your order.",
+  "@orderHintPickedUp": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintOnTheWay": "The driver is on the way to you.",
+  "@orderHintOnTheWay": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintArrived": "The driver has arrived. Have your delivery code ready.",
+  "@orderHintArrived": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintServiceRequested": "Your request reached the store; it will confirm the visit time.",
+  "@orderHintServiceRequested": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintServiceInspection": "The store will send the price and visit time for your approval.",
+  "@orderHintServiceInspection": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintServiceQuoted": "The price and visit time are ready. Approve or reject them.",
+  "@orderHintServiceQuoted": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintServiceScheduled": "The visit time is confirmed.",
+  "@orderHintServiceScheduled": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintTechnicianOnWay": "The technician is on the way.",
+  "@orderHintTechnicianOnWay": {
+    "description": "Short explanation under the order status chip"
+  },
+  "orderHintServiceInProgress": "The technician is working on your request.",
+  "@orderHintServiceInProgress": {
+    "description": "Short explanation under the order status chip"
+  },
+  "offerLabelSent": "Awaiting your approval",
+  "offerLabelAccepted": "Approved",
+  "offerLabelRejected": "Rejected",
+  "offerLabelExpired": "Expired",
+  "pushView": "View"
 }

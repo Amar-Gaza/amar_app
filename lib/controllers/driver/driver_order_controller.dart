@@ -19,8 +19,11 @@ class DriverOrderController extends GetxController {
     this._uploads,
     this._location,
     this._session,
-    this.orderId,
-  );
+    this.orderId, {
+    DriverOrder? initial,
+  }) {
+    order.value = initial;
+  }
 
   final DriverOrderService _orders;
   final UploadService _uploads;
@@ -70,6 +73,9 @@ class DriverOrderController extends GetxController {
   }
 
   Future<void> load() async {
+    // The server shows an order's details only after the driver accepts
+    // it; an offer keeps the data from the available list.
+    if (order.value?.isMine == false) return;
     isLoading.value = order.value == null;
     failure.value = null;
     try {

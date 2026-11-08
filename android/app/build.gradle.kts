@@ -5,6 +5,11 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Firebase config is git-ignored. Without it the app builds and push stays off.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 // Maps key comes from the git-ignored env file: prod when present, else dev.
 val envFile = listOf("env/prod.json", "env/dev.json")
     .map { rootProject.file("../$it") }

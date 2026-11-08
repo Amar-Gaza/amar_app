@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -5,6 +7,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/customer/cart_controller.dart';
 import '../../../controllers/customer/checkout_controller.dart';
+import '../../../controllers/customer/orders_controller.dart';
 import '../../../core/localization/error_message_resolver.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -46,6 +49,9 @@ class ReviewScreen extends GetView<CheckoutController> {
 
   Future<void> _submit() async {
     if (!await controller.placeOrder()) return;
+    if (Get.isRegistered<OrdersController>()) {
+      unawaited(Get.find<OrdersController>().showNewOrder());
+    }
     await Get.offNamedUntil<void>(
       AppRoutes.checkoutSuccess,
       (route) => route.settings.name == AppRoutes.home,

@@ -2,13 +2,19 @@ import 'package:get/get.dart';
 
 import '../../core/constants/app_defaults.dart';
 import '../../core/network/api_failure.dart';
+import '../../core/storage/secure_token_storage.dart';
 import '../../data/models/masar/masar_models.dart';
 import '../../data/services/shared/notification_service.dart';
+import '../shared/push_controller.dart';
 
 class NotificationsController extends GetxController {
-  NotificationsController(this._service);
+  NotificationsController(
+    this._service, {
+    this.role = SessionRole.customer,
+  });
 
   final NotificationService _service;
+  final SessionRole role;
 
   final RxList<AppNotification> items = <AppNotification>[].obs;
   final RxBool isLoading = false.obs;
@@ -45,7 +51,12 @@ class NotificationsController extends GetxController {
     }
   }
 
+  /// Reports the open, then shows the order the notification is about.
   Future<void> open(AppNotification notification) async {
+    if (Get.isRegistered<PushController>()) {
+      Get.find<PushController>()
+          .openTarget(role, notification.data, fromInbox: true);
+    }
     if (notification.openedAt != null) return;
     try {
       final updated = await _service.markOpened(notification.id);

@@ -7,6 +7,7 @@ import '../../../controllers/driver/driver_orders_controller.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../data/models/masar/masar_models.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/error_banner.dart';
 import '../../widgets/common/skeleton_box.dart';
@@ -26,8 +27,10 @@ class DriverHomeTab extends GetView<DriverHomeController> {
 
   static const double _heroSkeleton = 200;
 
-  Future<void> _open(int id) async {
-    await Get.toNamed<void>(AppRoutes.driverOrder, arguments: id);
+  /// [offer] is passed for an available order, whose details the server
+  /// returns only after it is accepted.
+  Future<void> _open(int id, {DriverOrder? offer}) async {
+    await Get.toNamed<void>(AppRoutes.driverOrder, arguments: offer ?? id);
     await controller.refreshAll();
   }
 
@@ -120,7 +123,7 @@ class DriverHomeTab extends GetView<DriverHomeController> {
                     padding: const EdgeInsets.only(bottom: AppSpacing.md),
                     child: AvailableOrderCard(
                       order: order,
-                      onAccept: () => _open(order.id),
+                      onAccept: () => _open(order.id, offer: order),
                     ),
                   ),
             ] else ...[
