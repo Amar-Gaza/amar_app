@@ -3,369 +3,415 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/customer/ai_chat_controller.dart';
-import '../../../core/localization/ai_labels.dart';
+import '../../../controllers/customer/ai_address_command.dart';
 import '../../../data/models/ai/ai_chat_message.dart';
 import '../../../data/models/ai/ai_intent.dart';
 import '../../widgets/ai/ai_chat_form_card.dart';
 
+/// A warm, premium conversational experience. This screen changes only AI UI;
+/// the app's checkout and address routes remain the source of truth.
 class AiAssistantScreen extends GetView<AiChatController> {
-  const AiAssistantScreen({
-    super.key,
-  });
+  const AiAssistantScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final labels = AiLabels(context);
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(labels.title),
-        actions: [
-          Obx(
-            () => IconButton(
+    final colors = Theme.of(context).colorScheme;
+    return Obx(() {
+      final ar = controller.chatLanguage.value != 'en';
+      String t(String arabic, String english) => ar ? arabic : english;
+      return Scaffold(
+        backgroundColor: colors.surface,
+        appBar: AppBar(
+          backgroundColor: colors.surface,
+          elevation: 0,
+          titleSpacing: 4,
+          title: Row(children: [
+            const _AmarMark(size: 42),
+            const SizedBox(width: 9),
+            Flexible(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(t('عَمّار الذكي', 'Amar AI'),
+                  maxLines: 1, overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w800)),
+                Row(mainAxisSize: MainAxisSize.min, children: [
+                  Container(width: 6, height: 6, decoration: const BoxDecoration(
+                    color: Color(0xff28bd8b), shape: BoxShape.circle)),
+                  const SizedBox(width: 5),
+                  Flexible(child: Text(t('مساعدك في المنتجات والخدمات', 'Products & services assistant'),
+                    maxLines: 1, overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelSmall)),
+                ]),
+              ],
+            )),
+          ]),
+          actions: [
+            IconButton(
               tooltip: controller.voiceReplies.value
-                  ? labels.speakerOn
-                  : labels.speakerOff,
-              icon: Icon(
-                controller.voiceReplies.value
-                    ? Icons.volume_up
-                    : Icons.volume_off,
+                  ? t('إيقاف الرد الصوتي', 'Turn off spoken replies')
+                  : t('تفعيل الرد الصوتي', 'Turn on spoken replies'),
+              style: IconButton.styleFrom(
+                backgroundColor: controller.voiceReplies.value
+                    ? colors.primaryContainer : null,
               ),
               onPressed: controller.toggleVoiceReplies,
+              icon: Icon(controller.voiceReplies.value
+                  ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+                  color: controller.voiceReplies.value ? colors.primary : null),
             ),
-          ),
-          IconButton(
-            tooltip: labels.clear,
-            icon: const Icon(
-              Icons.delete_outline,
-            ),
-            onPressed: () => Get.dialog<void>(
-              AlertDialog(
-                title: Text(labels.clear),
-                content: Text(
-                  labels.isArabic
-                      ? 'بدك تمسح رسائل المساعد المحفوظة على هذا الجهاز؟'
-                      : 'Clear saved messages on this device?',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Get.back<void>(),
-                    child: Text(
-                      labels.isArabic ? 'إلغاء' : 'Cancel',
-                    ),
-                  ),
-                  FilledButton(
-                    onPressed: () {
-                      controller.clearHistory();
-                      Get.back<void>();
-                    },
-                    child: Text(labels.clear),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() {
-                if (controller.messages.isEmpty) {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(
-                        30,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.smart_toy_outlined,
-                            size: 48,
-                            color: colors.primary,
-                          ),
-                          const SizedBox(
-                            height: 14,
-                          ),
-                          Text(
-                            labels.welcome,
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 6,
-                            children: [
-                              ActionChip(
-                                label: const Text(
-                                  'بدي شركات سباكة',
-                                ),
-                                onPressed: () => controller.send(
-                                  'بدي شركات سباكة',
-                                ),
-                              ),
-                              ActionChip(
-                                label: const Text(
-                                  'دورلي على حداد',
-                                ),
-                                onPressed: () => controller.send(
-                                  'دورلي على حداد',
-                                ),
-                              ),
-                              ActionChip(
-                                label: const Text(
-                                  'شو الأقسام عندكم؟',
-                                ),
-                                onPressed: () => controller.send(
-                                  'شو الأقسام عندكم؟',
-                                ),
-                              ),
-                              ActionChip(
-                                label: const Text(
-                                  'اطلبلي كورس إفرنجي',
-                                ),
-                                onPressed: () => controller.send(
-                                  'اطلبلي كورس إفرنجي',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+            PopupMenuButton<String>(
+              tooltip: t('اللغة والإعدادات', 'Language & settings'),
+              icon: const Icon(Icons.more_vert_rounded),
+              onSelected: (value) {
+                if (value == 'ar' || value == 'en') {
+                  controller.setChatLanguage(value);
+                } else if (value == 'clear') {
+                  _confirmClear(context, ar);
                 }
-
-                return ListView.builder(
-                  reverse: true,
-                  padding: const EdgeInsets.all(16),
-                  itemCount: controller.messages.length,
-                  itemBuilder: (_, index) {
-                    final message = controller
-                        .messages[controller.messages.length - 1 - index];
-
-                    return _MessageBubble(
-                      message: message,
-                      onOpen: controller.openItem,
-                      onPrepare: controller.prepareOrder,
-                      chat: controller,
-                      onSuggestion: (suggestion) => controller.send(
-                        suggestion,
-                      ),
-                    );
-                  },
-                );
-              }),
-            ),
-
-            // Error messages.
-            Obx(() {
-              final error = controller.errorCode.value;
-
-              if (error == null) {
-                return const SizedBox.shrink();
-              }
-
-              final description = _errorText(
-                labels,
-                error,
-              );
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 5,
-                ),
-                child: Text(
-                  kDebugMode ? '$description\nError: $error' : description,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: colors.error,
-                    fontSize: 12,
-                  ),
-                ),
-              );
-            }),
-
-            // Guided checkout progress.
-            Obx(
-              () => controller.isPreparingOrder.value
-                  ? Padding(
-                      padding: const EdgeInsets.all(
-                        10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Flexible(
-                            child: Text(
-                              controller.orderProgress.value,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ),
-
-            // Voice listening state.
-            Obx(
-              () => controller.isListening.value
-                  ? Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: Text(
-                        labels.listening,
-                        style: TextStyle(
-                          color: colors.primary,
-                        ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ),
-
-            // Input and microphone.
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                12,
-                8,
-                12,
-                8,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: controller.input,
-                      minLines: 1,
-                      maxLines: 4,
-                      textInputAction: TextInputAction.send,
-                      decoration: InputDecoration(
-                        hintText: labels.hint,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 11,
-                        ),
-                      ),
-                      onSubmitted: (_) => controller.send(),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  Obx(
-                    () => IconButton.filledTonal(
-                      tooltip: controller.isListening.value
-                          ? labels.stopListen
-                          : labels.listen,
-                      onPressed: controller.isSending.value
-                          ? null
-                          : controller.toggleVoice,
-                      icon: Icon(
-                        controller.isListening.value
-                            ? Icons.stop_circle
-                            : Icons.mic,
-                      ),
-                    ),
-                  ),
-                  Obx(
-                    () => IconButton.filled(
-                      tooltip: labels.send,
-                      onPressed: controller.isSending.value
-                          ? null
-                          : () => controller.send(),
-                      icon: controller.isSending.value
-                          ? const SizedBox.square(
-                              dimension: 17,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Icon(
-                              Icons.send,
-                            ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 5,
-              ),
-              child: Text(
-                labels.disclaimer,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  fontSize: 9,
-                ),
-              ),
+              },
+              itemBuilder: (context) => [
+                CheckedPopupMenuItem(value: 'ar', checked: ar,
+                  child: const Text('العربية')),
+                CheckedPopupMenuItem(value: 'en', checked: !ar,
+                  child: const Text('English')),
+                const PopupMenuDivider(),
+                PopupMenuItem(value: 'clear',
+                  child: Text(t('مسح المحادثة', 'Clear chat'))),
+              ],
             ),
           ],
         ),
+        body: Directionality(
+          textDirection: ar ? TextDirection.rtl : TextDirection.ltr,
+          child: SafeArea(
+          child: Column(children: [
+            Expanded(child: Obx(() {
+              if (controller.messages.isEmpty) {
+                return _WelcomePanel(
+                  arabic: ar,
+                  onTap: controller.send,
+                  onAddress: () => controller.openAddressFlow(
+                    AiAddressCommand.select),
+                );
+              }
+              return ListView.builder(
+                reverse: true,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: const EdgeInsets.fromLTRB(14, 16, 14, 10),
+                itemCount: controller.messages.length,
+                itemBuilder: (_, index) {
+                  final message = controller.messages[
+                    controller.messages.length - 1 - index];
+                  return _MessageBubble(
+                    message: message,
+                    onOpen: controller.openItem,
+                    onPrepare: controller.prepareOrder,
+                    chat: controller,
+                    onSuggestion: controller.send,
+                  );
+                },
+              );
+            })),
+            Obx(() {
+              final code = controller.errorCode.value;
+              if (code == null) return const SizedBox.shrink();
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(14, 4, 14, 6),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: colors.errorContainer,
+                  ),
+                  child: Row(children: [
+                    Icon(Icons.info_outline, color: colors.onErrorContainer, size: 19),
+                    const SizedBox(width: 9),
+                    Expanded(child: Text(
+                      kDebugMode ? '${_errorText(ar, code)} ($code)' : _errorText(ar, code),
+                      style: TextStyle(color: colors.onErrorContainer, fontSize: 12),
+                    )),
+                  ]),
+                ),
+              );
+            }),
+            Obx(() => controller.isPreparingOrder.value
+              ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 14),
+                child: Row(children: [
+                  const SizedBox.square(dimension: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2)),
+                  const SizedBox(width: 10),
+                  Expanded(child: Text(controller.orderProgress.value,
+                    style: Theme.of(context).textTheme.bodySmall)),
+                ]),
+              ) : const SizedBox.shrink()),
+            Obx(() => controller.isListening.value
+              ? Padding(padding: const EdgeInsets.all(6),
+                  child: Text(t('أنا بسمعك الآن…', 'I am listening…'),
+                    style: TextStyle(color: colors.primary)))
+              : const SizedBox.shrink()),
+            Container(
+              padding: const EdgeInsets.fromLTRB(12, 9, 12, 6),
+              decoration: BoxDecoration(
+                color: colors.surface,
+                border: Border(top: BorderSide(
+                  color: colors.outlineVariant.withValues(alpha: 0.5))),
+              ),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  IconButton(
+                    tooltip: t('اختيار عنوان', 'Choose address'),
+                    onPressed: controller.isNavigatingAddress.value
+                        ? null : () => controller.openAddressFlow(
+                            AiAddressCommand.select),
+                    icon: Icon(Icons.add_location_alt_outlined,
+                      color: colors.primary),
+                  ),
+                  Expanded(child: TextField(
+                    controller: controller.input,
+                    minLines: 1, maxLines: 4,
+                    textInputAction: TextInputAction.send,
+                    textCapitalization: TextCapitalization.sentences,
+                    onSubmitted: (_) => controller.send(),
+                    decoration: InputDecoration(
+                      hintText: t('احكيلي شو بدك…', 'Ask Amar anything…'),
+                      filled: true,
+                      fillColor: colors.surfaceContainerLow,
+                      contentPadding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(26),
+                        borderSide: BorderSide.none),
+                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(26),
+                        borderSide: BorderSide(color: colors.primary, width: 1.3)),
+                    ),
+                  )),
+                  const SizedBox(width: 7),
+                  IconButton.filledTonal(
+                    tooltip: controller.isListening.value
+                        ? t('إيقاف الاستماع', 'Stop listening')
+                        : t('تحدث', 'Speak'),
+                    onPressed: controller.isSending.value || controller.isNavigatingAddress.value
+                        ? null : controller.toggleVoice,
+                    icon: Icon(controller.isListening.value
+                      ? Icons.stop_circle_outlined : Icons.mic_none_rounded),
+                  ),
+                  const SizedBox(width: 6),
+                  IconButton.filled(
+                    tooltip: t('إرسال', 'Send'),
+                    onPressed: controller.isSending.value ||
+                            controller.isNavigatingAddress.value
+                        ? null : () => controller.send(),
+                    icon: controller.isSending.value
+                        ? const SizedBox.square(dimension: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.arrow_upward_rounded),
+                  ),
+                ]),
+                const SizedBox(height: 5),
+                Text(t('عَمّار يجهز الطلب، وإنت وحدك بتأكد الشراء والدفع.',
+                  'Amar prepares your order. Only you confirm or pay.'),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: colors.onSurfaceVariant, fontSize: 10),
+                  textAlign: TextAlign.center),
+              ]),
+            ),
+          ]),
+        )),
+      );
+    });
+  }
+
+  void _confirmClear(BuildContext context, bool ar) {
+    Get.dialog<void>(AlertDialog(
+      title: Text(ar ? 'مسح المحادثة' : 'Clear conversation'),
+      content: Text(ar
+          ? 'بدك تمسح الرسائل المحفوظة على هذا الجهاز؟'
+          : 'Clear the chat history saved on this device?'),
+      actions: [
+        TextButton(onPressed: () => Get.back<void>(),
+          child: Text(ar ? 'إلغاء' : 'Cancel')),
+        FilledButton(onPressed: () {
+          controller.clearHistory();
+          Get.back<void>();
+        }, child: Text(ar ? 'مسح' : 'Clear')),
+      ],
+    ));
+  }
+
+  String _errorText(bool ar, String code) {
+    String t(String arabic, String english) => ar ? arabic : english;
+    if (code.startsWith('unauthenticated')) {
+      return t('سجّل الدخول أولاً.', 'Please sign in first.');
+    }
+    if (code == 'speech_timeout') {
+      return t('ما سمعت كلام واضح؛ جرّب الميكروفون مرة ثانية.',
+        'No clear speech detected. Please try the microphone again.');
+    }
+    if (code == 'speech_language_missing') {
+      return t('التعرّف على اللغة العربية غير متوفر على الجهاز.',
+        'Speech recognition for this language is not installed.');
+    }
+    if (code == 'speech_wrong_language') {
+      return t('التعرّف سمع لغة مختلفة. جرّب مرة ثانية.',
+        'Speech was recognized in a different language.');
+    }
+    if (code == 'speech_voice_missing') {
+      return t('الصوت غير مثبت على الجهاز؛ المحادثة المكتوبة بتضل شغالة.',
+        'This voice is not installed. Text chat remains available.');
+    }
+    if (code == 'address_navigation_failed') {
+      return t('تعذّر فتح أو تأكيد العنوان المحفوظ.',
+        'Unable to open or verify your saved address.');
+    }
+    if (code == 'form_step_failed') {
+      return t('تعذّر إكمال الخطوة؛ جرّب مرة ثانية.',
+        'Could not complete the step. Please retry.');
+    }
+    if (code == 'order_preparation_failed') {
+      return t('تعذّر تجهيز الطلب؛ راجع السلة والمنتج.',
+        'Could not prepare your order. Check the cart and product.');
+    }
+    return t('المساعد مش متاح حالياً؛ جرّب مرة ثانية.',
+      'Assistant unavailable. Please retry.');
+  }
+
+}
+
+class _AmarMark extends StatelessWidget {
+  const _AmarMark({this.size = 60});
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.94, end: 1.0),
+      duration: const Duration(milliseconds: 800),
+      curve: Curves.easeOutBack,
+      builder: (context, scale, child) => Transform.scale(scale: scale, child: child),
+      child: Container(
+        width: size, height: size,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft, end: Alignment.bottomRight,
+            colors: [colors.primary, colors.tertiary]),
+          borderRadius: BorderRadius.circular(size * 0.31),
+          boxShadow: [BoxShadow(color: colors.primary.withValues(alpha: 0.24),
+            blurRadius: 15, offset: const Offset(0, 6))],
+        ),
+        child: Stack(alignment: Alignment.center, children: [
+          Icon(Icons.smart_toy_rounded, size: size * 0.55, color: colors.onPrimary),
+          Positioned(right: size * 0.12, top: size * 0.09,
+            child: Icon(Icons.auto_awesome_rounded,
+              size: size * 0.22, color: Colors.white)),
+        ]),
       ),
     );
   }
+}
 
-  String _errorText(
-    AiLabels labels,
-    String code,
-  ) {
-    if (code.startsWith(
-      'unauthenticated',
-    )) {
-      return labels.login;
-    }
+class _WelcomePanel extends StatelessWidget {
+  const _WelcomePanel({required this.arabic, required this.onTap,
+    required this.onAddress});
+  final bool arabic;
+  final Future<void> Function(String) onTap;
+  final VoidCallback onAddress;
 
-    if (code == 'speech_timeout') {
-      return labels.noSpeech;
-    }
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    String t(String ar, String en) => arabic ? ar : en;
+    return ListView(padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
+      children: [
+        Container(
+          padding: const EdgeInsets.all(22),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(26),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft, end: Alignment.bottomRight,
+              colors: [colors.primaryContainer,
+                colors.surfaceContainerHigh]),
+            border: Border.all(color: colors.primary.withValues(alpha: 0.12)),
+          ),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const _AmarMark(size: 68),
+            const SizedBox(height: 22),
+            Text(t('أهلاً، أنا عَمّار ✨', 'Hey there, I’m Amar ✨'),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: colors.onSurface, fontWeight: FontWeight.w800)),
+            const SizedBox(height: 8),
+            Text(t('احكيلي بطريقتك! بدورلك على منتجات وخدمات حقيقية، وبمشي معك بالطلب خطوة بخطوة.',
+              'Tell me what you need. I can find real products and services and guide you through checkout.'),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                height: 1.55, color: colors.onSurfaceVariant)),
+          ]),
+        ),
+        const SizedBox(height: 24),
+        Text(t('كيف بقدر أساعدك اليوم؟', 'What can I help you with?'),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w800)),
+        const SizedBox(height: 12),
+        _QuickTile(icon: Icons.shopping_bag_outlined,
+          title: t('اطلب منتج', 'Order a product'),
+          subtitle: t('ابحث عن المنتجات والأسعار', 'Browse real products and prices'),
+          onTap: () => onTap(t('بدي أطلب قاطع كهربائي عدد 2', 'I want to order 2 electrical circuit breakers'))),
+        const SizedBox(height: 9),
+        _QuickTile(icon: Icons.handyman_outlined,
+          title: t('اطلب خدمة', 'Book a service'),
+          subtitle: t('سباكة، كهرباء، صيانة…', 'Plumbing, electrical, repairs…'),
+          onTap: () => onTap(t('بدي أطلب خدمة سباك', 'I want to book a plumber'))),
+        const SizedBox(height: 9),
+        _QuickTile(icon: Icons.location_on_outlined,
+          title: t('عنوان التوصيل', 'Delivery address'),
+          subtitle: t('اختار عنوان محفوظ أو حدّد على الخريطة',
+            'Choose a saved address or a map location'),
+          onTap: onAddress),
+        const SizedBox(height: 9),
+        _QuickTile(icon: Icons.forum_outlined,
+          title: t('اسألني أي سؤال', 'Chat with me'),
+          subtitle: t('نصائح واقتراحات لمشروعك', 'Advice and ideas for your project'),
+          onTap: () => onTap(t('مرحبا عَمّار، كيف بتساعدني؟',
+            'Hi Amar, what can you help me with?'))),
+      ],
+    );
+  }
+}
 
-    if (code == 'speech_language_missing') {
-      return labels.missingLanguage;
-    }
+class _QuickTile extends StatelessWidget {
+  const _QuickTile({required this.icon, required this.title,
+    required this.subtitle, required this.onTap});
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
 
-    if (code == 'speech_wrong_language') {
-      return labels.wrongLanguage;
-    }
-
-    if (code == 'speech_voice_missing') {
-      return labels.noVoice;
-    }
-
-    if (code == 'form_step_failed') {
-      return labels.isArabic
-          ? 'تعذّر إكمال الخطوة من السيرفر؛ راجع اتصال الإنترنت وجرب مرة ثانية.'
-          : 'Could not complete the step; please retry.';
-    }
-
-    if (code == 'order_preparation_failed') {
-      return labels.isArabic
-          ? 'تعذّر تجهيز الطلب. راجع بيانات المنتج والسلة.'
-          : 'Could not prepare the order. Check the item and cart.';
-    }
-
-    return labels.unavailable;
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Material(
+      color: colors.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(18),
+        child: Padding(padding: const EdgeInsets.all(13),
+          child: Row(children: [
+            CircleAvatar(backgroundColor: colors.primaryContainer,
+              child: Icon(icon, color: colors.primary)),
+            const SizedBox(width: 12),
+            Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold)),
+                Text(subtitle, style: Theme.of(context).textTheme.bodySmall,
+                  maxLines: 2, overflow: TextOverflow.ellipsis),
+              ])),
+            const SizedBox(width: 8),
+            Icon(Icons.arrow_forward_ios_rounded, size: 15,
+              color: colors.onSurfaceVariant),
+          ])),
+      ),
+    );
   }
 }
 
@@ -424,10 +470,40 @@ class _MessageBubble extends StatelessWidget {
                 color: message.isUser
                     ? colors.primaryContainer
                     : colors.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(19),
+                  topRight: const Radius.circular(19),
+                  bottomLeft: Radius.circular(message.isUser ? 19 : 6),
+                  bottomRight: Radius.circular(message.isUser ? 6 : 19),
+                ),
               ),
-              child: Text(
-                message.text,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!message.isUser)
+                    Padding(padding: const EdgeInsets.only(bottom: 6),
+                      child: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.auto_awesome_rounded,
+                          size: 14, color: colors.primary),
+                        const SizedBox(width: 5),
+                        Text('AMAR AI', style: Theme.of(context).textTheme.labelSmall
+                          ?.copyWith(fontWeight: FontWeight.w800,
+                            color: colors.primary, letterSpacing: 0.4)),
+                      ])),
+                  Text(message.text, style: Theme.of(context).textTheme.bodyMedium
+                    ?.copyWith(height: 1.55)),
+                  if (!message.isUser && message.text.trim().isNotEmpty)
+                    Align(alignment: AlignmentDirectional.centerEnd,
+                      child: IconButton(
+                        tooltip: chat.chatLanguage.value == 'en'
+                            ? 'Read aloud' : 'اسمع الرد',
+                        constraints: const BoxConstraints(minHeight: 30, minWidth: 34),
+                        icon: Icon(Icons.volume_up_outlined,
+                          color: colors.primary, size: 18),
+                        onPressed: () => chat.speakMessage(message.text),
+                      )),
+                ],
               ),
             ),
 
@@ -509,7 +585,9 @@ class _MessageBubble extends StatelessWidget {
                                   ),
                                 if (item.vendorName.isNotEmpty)
                                   Text(
-                                    'المتجر: ${item.vendorName}',
+                                    chat.chatLanguage.value == 'en'
+                                        ? 'Store: ${item.vendorName}'
+                                        : 'المتجر: ${item.vendorName}',
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                     style: Theme.of(context).textTheme.labelSmall
@@ -540,9 +618,9 @@ class _MessageBubble extends StatelessWidget {
                                     ).textTheme.bodySmall,
                                   ),
                                 if (item.isOpenNow == true)
-                                  const Text(
-                                    'مفتوح الآن',
-                                    style: TextStyle(
+                                   Text(
+                                    chat.chatLanguage.value == 'en' ? 'Open now' : 'مفتوح الآن',
+                                    style: const TextStyle(
                                       fontSize: 11,
                                       color: Colors.green,
                                     ),
@@ -566,9 +644,10 @@ class _MessageBubble extends StatelessWidget {
                                   item,
                                   message.orderQuantity,
                                 ),
-                                child: const FittedBox(
+                                child: FittedBox(
                                   fit: BoxFit.scaleDown,
-                                  child: Text('اختار للطلب'),
+                                  child: Text(chat.chatLanguage.value == 'en'
+                                    ? 'Order' : 'اختار للطلب'),
                                 ),
                               ),
                             )

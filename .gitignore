@@ -18,3 +18,9 @@ ios/Flutter/Maps.xcconfig
 
 /android/.kotlin/errors/
 /.idea/caches/
+<<<<<<< HEAD
+=======
+
+/android/.kotlin/errors/
+/.idea/caches/
+>>>>>>> 86f1514 (fix: improve AI chatbot conversations and order handling)

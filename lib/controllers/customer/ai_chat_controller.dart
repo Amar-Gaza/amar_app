@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app/routes/app_routes.dart';
@@ -22,6 +23,8 @@ import '../../data/services/shared/ai_speech_service.dart';
 import '../shared/app_config_controller.dart';
 import '../shared/session_controller.dart';
 import 'ai_action_executor.dart';
+import 'ai_address_command.dart';
+import '../../presentation/screens/ai/ai_address_selection_screen.dart';
 import 'ai_guided_checkout.dart';
 import 'ai_task_controller.dart';
 
@@ -42,17 +45,32 @@ class AiChatController extends GetxController {
   final isSending = false.obs;
   final isListening = false.obs;
   final voiceReplies = false.obs;
+  final chatLanguage = 'ar'.obs;
+  final isNavigatingAddress = false.obs;
   final isPreparingOrder = false.obs;
   final isSubmittingForm = false.obs;
   final errorCode = RxnString();
   final orderProgress = ''.obs;
 
   AiOrderDraft? _draft;
+  int? _chosenAddressId;
+  String? _chosenAddressLabel;
   int? _customerId;
   bool _voiceSubmitted = false;
   int _formSeq = 0;
   Future<void> _lastSave = Future<void>.value();
   final Map<int, String> _vendorNames = {};
+
+  bool get _ar => chatLanguage.value != 'en';
+  String _tr(String ar, String en) => _ar ? ar : en;
+
+  void setChatLanguage(String language) {
+    if (language != 'ar' && language != 'en') return;
+    chatLanguage.value = language;
+    unawaited(_speech.stopSpeaking());
+    unawaited(_save());
+  }
+
 
   AiChatForm? get pendingForm {
     final draft = _draft;
@@ -76,10 +94,21 @@ class AiChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    chatLanguage.value = Get.locale?.languageCode == 'en' ? 'en' : 'ar';
     _customerId = _session.user.value?.id;
     if (_customerId == null) return;
     final snapshot = _prefs.customerState(StorageKeys.customerAiChat, customerId: _customerId);
     if (snapshot == null) return;
+    final storedLang = snapshot['chat_language'];
+    if (storedLang == 'ar' || storedLang == 'en') {
+      chatLanguage.value = storedLang as String;
+    }
+    voiceReplies.value = snapshot['voice_replies'] == true;
+    final storedAddressId = snapshot['selected_address_id'];
+    if (storedAddressId is int && storedAddressId > 0) {
+      _chosenAddressId = storedAddressId;
+      _chosenAddressLabel = snapshot['selected_address_label'] as String?;
+    }
     final restored = <AiChatMessage>[];
     final raw = snapshot['messages'];
     if (raw is List) {
@@ -123,6 +152,10 @@ class AiChatController extends GetxController {
       'schema': 5,
       'messages': last.map((m) => m.toJson()).toList(),
       'draft': _draft?.toJson(),
+      'selected_address_id': _chosenAddressId,
+      'selected_address_label': _chosenAddressLabel,
+      'chat_language': chatLanguage.value,
+      'voice_replies': voiceReplies.value,
     };
     final frozen = Map<String, dynamic>.from(jsonDecode(jsonEncode(snapshot)) as Map);
     _lastSave = _lastSave.then((_) => _prefs.saveCustomerState(
@@ -183,6 +216,7 @@ class AiChatController extends GetxController {
       role: 'assistant', text: text, createdAt: DateTime.now(), form: form,
     ));
     unawaited(_save());
+    if (voiceReplies.value) unawaited(speakMessage(text));
   }
 
   void _addForm({required String stage, required String title,
@@ -197,15 +231,34 @@ class AiChatController extends GetxController {
       purpose: stage, title: title, fields: fields,
       help: help, submitLabel: submit,
     );
-    _assistant('حدّد الخيارات التالية وبكمل معك نفس الطلب:', form: form);
+    _assistant(_tr('حدّد الخيارات التالية وبكمل معك نفس الطلب:',
+      'Choose an option below to continue your order:') + '\n' + title, form: form);
   }
 
   /// Normal open-ended chat is still handled by the authenticated gateway.
   /// Existing forms remain visible while the user asks unrelated questions.
   Future<void> send([String? provided]) async {
     final text = (provided ?? input.text).trim();
-    if (text.isEmpty || isSending.value || isPreparingOrder.value || isSubmittingForm.value) return;
+    if (text.isEmpty || isSending.value || isPreparingOrder.value ||
+        isSubmittingForm.value || isNavigatingAddress.value) return;
     if (text.length > 2000) { errorCode.value = 'message_too_long'; return; }
+
+    // Address navigation is a LOCAL, user-requested action. It must never
+    // depend on Gemini hallucinating a route or saving anything itself.
+    final addressCommand = parseAiAddressCommand(text);
+    if (addressCommand != null) {
+      if (isListening.value) {
+        isListening.value = false;
+        await _speech.stopListening();
+      }
+      await _speech.stopSpeaking();
+      input.clear();
+      messages.add(AiChatMessage(role: 'user', text: text,
+        createdAt: DateTime.now()));
+      await _save();
+      await openAddressFlow(addressCommand);
+      return;
+    }
 
     if (await _answerPendingFromText(text)) {
       input.clear();
@@ -233,7 +286,7 @@ class AiChatController extends GetxController {
       final pending = pendingForm;
       final draftContext = _draft;
       final reply = await _gateway.chat(
-        message: text, locale: Get.locale?.languageCode ?? 'ar',
+        message: text, locale: chatLanguage.value,
         history: history, lastResults: previous,
         pendingForm: pending == null || draftContext == null ? null : {
           'stage': draftContext.stage,
@@ -259,7 +312,7 @@ class AiChatController extends GetxController {
 
       if (voiceReplies.value) {
         if (!await _speech.speak(reply.reply,
-            language: Get.locale?.languageCode ?? 'ar')) {
+            language: aiSpeechLanguageFor(reply.reply, fallback: chatLanguage.value))) {
           errorCode.value = 'speech_voice_missing';
         }
       }
@@ -379,15 +432,18 @@ class AiChatController extends GetxController {
     final vendorIds = draft.candidates.map((e) => e.vendorId).whereType<int>().toSet();
     _addForm(
       stage: AiDraftStage.vendor,
-      title: 'من أي شركة أو متجر بدك تشتري؟',
+      title: _tr('من أي شركة أو متجر بدك تشتري؟', 'Which store would you like to order from?'),
       fields: [AiFormField(
-        key: 'vendor', label: 'الشركة / المتجر', type: AiFormType.single,
+        key: 'vendor', label: _tr('الشركة / المتجر', 'Store / Vendor'), type: AiFormType.single,
         choices: vendorIds.map((id) => AiFormChoice(
           value: '$id', label: _vendorNames[id]!,
-          detail: '${draft.candidates.where((item) => item.vendorId == id).length} منتج ضمن النتائج',
+          detail: _tr(
+            '${draft.candidates.where((item) => item.vendorId == id).length} منتج ضمن النتائج',
+            '${draft.candidates.where((item) => item.vendorId == id).length} matching items'),
         )).toList(),
       )],
-      help: 'هاي الشركات مرتبطة بمنتجات حقيقية رجّعها السيرفر.',
+      help: _tr('هاي الشركات مرتبطة بمنتجات حقيقية رجّعها السيرفر.',
+        'These stores are verified against actual catalog records.'),
     );
   }
 
@@ -397,18 +453,19 @@ class AiChatController extends GetxController {
     if (products.isEmpty) { _assistant('ما في منتجات متوفرة ضمن المتجر المختار.'); return; }
     _addForm(
       stage: AiDraftStage.product,
-      title: 'اختار المنتج والعدد المطلوب',
+      title: _tr('اختار المنتج والعدد المطلوب', 'Select the product and quantity'),
       fields: [
-        AiFormField(key: 'product', label: 'المنتج', type: AiFormType.single,
+        AiFormField(key: 'product', label: _tr('المنتج', 'Product'), type: AiFormType.single,
           choices: products.map((p) => AiFormChoice(
             value: '${p.id}', label: p.name,
             detail: p.price.isEmpty ? null : p.price,
           )).toList()),
-        AiFormField(key: 'quantity', label: 'الكمية',
+        AiFormField(key: 'quantity', label: _tr('الكمية', 'Quantity'),
           type: AiFormType.integer, min: 1, max: 20,
           initialNumber: draft.quantity),
       ],
-      help: 'سنتحقق مجدداً من المخزون والمواصفات قبل إضافته للسلة.',
+      help: _tr('سنتحقق مجدداً من المخزون والمواصفات قبل إضافته للسلة.',
+        'We will verify stock and options again before adding to your cart.'),
     );
   }
 
@@ -441,22 +498,28 @@ class AiChatController extends GetxController {
   }
 
   Future<void> _promptAddress() async {
-    final addresses = await Get.find<AddressService>()
-        .list().timeout(const Duration(seconds: 20));
+    // The customer selects/saves an address in REAL app screens, never in AI output.
+    // Keep legacy numeric choices compatible with restored V8.3 draft forms.
     _addForm(stage: AiDraftStage.address,
-      title: 'وين بدك توصيل الطلب؟',
+      title: _tr('وين بدك توصيل الطلب؟', 'Where should we deliver your order?'),
       fields: [AiFormField(
-        key: 'address', label: 'عنوان التوصيل',
+        key: 'address', label: _tr('اختيار عنوان التوصيل', 'Delivery address'),
         type: AiFormType.single,
         choices: [
-          for (final a in addresses)
-            AiFormChoice(value: '${a.id}',
-              label: a.label ?? 'عنوان ${a.id}',
-              detail: a.details),
-          const AiFormChoice(value: 'new', label: 'إضافة عنوان جديد من الخريطة'),
+          if (_chosenAddressId != null)
+            AiFormChoice(value: 'recent', label: _tr(
+              'استخدم العنوان المختار سابقاً: ${_chosenAddressLabel ?? 'عنوان محفوظ'}',
+              'Use the previously selected address: ${_chosenAddressLabel ?? 'Saved address'}')),
+          AiFormChoice(value: 'select', label: _tr(
+            'اختار عنوان من العناوين المحفوظة', 'Choose a saved address')),
+          AiFormChoice(value: 'new', label: _tr(
+            'أضف عنواناً جديداً', 'Add a new address')),
+          AiFormChoice(value: 'map', label: _tr(
+            'حدّد عنواناً من الخريطة', 'Choose on the map')),
         ],
       )],
-      help: 'اختار عنواناً محفوظاً أو حدّد نقطة جديدة بنفسك على الخريطة.',
+      help: _tr('سأفتح شاشة العناوين أو الخريطة، وبعد الحفظ أرجعك للشات لنكمل الدفع والمراجعة.',
+        'I will open the address screen or map. Once saved, we will return here for payment and review.'),
     );
   }
 
@@ -473,7 +536,7 @@ class AiChatController extends GetxController {
             options.add(AiFormChoice(
               value: '$method:',
               label: method == PaymentMethods.cashOnDelivery
-                  ? 'نقداً عند الاستلام' : method,
+                  ? _tr('نقداً عند الاستلام', 'Cash on delivery') : method,
             ));
           }
         }
@@ -481,7 +544,7 @@ class AiChatController extends GetxController {
       for (final gateway in methods.gateways) {
         options.add(AiFormChoice(
           value: '${PaymentMethods.bankTransfer}:${gateway.id}',
-          label: 'تحويل: ${gateway.name}',
+          label: _tr('تحويل: ${gateway.name}', 'Transfer: ${gateway.name}'),
         ));
       }
     } catch (_) {
@@ -495,8 +558,8 @@ class AiChatController extends GetxController {
       return;
     }
     _addForm(stage: AiDraftStage.payment,
-      title: 'شو طريقة الدفع اللي بتفضّلها؟',
-      fields: [AiFormField(key: 'payment', label: 'طريقة الدفع',
+      title: _tr('شو طريقة الدفع اللي بتفضّلها؟', 'How would you like to pay?'),
+      fields: [AiFormField(key: 'payment', label: _tr('طريقة الدفع', 'Payment method'),
         type: AiFormType.single, choices: options)],
       help: 'هذا اختيار طريقة الدفع فقط؛ لا يوجد دفع أو تحويل الآن.');
   }
@@ -506,12 +569,15 @@ class AiChatController extends GetxController {
     final item = draft.selectedItem;
     _addForm(
       stage: AiDraftStage.review,
-      title: 'مراجعة اختياراتك قبل فتح الشاشات',
-      fields: const [AiFormField(
-        key: 'go', label: 'شو بدك نعمل؟', type: AiFormType.single,
+      title: _tr('مراجعة اختياراتك قبل فتح الشاشات', 'Review selections before opening checkout'),
+      fields: [AiFormField(
+        key: 'go', label: _tr('شو بدك نعمل؟', 'What would you like to do?'),
+        type: AiFormType.single,
         choices: [
-          AiFormChoice(value: 'prepare', label: 'جهّز الطلب واعرض الشاشات'),
-          AiFormChoice(value: 'cancel', label: 'إلغاء تجهيز الطلب'),
+          AiFormChoice(value: 'prepare', label: _tr(
+            'جهّز الطلب واعرض الشاشات', 'Prepare order and show checkout screens')),
+          AiFormChoice(value: 'cancel', label: _tr(
+            'إلغاء تجهيز الطلب', 'Cancel order preparation')),
         ],
       )],
       help: '${item?.name ?? 'المنتج'} × ${draft.quantity}\n'
@@ -520,7 +586,7 @@ class AiChatController extends GetxController {
           'التوصيل: ${draft.addressLabel ?? 'يحدد من شاشة التوصيل'}\n'
           'طريقة الدفع: ${draft.paymentLabel ?? 'تختار من شاشة التوصيل'}\n'
           'السعر النهائي يُحسب بواسطة Masar. التأكيد والدفع فقط من أزرار التطبيق الأصلية.',
-      submit: 'متابعة',
+      submit: _tr('متابعة', 'Continue'),
     );
   }
 
@@ -585,24 +651,37 @@ class AiChatController extends GetxController {
           break;
         }
         case AiDraftStage.address: {
-          final id = answers['address'] as String;
-          if (id == 'new') {
-            final created = await Get.toNamed<Address>(
-              AppRoutes.checkoutAddressNew,
-              arguments: const AddressFormArgs(),
+          final chosen = answers['address'] as String;
+          Address? selected;
+          if (chosen == 'recent') {
+            final id = _chosenAddressId;
+            if (id != null) selected = await _verifySavedAddress(id);
+          } else if (chosen == 'new' || chosen == 'select' || chosen == 'map') {
+            selected = await _openAddressScreen(
+              chosen == 'new' ? AiAddressCommand.add
+                : chosen == 'map' ? AiAddressCommand.map
+                : AiAddressCommand.select,
             );
-            if (created == null) return false;
-            draft.addressId = created.id;
-            draft.addressLabel = created.label;
           } else {
+            // Legacy V8.3 persisted forms may contain a verified address ID.
+            final id = int.tryParse(chosen);
+            if (id == null) return false;
             final current = await Get.find<AddressService>().list();
-            final selected = current.where((a) => '${a.id}' == id);
-            if (selected.isEmpty) return false;
-            draft.addressId = selected.first.id;
-            draft.addressLabel = selected.first.label;
+            final found = current.where((a) => a.id == id);
+            if (found.isNotEmpty) selected = found.first;
           }
+          if (selected == null) return false; // Cancel: leave the form active.
+          final verified = await _verifySavedAddress(selected.id);
+          if (verified == null) return false;
+          draft.addressId = verified.id;
+          draft.addressLabel = verified.label ?? verified.details;
+          _chosenAddressId = verified.id;
+          _chosenAddressLabel = draft.addressLabel;
+          _markAnswered(form, {
+            'address': chosen == 'new' || chosen == 'select' || chosen == 'map'
+                ? chosen : '${verified.id}',
+          });
           await _promptPayment();
-          _markAnswered(form, answers);
           break;
         }
         case AiDraftStage.payment: {
@@ -787,7 +866,7 @@ class AiChatController extends GetxController {
     );
     if (!ready) { errorCode.value = 'speech_unavailable'; return; }
     isListening.value = true;
-    final language = Get.locale?.languageCode ?? 'ar';
+    final language = chatLanguage.value;
     await _speech.listen(language: language, onResult: (result) {
       final words = result.recognizedWords.trim();
       if (language == 'ar' && result.finalResult && words.isNotEmpty &&
@@ -808,9 +887,110 @@ class AiChatController extends GetxController {
     });
   }
 
-  void toggleVoiceReplies() {
-    voiceReplies.value = !voiceReplies.value;
-    if (!voiceReplies.value) unawaited(_speech.stopSpeaking());
+  /// Top-right speaker actually speaks the latest assistant reply immediately.
+  /// The language is chosen from message text (Arabic / English).
+  Future<void> toggleVoiceReplies() async {
+    if (voiceReplies.value) {
+      voiceReplies.value = false;
+      unawaited(_save());
+      await _speech.stopSpeaking();
+      return;
+    }
+    voiceReplies.value = true;
+    unawaited(_save());
+    final recent = messages.reversed.where((m) => !m.isUser).firstOrNull;
+    await speakMessage(recent?.text ?? _tr(
+      'أهلاً! أنا مساعد عَمّار، احكيلي شو بتحتاج.',
+      'Hello! I am Amar, your assistant. How can I help?'));
+  }
+
+  Future<void> speakMessage(String text) async {
+    if (text.trim().isEmpty) return;
+    final spoken = await _speech.speak(text,
+      language: aiSpeechLanguageFor(text, fallback: chatLanguage.value));
+    if (!spoken) {
+      voiceReplies.value = false;
+      errorCode.value = 'speech_voice_missing';
+    }
+  }
+
+  Future<Address?> _verifySavedAddress(int id) async {
+    final accounts = await Get.find<AddressService>().list()
+        .timeout(const Duration(seconds: 20));
+    return accounts.firstWhereOrNull((a) => a.id == id);
+  }
+
+  /// Opens the existing app address form / a real saved-address chooser.
+  /// Each child route pops to this chat with an Address or null on cancel.
+  Future<Address?> _openAddressScreen(AiAddressCommand command) async {
+    if (command == AiAddressCommand.add) {
+      return await Get.toNamed<Address>(
+        AppRoutes.checkoutAddressNew,
+        arguments: const AddressFormArgs(),
+      );
+    }
+    return await Get.to<Address>(
+      () => AiAddressSelectionScreen(
+        openMapImmediately: command == AiAddressCommand.map,
+        language: chatLanguage.value,
+      ),
+      transition: Transition.rightToLeftWithFade,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  /// User can ask to add/select a location in normal chat OR mid-checkout.
+  /// Never continue the draft unless the address was saved to Masar and
+  /// verified again by the account's AddressService.
+  Future<void> openAddressFlow(AiAddressCommand command) async {
+    if (isNavigatingAddress.value || isSubmittingForm.value ||
+        isPreparingOrder.value) return;
+    isNavigatingAddress.value = true;
+    errorCode.value = null;
+    _assistant(_tr(
+      command == AiAddressCommand.add ? 'رح أفتح شاشة إضافة عنوان جديد. بعد الحفظ بنرجع نكمل هون.'
+        : command == AiAddressCommand.map ? 'رح أفتح الخريطة لتحديد الموقع، وبعد الحفظ نرجع للشات.'
+        : 'رح أفتح شاشة اختيار العنوان. بعدها بنرجع نكمل الطلب.',
+      command == AiAddressCommand.add ? 'Opening Add Address. After saving, we will continue here.'
+        : command == AiAddressCommand.map ? 'Opening the map. We will return here after saving.'
+        : 'Opening saved addresses. We will continue here afterward.',
+    ));
+    try {
+      final picked = await _openAddressScreen(command);
+      if (picked == null) {
+        _assistant(_tr('رجعنا للشات بدون اختيار عنوان. تقدر تختار وقت ما بدك.',
+          'Back in chat. No address selected; you can choose one anytime.'));
+        return;
+      }
+      final address = await _verifySavedAddress(picked.id);
+      if (address == null) {
+        _assistant(_tr('العنوان ما تأكد من السيرفر. جرّب الاختيار مرة ثانية.',
+          'The address was not verified on the server. Please retry.'));
+        return;
+      }
+      _chosenAddressId = address.id;
+      _chosenAddressLabel = address.label ?? address.details;
+      final draft = _draft;
+      final form = pendingForm;
+      if (draft != null && draft.stage == AiDraftStage.address &&
+          form != null && form.purpose == AiDraftStage.address) {
+        draft.addressId = address.id;
+        draft.addressLabel = address.label ?? address.details;
+        _markAnswered(form, const {'address': 'select'});
+        await _promptPayment();
+      }
+      _assistant(_tr(
+        'تمام، تم اختيار العنوان «${address.label ?? address.details ?? 'عنوان محفوظ'}» من السيرفر. نكمل باقي الخطوات هون.',
+        'Address «${address.label ?? address.details ?? 'Saved address'}» is confirmed. Let’s continue here.',
+      ));
+      await _save();
+    } catch (_) {
+      errorCode.value = 'address_navigation_failed';
+      _assistant(_tr('صار خطأ بفتح العنوان أو حفظه. ما تغير الطلب، جرّب مرة ثانية.',
+        'Could not open or save the address. Your draft is unchanged; please retry.'));
+    } finally {
+      isNavigatingAddress.value = false;
+    }
   }
 
   void openItem(AiCatalogItem item) => _executor.openItem(item);
@@ -819,6 +999,8 @@ class AiChatController extends GetxController {
     if (isSubmittingForm.value || isPreparingOrder.value) return;
     messages.clear();
     _draft = null;
+    _chosenAddressId = null;
+    _chosenAddressLabel = null;
     errorCode.value = null;
     await _save();
   }
