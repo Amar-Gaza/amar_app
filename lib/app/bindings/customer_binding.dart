@@ -24,7 +24,7 @@ class SplashBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<SplashController>(
-          () => SplashController(
+      () => SplashController(
         Get.find<AppConfigController>(),
         Get.find<SessionController>(),
         Get.find<DriverSessionController>(),
@@ -37,7 +37,7 @@ class AuthBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<AuthController>(
-          () => AuthController(
+      () => AuthController(
         Get.find<AuthService>(),
         Get.find<SessionController>(),
       ),
@@ -49,7 +49,7 @@ class ProfileSetupBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut<ProfileSetupController>(
-          () => ProfileSetupController(
+      () => ProfileSetupController(
         Get.find<ProfileService>(),
         Get.find<UploadService>(),
         Get.find<SessionController>(),
@@ -65,7 +65,7 @@ class HomeBinding extends Bindings {
     Get
       ..lazyPut<ShellController>(ShellController.new)
       ..lazyPut<CatalogController>(
-            () => CatalogController(
+        () => CatalogController(
           Get.find<CatalogService>(),
           Get.find<OrderService>(),
           Get.find<AddressService>(),
@@ -73,10 +73,10 @@ class HomeBinding extends Bindings {
         ),
       )
       ..lazyPut<OrdersController>(
-            () => OrdersController(Get.find<OrderService>()),
+        () => OrdersController(Get.find<OrderService>()),
       )
       ..lazyPut<NotificationsController>(
-            () => NotificationsController(
+        () => NotificationsController(
           Get.find<NotificationService>(),
         ),
       );

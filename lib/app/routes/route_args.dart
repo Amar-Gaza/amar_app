@@ -1,6 +1,6 @@
 import '../../data/models/catalog/picked_location.dart';
 
-/// Typed arguments passed with [Get.toNamed].
+/// Typed arguments passed with Get.toNamed.
 class ProductsArgs {
   const ProductsArgs({
     this.categoryIds = const [],
@@ -8,30 +8,31 @@ class ProductsArgs {
     required this.title,
   });
 
-  /// A unified category can span several server ids (one per vendor).
   final List<int> categoryIds;
   final int? vendorId;
   final String title;
 }
 
-/// Kind of the providers shown by the "view all" list.
 class ProvidersArgs {
   const ProvidersArgs({
     required this.kind,
     required this.title,
+    this.query,
   });
 
   final String kind;
   final String title;
+  final String? query;
 }
 
 class VendorsArgs {
-  const VendorsArgs({this.category});
+  const VendorsArgs({
+    this.category,
+  });
 
   final String? category;
 }
 
-/// Product id; also the tag of the shared [ProductController].
 class ProductArgs {
   const ProductArgs(this.productId);
 
@@ -40,7 +41,6 @@ class ProductArgs {
   String get tag => productId.toString();
 }
 
-/// Initial draft for a new delivery address; saved Address arguments still edit.
 class AddressFormArgs {
   const AddressFormArgs({
     this.point,
@@ -49,4 +49,14 @@ class AddressFormArgs {
 
   final PickedLocation? point;
   final bool useCurrentLocation;
+}
+
+class AiSearchArgs {
+  const AiSearchArgs({
+    required this.query,
+    this.kind,
+  });
+
+  final String query;
+  final String? kind;
 }

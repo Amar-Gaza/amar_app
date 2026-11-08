@@ -46,7 +46,8 @@ class CurvedBottomNav extends StatelessWidget {
                     painter: NavBarPainter(
                       center: center,
                       color: context.scheme.surface,
-                      shadow: colors.brand.withValues(alpha: _shadowAlpha), waterColor: Colors.white,
+                      shadow: colors.brand.withValues(alpha: _shadowAlpha),
+                      waterColor: Colors.white,
                     ),
                   ),
                 ),

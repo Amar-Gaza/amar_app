@@ -44,8 +44,7 @@ class NavBarPainter extends CustomPainter {
   final double ripple;
 
   double _surfaceY(double x, double width) {
-    final safeCenter =
-    center.clamp(_corner, width - _corner).toDouble();
+    final safeCenter = center.clamp(_corner, width - _corner).toDouble();
 
     final half = math.min(
       _notchHalf,
@@ -57,17 +56,13 @@ class NavBarPainter extends CustomPainter {
 
     final distance = (x - safeCenter).abs();
 
-    final immersion =
-        1 -
-            (lift / NavMotion.jumpHeight).clamp(0.0, 1.0) * 0.85;
+    final immersion = 1 - (lift / NavMotion.jumpHeight).clamp(0.0, 1.0) * 0.85;
 
     final profile = half > 0 && distance < half
         ? (1 + math.cos(math.pi * distance / half)) / 2
         : 0.0;
 
-    final depth =
-        (AppSizes.navNotchDepth - AppSizes.navBarTop) *
-            immersion;
+    final depth = (AppSizes.navNotchDepth - AppSizes.navBarTop) * immersion;
 
     var wave = 0.0;
 
@@ -78,36 +73,29 @@ class NavBarPainter extends CustomPainter {
         -math.pow((distance - radius) / _waveSpread, 2),
       );
 
-      final fade =
-          math.sin(math.pi * ripple) * (1 - ripple);
+      final fade = math.sin(math.pi * ripple) * (1 - ripple);
 
-      final edge =
-      (math.min(x - _corner, width - _corner - x) /
-          _corner)
+      final edge = (math.min(x - _corner, width - _corner - x) / _corner)
           .clamp(0.0, 1.0)
           .toDouble();
 
-      wave =
-          math.sin(
+      wave = math.sin(
             (distance - radius) / _waveSpread * math.pi,
           ) *
-              envelope *
-              fade *
-              _waveAmplitude *
-              edge;
+          envelope *
+          fade *
+          _waveAmplitude *
+          edge;
     }
 
     return AppSizes.navBarTop + depth * profile + wave;
   }
 
   Path _surface(Size size) {
-    final path = Path()
-      ..moveTo(_corner, AppSizes.navBarTop);
+    final path = Path()..moveTo(_corner, AppSizes.navBarTop);
 
     for (var i = 1; i <= _samples; i++) {
-      final x =
-          _corner +
-              (size.width - _corner * 2) * i / _samples;
+      final x = _corner + (size.width - _corner * 2) * i / _samples;
 
       path.lineTo(x, _surfaceY(x, size.width));
     }
@@ -126,9 +114,7 @@ class NavBarPainter extends CustomPainter {
       );
 
     for (var i = 1; i <= _samples; i++) {
-      final x =
-          _corner +
-              (size.width - _corner * 2) * i / _samples;
+      final x = _corner + (size.width - _corner * 2) * i / _samples;
 
       path.lineTo(x, _surfaceY(x, size.width));
     }
@@ -148,12 +134,9 @@ class NavBarPainter extends CustomPainter {
   void _paintLanding(Canvas canvas) {
     if (ripple <= 0 || ripple >= 1) return;
 
-    final fade =
-        math.sin(math.pi * ripple) * (1 - ripple);
+    final fade = math.sin(math.pi * ripple) * (1 - ripple);
 
-    final radius =
-        _rippleStart +
-            (_rippleEnd - _rippleStart) * ripple;
+    final radius = _rippleStart + (_rippleEnd - _rippleStart) * ripple;
 
     final origin = Offset(
       center,
@@ -198,16 +181,11 @@ class NavBarPainter extends CustomPainter {
 
     for (final side in [-1.0, 1.0]) {
       for (var i = 0; i < 2; i++) {
-        final distance =
-            (AppSizes.navBubble / 2 +
-                ripple * _waveReach / 2) *
-                (i == 0 ? 1.0 : 0.7);
+        final distance = (AppSizes.navBubble / 2 + ripple * _waveReach / 2) *
+            (i == 0 ? 1.0 : 0.7);
 
         final y =
-            AppSizes.navBarTop -
-                splash *
-                    _splashHeight *
-                    (i == 0 ? 1.0 : 0.6);
+            AppSizes.navBarTop - splash * _splashHeight * (i == 0 ? 1.0 : 0.6);
 
         canvas.drawCircle(
           Offset(center + side * distance, y),
@@ -231,10 +209,7 @@ class NavBarPainter extends CustomPainter {
         Paint()..color = color,
       );
 
-    final air =
-    (lift / NavMotion.jumpHeight)
-        .clamp(0.0, 1.0)
-        .toDouble();
+    final air = (lift / NavMotion.jumpHeight).clamp(0.0, 1.0).toDouble();
 
     canvas.drawOval(
       Rect.fromCenter(
@@ -242,8 +217,7 @@ class NavBarPainter extends CustomPainter {
           center,
           AppSizes.navBubble * 0.82,
         ),
-        width:
-        AppSizes.navBubble * (0.65 - air * 0.25),
+        width: AppSizes.navBubble * (0.65 - air * 0.25),
         height: AppSizes.navBubble * 0.12,
       ),
       Paint()
@@ -274,9 +248,9 @@ class NavBarPainter extends CustomPainter {
   @override
   bool shouldRepaint(NavBarPainter oldDelegate) =>
       center != oldDelegate.center ||
-          color != oldDelegate.color ||
-          shadow != oldDelegate.shadow ||
-          waterColor != oldDelegate.waterColor ||
-          lift != oldDelegate.lift ||
-          ripple != oldDelegate.ripple;
+      color != oldDelegate.color ||
+      shadow != oldDelegate.shadow ||
+      waterColor != oldDelegate.waterColor ||
+      lift != oldDelegate.lift ||
+      ripple != oldDelegate.ripple;
 }

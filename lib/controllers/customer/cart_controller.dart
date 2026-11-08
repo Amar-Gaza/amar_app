@@ -60,13 +60,12 @@ class CartController extends GetxController {
           );
 
           if (restored.isNotEmpty &&
-              restored.first.product.vendorId !=
-                  item.product.vendorId) {
+              restored.first.product.vendorId != item.product.vendorId) {
             continue;
           }
 
           final index = restored.indexWhere(
-                (other) => other.key == item.key,
+            (other) => other.key == item.key,
           );
 
           if (index < 0) {
@@ -96,9 +95,7 @@ class CartController extends GetxController {
         StorageKeys.customerCart,
         {
           'schema': 1,
-          'items': items
-              .map((item) => item.toJson())
-              .toList(),
+          'items': items.map((item) => item.toJson()).toList(),
         },
         customerId: _customerId,
       ),
@@ -111,8 +108,7 @@ class CartController extends GetxController {
     return pending == null ? items : [pending];
   }
 
-  int? get checkoutVendorId =>
-      service.value?.product.vendorId ?? vendorId;
+  int? get checkoutVendorId => service.value?.product.vendorId ?? vendorId;
 
   void clearCheckout() {
     if (service.value == null) {
@@ -123,25 +119,23 @@ class CartController extends GetxController {
   }
 
   int get count => items.fold(
-    0,
+        0,
         (sum, item) => sum + item.qty,
-  );
+      );
 
-  int? get vendorId =>
-      items.isEmpty ? null : items.first.product.vendorId;
+  int? get vendorId => items.isEmpty ? null : items.first.product.vendorId;
 
   /// Returns otherVendor without changing the cart.
   /// Call replaceWith after confirmation.
   AddToCartResult add(CartItem item) {
     final current = vendorId;
 
-    if (current != null &&
-        item.product.vendorId != current) {
+    if (current != null && item.product.vendorId != current) {
       return AddToCartResult.otherVendor;
     }
 
     final index = items.indexWhere(
-          (existing) => existing.key == item.key,
+      (existing) => existing.key == item.key,
     );
 
     if (index >= 0) {
@@ -164,7 +158,7 @@ class CartController extends GetxController {
 
   void setQty(CartItem item, int qty) {
     final index = items.indexWhere(
-          (existing) => existing.key == item.key,
+      (existing) => existing.key == item.key,
     );
 
     if (index < 0) return;
@@ -180,7 +174,7 @@ class CartController extends GetxController {
 
   void remove(CartItem item) {
     items.removeWhere(
-          (existing) => existing.key == item.key,
+      (existing) => existing.key == item.key,
     );
 
     _persist();
@@ -191,10 +185,9 @@ class CartController extends GetxController {
     _persist();
   }
 
-  int quantityOf(Product product) => items
-      .where((item) => item.product.id == product.id)
-      .fold(
-    0,
-        (sum, item) => sum + item.qty,
-  );
+  int quantityOf(Product product) =>
+      items.where((item) => item.product.id == product.id).fold(
+            0,
+            (sum, item) => sum + item.qty,
+          );
 }

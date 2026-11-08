@@ -16,14 +16,14 @@ import '../customer/cart_controller.dart';
 
 class SessionController extends GetxController {
   SessionController(
-      this._tokens,
-      this._auth,
-      this._profile,
-      this._events, {
-        AppPreferences? preferences,
-        CartController? cart,
-        DeviceLocationService? location,
-      })  : _preferences = preferences,
+    this._tokens,
+    this._auth,
+    this._profile,
+    this._events, {
+    AppPreferences? preferences,
+    CartController? cart,
+    DeviceLocationService? location,
+  })  : _preferences = preferences,
         _cart = cart,
         _location = location;
 
@@ -42,8 +42,8 @@ class SessionController extends GetxController {
   StreamSubscription<SessionRole>? _subscription;
 
   Future<void> _activateLocalCustomer(
-      int? customerId,
-      ) async {
+    int? customerId,
+  ) async {
     // Swap both caches before any await.
     // Location switching also invalidates old requests.
     _location?.activateCustomer(customerId);
@@ -83,8 +83,7 @@ class SessionController extends GetxController {
     } on ApiFailure catch (failure) {
       // Transient failures keep the stored session.
       // A 401 clears it through session events.
-      final keep =
-          failure.code != ApiErrorCodes.unauthenticated;
+      final keep = failure.code != ApiErrorCodes.unauthenticated;
 
       isAuthenticated.value = keep;
 
@@ -93,9 +92,9 @@ class SessionController extends GetxController {
   }
 
   Future<void> start(
-      String token,
-      User signedIn,
-      ) async {
+    String token,
+    User signedIn,
+  ) async {
     await _tokens.write(
       SessionRole.customer,
       token,
@@ -125,8 +124,7 @@ class SessionController extends GetxController {
   }
 
   Future<void> deleteAccount() async {
-    final customerId =
-        user.value?.id ?? _preferences?.activeCustomerId;
+    final customerId = user.value?.id ?? _preferences?.activeCustomerId;
 
     await _profile.deleteAccount();
 
@@ -140,8 +138,8 @@ class SessionController extends GetxController {
   }
 
   Future<void> _onUnauthorized(
-      SessionRole role,
-      ) async {
+    SessionRole role,
+  ) async {
     if (role != SessionRole.customer) return;
 
     await _clear();

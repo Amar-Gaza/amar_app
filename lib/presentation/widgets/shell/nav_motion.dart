@@ -69,10 +69,9 @@ abstract final class NavMotion {
 
     final u = (t - landingAt) / (1 - landingAt);
 
-    final spring =
-        math.sin(u * math.pi * impactCycles) *
-            math.exp(-impactDamping * u) *
-            (1 - u);
+    final spring = math.sin(u * math.pi * impactCycles) *
+        math.exp(-impactDamping * u) *
+        (1 - u);
 
     return NavMotionFrame(
       index: target,
@@ -83,15 +82,12 @@ abstract final class NavMotion {
     );
   }
 
-  static double _lerp(double a, double b, double t) =>
-      a + (b - a) * t;
+  static double _lerp(double a, double b, double t) => a + (b - a) * t;
 
-  static double _easeOut(double t) =>
-      1 - math.pow(1 - t, 3).toDouble();
+  static double _easeOut(double t) => 1 - math.pow(1 - t, 3).toDouble();
 
-  static double _easeInOut(double t) => t < 0.5
-      ? 4 * t * t * t
-      : 1 - math.pow(-2 * t + 2, 3).toDouble() / 2;
+  static double _easeInOut(double t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - math.pow(-2 * t + 2, 3).toDouble() / 2;
 }
 
 class NavMotionFrame {

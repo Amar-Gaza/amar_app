@@ -49,28 +49,24 @@ class HomeTab extends GetView<CatalogController> {
       child: Column(
         children: [
           Obx(() {
-            final location =
-            Get.find<DeviceLocationService>();
+            final location = Get.find<DeviceLocationService>();
             final issue = location.issue.value;
-            final currentLabel =
-                location.resolvedLocation.value?.label;
+            final currentLabel = location.resolvedLocation.value?.label;
 
             return HomeHeader(
               hasUnread: notifications.hasUnread,
-              locationLabel:
-              currentLabel ??
+              locationLabel: currentLabel ??
                   (location.isLocating.value
                       ? l10n.addressLocating
                       : issue != null
-                      ? LocationIssueText.of(l10n, issue)
-                      : location.currentPoint.value != null
-                      ? l10n.locationAddressUnavailable
-                      : l10n.homeSetLocation),
+                          ? LocationIssueText.of(l10n, issue)
+                          : location.currentPoint.value != null
+                              ? l10n.locationAddressUnavailable
+                              : l10n.homeSetLocation),
               onNotifications: () => Get.toNamed<void>(
                 AppRoutes.notifications,
               ),
-              onLocation: () =>
-                  CurrentLocationSheet.show(context, l10n),
+              onLocation: () => CurrentLocationSheet.show(context, l10n),
             );
           }),
           const SizedBox(height: AppSpacing.md),
@@ -109,9 +105,8 @@ class HomeTab extends GetView<CatalogController> {
 
               final order = controller.activeOrder.value;
 
-              final (totalSteps, currentStep) = order == null
-                  ? (0, 0)
-                  : config.progressOf(order.status.key);
+              final (totalSteps, currentStep) =
+                  order == null ? (0, 0) : config.progressOf(order.status.key);
 
               return RefreshIndicator(
                 onRefresh: controller.load,
@@ -157,17 +152,16 @@ class HomeTab extends GetView<CatalogController> {
                         child: CategoryGrid(
                           categories: controller.categories
                               .take(
-                            AppDefaults.homeCategoryLimit,
-                          )
+                                AppDefaults.homeCategoryLimit,
+                              )
                               .toList(),
-                          onTap: (category) =>
-                              Get.toNamed<void>(
-                                AppRoutes.products,
-                                arguments: ProductsArgs(
-                                  categoryIds: category.ids,
-                                  title: category.name,
-                                ),
-                              ),
+                          onTap: (category) => Get.toNamed<void>(
+                            AppRoutes.products,
+                            arguments: ProductsArgs(
+                              categoryIds: category.ids,
+                              title: category.name,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -180,21 +174,19 @@ class HomeTab extends GetView<CatalogController> {
                       HorizontalStrip(
                         items: controller.products,
                         height: AppSizes.homeProductStrip,
-                        itemBuilder: (product) =>
-                            HomeProductCard(
-                              product: product,
-                              onTap: () => Get.toNamed<void>(
-                                AppRoutes.product,
-                                arguments: ProductArgs(
-                                  product.id,
-                                ),
-                              ),
-                              onAdd: () =>
-                                  AddToCartFlow.quickAdd(
-                                    context,
-                                    product,
-                                  ),
+                        itemBuilder: (product) => HomeProductCard(
+                          product: product,
+                          onTap: () => Get.toNamed<void>(
+                            AppRoutes.product,
+                            arguments: ProductArgs(
+                              product.id,
                             ),
+                          ),
+                          onAdd: () => AddToCartFlow.quickAdd(
+                            context,
+                            product,
+                          ),
+                        ),
                       ),
                     ],
                     ProviderSection(

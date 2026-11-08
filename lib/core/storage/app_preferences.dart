@@ -17,11 +17,9 @@ class AppPreferences {
   }
 
   String get locale =>
-      _box.read<String>(StorageKeys.locale) ??
-          AppDefaults.defaultLocale;
+      _box.read<String>(StorageKeys.locale) ?? AppDefaults.defaultLocale;
 
-  Future<void> setLocale(String value) =>
-      _box.write(StorageKeys.locale, value);
+  Future<void> setLocale(String value) => _box.write(StorageKeys.locale, value);
 
   int? get activeCustomerId {
     final value = _box.read<Object>(
@@ -31,14 +29,13 @@ class AppPreferences {
     return value is int && value > 0 ? value : null;
   }
 
-  Future<void> setActiveCustomerId(int? value) =>
-      _writeLocal(
-            () => value == null
+  Future<void> setActiveCustomerId(int? value) => _writeLocal(
+        () => value == null
             ? _box.remove(StorageKeys.activeCustomerId)
             : _box.write(
-          StorageKeys.activeCustomerId,
-          value,
-        ),
+                StorageKeys.activeCustomerId,
+                value,
+              ),
       );
 
   String _customerKey(String key, int? customerId) =>
@@ -47,9 +44,9 @@ class AppPreferences {
   /// Snapshots contain JSON primitives only.
   /// Damaged caches are discarded.
   Map<String, dynamic>? customerState(
-      String key, {
-        required int? customerId,
-      }) {
+    String key, {
+    required int? customerId,
+  }) {
     try {
       final raw = _box.read<Object>(
         _customerKey(key, customerId),
@@ -57,33 +54,34 @@ class AppPreferences {
 
       final decoded = raw is String ? jsonDecode(raw) : raw;
 
-      return decoded is Map
-          ? Map<String, dynamic>.from(decoded)
-          : null;
+      return decoded is Map ? Map<String, dynamic>.from(decoded) : null;
     } catch (_) {
       return null;
     }
   }
 
   Future<void> saveCustomerState(
-      String key,
-      Map<String, dynamic> value, {
-        required int? customerId,
-      }) =>
+    String key,
+    Map<String, dynamic> value, {
+    required int? customerId,
+  }) =>
       _writeLocal(
-            () => _box.write(
+        () => _box.write(
           _customerKey(key, customerId),
           jsonEncode(value),
         ),
       );
 
-  Future<void> deleteCustomerState(int customerId) async {
+  Future<void> deleteCustomerState(
+    int customerId,
+  ) async {
     for (final key in [
       StorageKeys.customerCart,
       StorageKeys.customerLocation,
+      StorageKeys.customerAiChat,
     ]) {
       await _writeLocal(
-            () => _box.remove(
+        () => _box.remove(
           _customerKey(key, customerId),
         ),
       );
@@ -93,8 +91,8 @@ class AppPreferences {
   /// Cache I/O must not interrupt cart actions
   /// or successful authentication.
   Future<void> _writeLocal(
-      Future<void> Function() write,
-      ) async {
+    Future<void> Function() write,
+  ) async {
     try {
       await write();
     } catch (error, stack) {
@@ -111,8 +109,7 @@ class AppPreferences {
     }
   }
 
-  int? get configVersion =>
-      _box.read<int>(StorageKeys.configVersion);
+  int? get configVersion => _box.read<int>(StorageKeys.configVersion);
 
   Map<String, dynamic>? get cachedConfig {
     final raw = _box.read<String>(
@@ -127,9 +124,9 @@ class AppPreferences {
   }
 
   Future<void> saveConfig(
-      int version,
-      Map<String, dynamic> json,
-      ) async {
+    int version,
+    Map<String, dynamic> json,
+  ) async {
     await _box.write(
       StorageKeys.configVersion,
       version,

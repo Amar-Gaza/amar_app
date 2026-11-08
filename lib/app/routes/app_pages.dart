@@ -1,4 +1,8 @@
+
 import 'package:get/get.dart';
+
+import '../../presentation/screens/ai/ai_assistant_screen.dart';
+import '../bindings/ai_binding.dart';
 
 import '../../presentation/screens/auth/otp/otp_screen.dart';
 import '../../presentation/screens/account/addresses_screen.dart';
@@ -98,6 +102,12 @@ abstract final class AppPages {
       middlewares: [CustomerAuthMiddleware()],
     ),
     GetPage<void>(
+      name: AppRoutes.aiAssistant,
+      page: AiAssistantScreen.new,
+      binding: AiBinding(),
+      middlewares: [CustomerAuthMiddleware()],
+    ),
+    GetPage<void>(
       name: AppRoutes.search,
       page: SearchScreen.new,
       binding: SearchBinding(),
@@ -125,6 +135,8 @@ abstract final class AppPages {
     GetPage<void>(
       name: AppRoutes.product,
       page: ProductDetailsScreen.new,
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 420),
       binding: ProductBinding(),
     ),
     GetPage<void>(
@@ -135,7 +147,12 @@ abstract final class AppPages {
       name: AppRoutes.productQuantity,
       page: ProductQuantityScreen.new,
     ),
-    GetPage<void>(name: AppRoutes.checkoutDelivery, page: DeliveryScreen.new),
+    GetPage<void>(
+      name: AppRoutes.checkoutDelivery,
+      page: DeliveryScreen.new,
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 420),
+    ),
     GetPage<void>(
       name: AppRoutes.checkoutAddresses,
       page: AddressPickerScreen.new,
@@ -143,6 +160,8 @@ abstract final class AppPages {
     GetPage<void>(
       name: AppRoutes.serviceRequest,
       page: DeliveryScreen.new,
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 420),
       binding: CheckoutBinding(),
       middlewares: [CustomerAuthMiddleware()],
     ),
@@ -161,8 +180,18 @@ abstract final class AppPages {
       page: CheckoutDetailsScreen.new,
     ),
     GetPage<void>(name: AppRoutes.checkoutCoupon, page: CouponScreen.new),
-    GetPage<void>(name: AppRoutes.checkoutQuote, page: QuoteScreen.new),
-    GetPage<void>(name: AppRoutes.checkoutReview, page: ReviewScreen.new),
+    GetPage<void>(
+      name: AppRoutes.checkoutQuote,
+      page: QuoteScreen.new,
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 420),
+    ),
+    GetPage<void>(
+      name: AppRoutes.checkoutReview,
+      page: ReviewScreen.new,
+      transition: Transition.rightToLeftWithFade,
+      transitionDuration: const Duration(milliseconds: 420),
+    ),
     GetPage<void>(
       name: AppRoutes.checkoutSuccess,
       page: OrderSuccessScreen.new,
