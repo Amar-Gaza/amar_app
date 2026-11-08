@@ -7,7 +7,7 @@ import '../../../core/theme/theme_context.dart';
 import 'nav_badge.dart';
 
 /// Tab icon and label. With [floatingSelection] the active tab's icon is
-/// hidden because the bar draws it in a floating bubble.
+/// hidden because the bar draws it in a raised bubble; its label stays.
 class NavItem extends StatelessWidget {
   const NavItem({
     super.key,
@@ -33,38 +33,35 @@ class NavItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.md),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            AnimatedOpacity(
-              opacity: selected && floatingSelection ? 0 : 1,
-              duration: AppDurations.dot,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Icon(icon, size: AppSizes.iconMd, color: color),
-                  if (badge > 0)
-                    PositionedDirectional(
-                      top: -AppSpacing.sm,
-                      end: -AppSpacing.md,
-                      child: NavBadge(count: badge),
-                    ),
-                ],
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedOpacity(
+            opacity: selected && floatingSelection ? 0 : 1,
+            duration: AppDurations.dot,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(icon, size: AppSizes.iconMd, color: color),
+                if (badge > 0)
+                  PositionedDirectional(
+                    top: -AppSpacing.sm,
+                    end: -AppSpacing.md,
+                    child: NavBadge(count: badge),
+                  ),
+              ],
             ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              label,
-              style: context.text.labelSmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w700,
-              ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          AnimatedDefaultTextStyle(
+            duration: AppDurations.dot,
+            style: (context.text.labelSmall ?? const TextStyle()).copyWith(
+              color: color,
+              fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
             ),
-          ],
-        ),
+            child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+        ],
       ),
     );
   }

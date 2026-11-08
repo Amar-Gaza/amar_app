@@ -2,255 +2,111 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_sizes.dart';
-import 'nav_motion.dart';
-
-/// A soft notch that recovers during flight and ripples on landing.
+/// Floating pill whose top edge dips into a rounded notch under the
+/// bubble, joined to the bar by smooth curves. The notch follows the
+/// bubble sideways and fills in while it is in the air.
 class NavBarPainter extends CustomPainter {
   const NavBarPainter({
     required this.center,
+    required this.bubbleCenterY,
+    required this.bubbleRadius,
+    required this.raise,
     required this.color,
     required this.shadow,
-    required this.waterColor,
-    this.lift = 0,
-    this.ripple = 0,
   });
 
-  static const double _notchHalf = 44;
-  static const double _corner = 16;
-  static const double _elevation = 8;
-  static const int _samples = 96;
+  static const double corner = 26;
 
-  static const double _waveAmplitude = 5;
-  static const double _waveReach = 90;
-  static const double _waveSpread = 22;
+  /// Gap between the bubble and the notch edge.
+  static const double _ring = 6;
 
-  static const double _rippleStart = 18;
-  static const double _rippleEnd = 72;
-  static const double _rippleHeight = 0.22;
-  static const double _ringStroke = 1.6;
-  static const double _ringAlpha = 0.3;
+  /// How soft the join between the bar and the notch is.
+  static const double _blend = 14;
+  static const int _samples = 120;
 
-  static const double _dropletRadius = 2.2;
-  static const double _splashHeight = 24;
-  static const double _shadowAlpha = 0.12;
-  static const double _surfaceAlpha = 0.16;
-
+  /// Bubble centre on x, in the pill's coordinates.
   final double center;
+
+  /// Bubble centre on y at rest, relative to the pill's top edge.
+  final double bubbleCenterY;
+  final double bubbleRadius;
+
+  /// 1 while the bubble rests in the notch, towards 0 while it jumps.
+  final double raise;
   final Color color;
   final Color shadow;
-  final Color waterColor;
-  final double lift;
-  final double ripple;
 
-  double _surfaceY(double x, double width) {
-    final safeCenter = center.clamp(_corner, width - _corner).toDouble();
-
-    final half = math.min(
-      _notchHalf,
-      math.max(
-        0.0,
-        math.min(safeCenter, width - safeCenter) - _corner,
-      ),
-    );
-
-    final distance = (x - safeCenter).abs();
-
-    final immersion = 1 - (lift / NavMotion.jumpHeight).clamp(0.0, 1.0) * 0.85;
-
-    final profile = half > 0 && distance < half
-        ? (1 + math.cos(math.pi * distance / half)) / 2
-        : 0.0;
-
-    final depth = (AppSizes.navNotchDepth - AppSizes.navBarTop) * immersion;
-
-    var wave = 0.0;
-
-    if (ripple > 0 && ripple < 1) {
-      final radius = _waveReach * ripple;
-
-      final envelope = math.exp(
-        -math.pow((distance - radius) / _waveSpread, 2),
-      );
-
-      final fade = math.sin(math.pi * ripple) * (1 - ripple);
-
-      final edge = (math.min(x - _corner, width - _corner - x) / _corner)
-          .clamp(0.0, 1.0)
-          .toDouble();
-
-      wave = math.sin(
-            (distance - radius) / _waveSpread * math.pi,
-          ) *
-          envelope *
-          fade *
-          _waveAmplitude *
-          edge;
-    }
-
-    return AppSizes.navBarTop + depth * profile + wave;
+  /// Polynomial smooth maximum: the larger of [a] and [b] with a rounded
+  /// fillet where they meet.
+  static double _smoothMax(double a, double b, double k) {
+    final h = (0.5 + 0.5 * (a - b) / k).clamp(0.0, 1.0);
+    return b + (a - b) * h + k * h * (1 - h);
   }
 
-  Path _surface(Size size) {
-    final path = Path()..moveTo(_corner, AppSizes.navBarTop);
-
-    for (var i = 1; i <= _samples; i++) {
-      final x = _corner + (size.width - _corner * 2) * i / _samples;
-
-      path.lineTo(x, _surfaceY(x, size.width));
+  double _topAt(double x, double width) {
+    // Rounded pill corners.
+    var edge = 0.0;
+    if (x < corner) {
+      final d = corner - x;
+      edge = corner - math.sqrt(corner * corner - d * d);
+    } else if (x > width - corner) {
+      final d = x - (width - corner);
+      edge = corner - math.sqrt(corner * corner - d * d);
     }
 
-    return path;
+    // Lower half of the notch circle under the bubble.
+    final r = bubbleRadius + _ring;
+    final dx = (x - center).abs();
+    final notch = dx < r
+        ? bubbleCenterY + math.sqrt(r * r - dx * dx)
+        : bubbleCenterY - (dx - r);
+
+    final joined = _smoothMax(edge, notch, _blend);
+    // Only the part cut below the bar's edge fills in while the bubble jumps.
+    return joined > edge ? edge + (joined - edge) * raise : joined;
   }
 
-  Path _bar(Size size) {
-    final path = Path()
-      ..moveTo(0, AppSizes.navBarTop + _corner)
-      ..quadraticBezierTo(
-        0,
-        AppSizes.navBarTop,
-        _corner,
-        AppSizes.navBarTop,
-      );
-
+  Path _path(Size size) {
+    final w = size.width;
+    final path = Path()..moveTo(0, _topAt(0, w));
     for (var i = 1; i <= _samples; i++) {
-      final x = _corner + (size.width - _corner * 2) * i / _samples;
-
-      path.lineTo(x, _surfaceY(x, size.width));
+      final x = w * i / _samples;
+      path.lineTo(x, _topAt(x, w));
     }
-
     return path
-      ..quadraticBezierTo(
-        size.width,
-        AppSizes.navBarTop,
-        size.width,
-        AppSizes.navBarTop + _corner,
+      ..lineTo(w, size.height - corner)
+      ..arcToPoint(
+        Offset(w - corner, size.height),
+        radius: const Radius.circular(corner),
       )
-      ..lineTo(size.width, size.height)
-      ..lineTo(0, size.height)
+      ..lineTo(corner, size.height)
+      ..arcToPoint(
+        Offset(0, size.height - corner),
+        radius: const Radius.circular(corner),
+      )
       ..close();
-  }
-
-  void _paintLanding(Canvas canvas) {
-    if (ripple <= 0 || ripple >= 1) return;
-
-    final fade = math.sin(math.pi * ripple) * (1 - ripple);
-
-    final radius = _rippleStart + (_rippleEnd - _rippleStart) * ripple;
-
-    final origin = Offset(
-      center,
-      AppSizes.navBubble * 0.8,
-    );
-
-    final ring = Paint()
-      ..color = waterColor.withValues(
-        alpha: fade * _ringAlpha,
-      )
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = _ringStroke * (1 - ripple);
-
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: origin,
-        width: radius * 2,
-        height: radius * _rippleHeight,
-      ),
-      ring,
-    );
-
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: origin,
-        width: radius * 1.4,
-        height: radius * _rippleHeight * 0.65,
-      ),
-      ring,
-    );
-
-    final splash = math.sin(
-      math.pi * math.min(1.0, ripple * 2),
-    );
-
-    if (splash <= 0) return;
-
-    final droplet = Paint()
-      ..color = waterColor.withValues(
-        alpha: fade * 0.6,
-      );
-
-    for (final side in [-1.0, 1.0]) {
-      for (var i = 0; i < 2; i++) {
-        final distance = (AppSizes.navBubble / 2 + ripple * _waveReach / 2) *
-            (i == 0 ? 1.0 : 0.7);
-
-        final y =
-            AppSizes.navBarTop - splash * _splashHeight * (i == 0 ? 1.0 : 0.6);
-
-        canvas.drawCircle(
-          Offset(center + side * distance, y),
-          _dropletRadius * (1 - ripple),
-          droplet,
-        );
-      }
-    }
   }
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (size.width <= _corner * 2) return;
-
-    final path = _bar(size);
-
+    if (size.width <= corner * 2) return;
+    final path = _path(size);
     canvas
-      ..drawShadow(path, shadow, _elevation, false)
       ..drawPath(
-        path,
-        Paint()..color = color,
-      );
-
-    final air = (lift / NavMotion.jumpHeight).clamp(0.0, 1.0).toDouble();
-
-    canvas.drawOval(
-      Rect.fromCenter(
-        center: Offset(
-          center,
-          AppSizes.navBubble * 0.82,
-        ),
-        width: AppSizes.navBubble * (0.65 - air * 0.25),
-        height: AppSizes.navBubble * 0.12,
-      ),
-      Paint()
-        ..color = waterColor.withValues(
-          alpha: _shadowAlpha * (1 - air * 0.6),
-        )
-        ..maskFilter = const MaskFilter.blur(
-          BlurStyle.normal,
-          4,
-        ),
-    );
-
-    if (ripple > 0) {
-      canvas.drawPath(
-        _surface(size),
+        path.shift(const Offset(0, 6)),
         Paint()
-          ..color = waterColor.withValues(
-            alpha: _surfaceAlpha * (1 - ripple),
-          )
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = _ringStroke,
-      );
-    }
-
-    _paintLanding(canvas);
+          ..color = shadow
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12),
+      )
+      ..drawPath(path, Paint()..color = color);
   }
 
   @override
   bool shouldRepaint(NavBarPainter oldDelegate) =>
       center != oldDelegate.center ||
+      bubbleCenterY != oldDelegate.bubbleCenterY ||
+      bubbleRadius != oldDelegate.bubbleRadius ||
+      raise != oldDelegate.raise ||
       color != oldDelegate.color ||
-      shadow != oldDelegate.shadow ||
-      waterColor != oldDelegate.waterColor ||
-      lift != oldDelegate.lift ||
-      ripple != oldDelegate.ripple;
+      shadow != oldDelegate.shadow;
 }

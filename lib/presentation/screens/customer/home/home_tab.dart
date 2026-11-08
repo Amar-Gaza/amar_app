@@ -111,8 +111,9 @@ class HomeTab extends GetView<CatalogController> {
               return RefreshIndicator(
                 onRefresh: controller.load,
                 child: ListView(
-                  padding: const EdgeInsets.only(
-                    bottom: AppSpacing.xl,
+                  padding: EdgeInsets.only(
+                    bottom:
+                        MediaQuery.paddingOf(context).bottom + AppSpacing.xl,
                   ),
                   children: [
                     if (order != null)
