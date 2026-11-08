@@ -5,7 +5,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/driver/driver_session_controller.dart';
 import '../../../core/localization/vehicle_label.dart';
-import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../widgets/common/confirmation_dialog.dart';
@@ -24,7 +23,8 @@ class DriverAccountTab extends GetView<DriverSessionController> {
     return Obx(() {
       final driver = controller.driver.value;
       return ListView(
-        padding: const EdgeInsets.only(bottom: AppSizes.navBubble),
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.paddingOf(context).bottom + AppSpacing.lg),
         children: [
           ProfileHeader(
             title: l10n.navAccount,

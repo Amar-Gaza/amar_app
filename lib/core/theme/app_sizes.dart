@@ -26,11 +26,10 @@ abstract final class AppSizes {
   static const double homeProductStrip = 208;
   static const double providerLogo = 48;
   static const double addButton = 32;
-  static const double navHeight = 86;
+  static const double navHeight = 64;
   static const double mapPinSize = 40;
-  static const double navBubble = 54;
-  static const double navBarTop = 20;
-  static const double navNotchDepth = 58;
+  static const double navBubble = 50;
+  static const double navBarTop = 30;
   static const double navBadge = 18;
   static const double iconXs = 16;
   static const double iconSm = 20;

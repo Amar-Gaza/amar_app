@@ -5,7 +5,6 @@ import '../../../app/routes/app_routes.dart';
 import '../../../controllers/driver/driver_home_controller.dart';
 import '../../../controllers/driver/driver_orders_controller.dart';
 import '../../../core/theme/app_radius.dart';
-import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../data/models/masar/masar_models.dart';
 import '../../../l10n/app_localizations.dart';
@@ -130,7 +129,7 @@ class DriverHomeTab extends GetView<DriverHomeController> {
               const SizedBox(height: AppSpacing.page),
               const DriverOfflineCard(),
             ],
-            const SizedBox(height: AppSizes.navBubble),
+            SizedBox(height: MediaQuery.paddingOf(context).bottom),
           ],
         ),
       );

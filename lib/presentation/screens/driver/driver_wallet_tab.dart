@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../../controllers/driver/driver_wallet_controller.dart';
 import '../../../core/constants/api_query.dart';
-import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../l10n/app_localizations.dart';
@@ -43,7 +42,7 @@ class DriverWalletTab extends GetView<DriverWalletController> {
             AppSpacing.page,
             MediaQuery.paddingOf(context).top + AppSpacing.sm,
             AppSpacing.page,
-            AppSizes.navBubble,
+            MediaQuery.paddingOf(context).bottom + AppSpacing.lg,
           ),
           children: [
             Text(l10n.driverNavWallet, style: context.text.headlineLarge),

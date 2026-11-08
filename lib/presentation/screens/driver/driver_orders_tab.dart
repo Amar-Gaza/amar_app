@@ -5,7 +5,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../app/routes/app_routes.dart';
 import '../../../controllers/driver/driver_home_controller.dart';
 import '../../../controllers/driver/driver_orders_controller.dart';
-import '../../../core/theme/app_sizes.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/theme_context.dart';
 import '../../../core/utils/date_formatter.dart';
@@ -114,7 +113,7 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
             AppSpacing.page,
             MediaQuery.paddingOf(context).top + AppSpacing.sm,
             AppSpacing.page,
-            AppSizes.navBubble,
+            MediaQuery.paddingOf(context).bottom + AppSpacing.lg,
           ),
           children: [
             Text(l10n.driverNavOrders, style: context.text.headlineLarge),

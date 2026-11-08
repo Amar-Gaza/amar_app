@@ -67,11 +67,11 @@ class OrdersTab extends GetView<OrdersController> {
                   return false;
                 },
                 child: ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(
+                  padding: EdgeInsets.fromLTRB(
                     AppSpacing.lg,
                     0,
                     AppSpacing.lg,
-                    AppSpacing.xl,
+                    MediaQuery.paddingOf(context).bottom + AppSpacing.xl,
                   ),
                   itemCount: controller.items.length +
                       (controller.isLoadingMore.value ? 1 : 0),

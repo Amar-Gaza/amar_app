@@ -30,7 +30,12 @@ class AccountTab extends GetView<SessionController> {
         AppTopBar(title: l10n.navAccount, showBack: false),
         Expanded(
           child: ListView(
-            padding: const EdgeInsets.all(AppSpacing.lg),
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.lg,
+              AppSpacing.lg,
+              AppSpacing.lg,
+              MediaQuery.paddingOf(context).bottom + AppSpacing.lg,
+            ),
             children: [
               Obx(() {
                 final user = controller.user.value;

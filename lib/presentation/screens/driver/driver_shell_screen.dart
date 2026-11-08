@@ -29,6 +29,8 @@ class DriverShellScreen extends GetView<DriverHomeController> {
     ];
     return Obx(
       () => Scaffold(
+        // Content scrolls behind the floating nav bar.
+        extendBody: true,
         body: Column(
           children: [
             if (connectivity.isOffline.value)
