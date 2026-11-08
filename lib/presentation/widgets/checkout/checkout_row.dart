@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_radius.dart';
@@ -37,9 +36,7 @@ class CheckoutRow extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: AppRadius.lgAll,
           side: BorderSide(
-            color: highlight
-                ? colors.warning
-                : colors.border,
+            color: highlight ? colors.warning : colors.border,
           ),
         ),
         child: InkWell(
@@ -51,8 +48,7 @@ class CheckoutRow extends StatelessWidget {
               vertical: AppSpacing.lg,
             ),
             child: Row(
-              crossAxisAlignment:
-              CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 IconTile(
                   icon: icon,
@@ -65,15 +61,13 @@ class CheckoutRow extends StatelessWidget {
                 Expanded(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: context.text.titleMedium
-                            ?.copyWith(
+                        style: context.text.titleMedium?.copyWith(
                           color: colors.ink,
                           fontWeight: FontWeight.w700,
                         ),
@@ -87,11 +81,8 @@ class CheckoutRow extends StatelessWidget {
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
-                        style: context.text.bodyMedium
-                            ?.copyWith(
-                          color: highlight
-                              ? colors.warning
-                              : colors.mutedText,
+                        style: context.text.bodyMedium?.copyWith(
+                          color: highlight ? colors.warning : colors.mutedText,
                           height: 1.5,
                           fontWeight: FontWeight.w500,
                         ),

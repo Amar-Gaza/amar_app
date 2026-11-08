@@ -12,6 +12,7 @@ abstract final class AppRoutes {
 
   // Catalog
   static const String search = '/search';
+  static const String aiAssistant = '/ai-assistant';
   static const String categories = '/categories';
   static const String vendors = '/vendors';
   static const String providers = '/providers';

@@ -4,14 +4,23 @@
 <dict>
 	<key>GMSApiKey</key>
 	<string>$(AMAR_MAPS_KEY)</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>نستخدم موقعك لتحديد عنوان التوصيل بدقة.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>نستخدم الكاميرا لتصوير المرفقات وإثبات التسليم.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>نستخدم الصور لإرفاقها بطلبك.</string>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>نستخدم موقعك لتحديد عنوان التوصيل بدقة.</string>
+
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>نستخدم التعرف على الكلام لتلقي أوامرك الصوتية.</string>
+
+    <key>NSMicrophoneUsageDescription</key>
+    <string>نستخدم الميكروفون عند تفعيل المساعد الصوتي فقط.</string>
+
+    <key>NSCameraUsageDescription</key>
+    <string>نستخدم الكاميرا لتصوير المرفقات وإثبات التسليم.</string>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>نستخدم الصور لإرفاقها بطلبك.</string>
+
+    <key>CADisableMinimumFrameDurationOnPhone</key>
+    <true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

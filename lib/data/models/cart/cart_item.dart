@@ -21,8 +21,8 @@ class CartItem {
   final String? note;
 
   factory CartItem.fromJson(
-      Map<String, dynamic> json,
-      ) {
+    Map<String, dynamic> json,
+  ) {
     final qty = json['qty'];
     final rawOptions = json['options'];
     final note = json['note'];
@@ -57,15 +57,14 @@ class CartItem {
       if (entry.key is! String ||
           entry.value is! List ||
           (entry.value as List).any(
-                (value) => value is! String,
+            (value) => value is! String,
           )) {
         throw const FormatException(
           'Invalid saved cart options',
         );
       }
 
-      options[entry.key as String] =
-      List<String>.from(
+      options[entry.key as String] = List<String>.from(
         entry.value as List,
       );
     }
@@ -79,23 +78,22 @@ class CartItem {
   }
 
   Map<String, dynamic> toJson() => {
-    'product': product.toJson(),
-    'qty': qty,
-    'options': {
-      for (final entry in options.entries)
-        entry.key: List<String>.from(entry.value),
-    },
-    'note': note,
-  };
+        'product': product.toJson(),
+        'qty': qty,
+        'options': {
+          for (final entry in options.entries)
+            entry.key: List<String>.from(entry.value),
+        },
+        'note': note,
+      };
 
   /// Same product with the same choices
   /// merges into one line.
   String get key {
     final parts = options.entries
         .map(
-          (entry) =>
-      '${entry.key}=${([...entry.value]..sort()).join('|')}',
-    )
+          (entry) => '${entry.key}=${([...entry.value]..sort()).join('|')}',
+        )
         .toList()
       ..sort();
 
@@ -105,33 +103,31 @@ class CartItem {
   /// Labels of the selected choices,
   /// in option order.
   List<String> get choiceLabels => [
-    for (final option in product.options)
-      for (final choice in option.choices)
-        if (options[option.key]?.contains(choice.key) ??
-            false)
-          choice.label,
-  ];
+        for (final option in product.options)
+          for (final choice in option.choices)
+            if (options[option.key]?.contains(choice.key) ?? false)
+              choice.label,
+      ];
 
   CartItem copyWith({int? qty}) => CartItem(
-    product: product,
-    qty: qty ?? this.qty,
-    options: options,
-    note: note,
-  );
+        product: product,
+        qty: qty ?? this.qty,
+        options: options,
+        note: note,
+      );
 
   CartLine toCartLine() => CartLine(
-    productId: product.id,
-    qty: qty,
-    note: note,
-    options: {
-      for (final option in product.options)
-        if (options[option.key]?.isNotEmpty ?? false)
-          option.key:
-          option.type == ProductOptionType.multi
-              ? options[option.key]!
-              : options[option.key]!.first,
-    },
-  );
+        productId: product.id,
+        qty: qty,
+        note: note,
+        options: {
+          for (final option in product.options)
+            if (options[option.key]?.isNotEmpty ?? false)
+              option.key: option.type == ProductOptionType.multi
+                  ? options[option.key]!
+                  : options[option.key]!.first,
+        },
+      );
 }
 
 abstract final class ProductOptionType {

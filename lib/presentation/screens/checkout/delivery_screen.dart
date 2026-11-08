@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -24,9 +23,9 @@ class DeliveryScreen extends GetView<CheckoutController> {
   const DeliveryScreen({super.key});
 
   static String _removeRepeatedPlaces(
-      String text,
-      String language,
-      ) {
+    String text,
+    String language,
+  ) {
     final parts = text
         .split(RegExp(r'[،,]+'))
         .map((part) => part.trim())
@@ -47,11 +46,11 @@ class DeliveryScreen extends GetView<CheckoutController> {
   }
 
   static String _addressDescription(
-      Address? address,
-      String fallback,
-      String defaultTitle,
-      String language,
-      ) {
+    Address? address,
+    String fallback,
+    String defaultTitle,
+    String language,
+  ) {
     if (address == null) return fallback;
 
     final name = _removeRepeatedPlaces(
@@ -79,8 +78,8 @@ class DeliveryScreen extends GetView<CheckoutController> {
   }
 
   Future<void> _pickSchedule(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     final l10n = AppLocalizations.of(context);
     final now = DateTime.now();
 
@@ -91,8 +90,7 @@ class DeliveryScreen extends GetView<CheckoutController> {
     );
 
     if (!controller.isService) {
-      final asap =
-      await showModalBottomSheet<bool>(
+      final asap = await showModalBottomSheet<bool>(
         context: context,
         builder: (sheet) => SafeArea(
           child: Column(
@@ -103,16 +101,14 @@ class DeliveryScreen extends GetView<CheckoutController> {
                   LucideIcons.zap,
                 ),
                 title: Text(l10n.scheduleNow),
-                onTap: () =>
-                    Navigator.of(sheet).pop(true),
+                onTap: () => Navigator.of(sheet).pop(true),
               ),
               ListTile(
                 leading: const Icon(
                   LucideIcons.calendarClock,
                 ),
                 title: Text(l10n.schedulePick),
-                onTap: () =>
-                    Navigator.of(sheet).pop(false),
+                onTap: () => Navigator.of(sheet).pop(false),
               ),
             ],
           ),
@@ -162,19 +158,17 @@ class DeliveryScreen extends GetView<CheckoutController> {
   }
 
   Future<void> _pickPayment(
-      BuildContext context,
-      ) async {
+    BuildContext context,
+  ) async {
     final l10n = AppLocalizations.of(context);
 
-    final picked =
-    await showModalBottomSheet<PaymentOption>(
+    final picked = await showModalBottomSheet<PaymentOption>(
       context: context,
       builder: (sheet) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            for (final option
-            in controller.paymentOptions)
+            for (final option in controller.paymentOptions)
               ListTile(
                 title: Text(
                   option.gateway?.name ??
@@ -183,14 +177,12 @@ class DeliveryScreen extends GetView<CheckoutController> {
                         option.method,
                       ),
                 ),
-                trailing:
-                option.same(controller.payment)
+                trailing: option.same(controller.payment)
                     ? const Icon(
-                  LucideIcons.check,
-                )
+                        LucideIcons.check,
+                      )
                     : null,
-                onTap: () =>
-                    Navigator.of(sheet).pop(option),
+                onTap: () => Navigator.of(sheet).pop(option),
               ),
           ],
         ),
@@ -206,8 +198,7 @@ class DeliveryScreen extends GetView<CheckoutController> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    final locale =
-        Localizations.localeOf(context).languageCode;
+    final locale = Localizations.localeOf(context).languageCode;
 
     return Scaffold(
       appBar: AppTopBar(
@@ -218,18 +209,14 @@ class DeliveryScreen extends GetView<CheckoutController> {
           const CheckoutSteps(current: 1),
           Expanded(
             child: Obx(() {
-              final address =
-                  controller.address.value;
+              final address = controller.address.value;
 
-              final schedule =
-                  controller.scheduledFor.value;
+              final schedule = controller.scheduledFor.value;
 
-              final failure =
-                  controller.quoteFailure.value;
+              final failure = controller.quoteFailure.value;
 
-              final uploaded = controller.attachments
-                  .where((a) => a.isDone)
-                  .length;
+              final uploaded =
+                  controller.attachments.where((a) => a.isDone).length;
 
               return ListView(
                 padding: const EdgeInsets.all(
@@ -239,8 +226,7 @@ class DeliveryScreen extends GetView<CheckoutController> {
                   CheckoutRow(
                     icon: LucideIcons.store,
                     title: l10n.deliveryPickup,
-                    value: controller
-                        .vendor.value?.name ??
+                    value: controller.vendor.value?.name ??
                         l10n.cartVendorFallback,
                   ),
 
@@ -267,33 +253,26 @@ class DeliveryScreen extends GetView<CheckoutController> {
                         : l10n.deliveryTime,
                     value: schedule == null
                         ? controller.isService
-                        ? l10n.scheduleChoose
-                        : l10n.scheduleNow
+                            ? l10n.scheduleChoose
+                            : l10n.scheduleNow
                         : DateFormatter.dayMonthTime(
-                      schedule,
-                      locale,
-                    ),
-                    onTap: () =>
-                        _pickSchedule(context),
+                            schedule,
+                            locale,
+                          ),
+                    onTap: () => _pickSchedule(context),
                   ),
 
-                  if (controller
-                      .paymentOptions.isNotEmpty)
+                  if (controller.paymentOptions.isNotEmpty)
                     CheckoutRow(
                       icon: LucideIcons.banknote,
                       title: l10n.checkoutPayment,
-                      value: controller
-                          .gateway.value?.name ??
+                      value: controller.gateway.value?.name ??
                           paymentLabel(
                             l10n,
-                            controller
-                                .paymentMethod.value,
+                            controller.paymentMethod.value,
                           ),
-                      onTap: controller
-                          .paymentOptions.length >
-                          1
-                          ? () =>
-                          _pickPayment(context)
+                      onTap: controller.paymentOptions.length > 1
+                          ? () => _pickPayment(context)
                           : null,
                     ),
 
@@ -303,24 +282,21 @@ class DeliveryScreen extends GetView<CheckoutController> {
                     value: uploaded == 0
                         ? l10n.detailsHint
                         : l10n.detailsAttachedCount(
-                      uploaded,
+                            uploaded,
+                          ),
+                    onTap: () => Get.toNamed<void>(
+                      AppRoutes.checkoutDetails,
                     ),
-                    onTap: () =>
-                        Get.toNamed<void>(
-                          AppRoutes.checkoutDetails,
-                        ),
                   ),
 
                   if (controller.couponsEnabled)
                     CheckoutRow(
                       icon: LucideIcons.ticket,
                       title: l10n.couponTitle,
-                      value: controller.coupon.value ??
-                          l10n.couponHint,
-                      onTap: () =>
-                          Get.toNamed<void>(
-                            AppRoutes.checkoutCoupon,
-                          ),
+                      value: controller.coupon.value ?? l10n.couponHint,
+                      onTap: () => Get.toNamed<void>(
+                        AppRoutes.checkoutCoupon,
+                      ),
                     ),
 
                   if (failure != null)
@@ -335,28 +311,24 @@ class DeliveryScreen extends GetView<CheckoutController> {
       ),
       bottomNavigationBar: BottomActionBar(
         child: Obx(
-              () => PrimaryButton(
+          () => PrimaryButton(
             label: controller.address.value == null
                 ? l10n.deliveryChooseAddress
                 : l10n.deliveryRequestQuote,
             isLoading: controller.isQuoting.value,
-            onPressed:
-            controller.address.value == null
+            onPressed: controller.address.value == null
                 ? () => Get.toNamed<void>(
-              AppRoutes
-                  .checkoutAddresses,
-            )
+                      AppRoutes.checkoutAddresses,
+                    )
                 : controller.canRequestQuote
-                ? () async {
-              if (await controller
-                  .requestQuote()) {
-                await Get.toNamed<void>(
-                  AppRoutes
-                      .checkoutQuote,
-                );
-              }
-            }
-                : null,
+                    ? () async {
+                        if (await controller.requestQuote()) {
+                          await Get.toNamed<void>(
+                            AppRoutes.checkoutQuote,
+                          );
+                        }
+                      }
+                    : null,
           ),
         ),
       ),

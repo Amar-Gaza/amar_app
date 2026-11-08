@@ -11,25 +11,38 @@ import '../../widgets/common/app_top_bar.dart';
 import '../../widgets/common/empty_view.dart';
 import '../../widgets/home/provider_card.dart';
 
-/// "View all" of a home section: every store or every company.
 class ProvidersScreen extends GetView<CatalogController> {
   const ProvidersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final args = Get.arguments as ProvidersArgs;
+
     return Scaffold(
       appBar: AppTopBar(title: args.title),
       body: Obx(() {
-        final entries = controller.providers(args.kind);
+        final query = args.query?.trim().toLowerCase() ?? '';
+
+        final entries = controller
+            .providers(args.kind)
+            .where(
+              (entry) =>
+                  query.isEmpty ||
+                  entry.vendor.name.toLowerCase().contains(query),
+            )
+            .toList();
+
         if (entries.isEmpty) {
           return EmptyView(
             icon: LucideIcons.store,
             title: AppLocalizations.of(context).homeProvidersEmpty,
           );
         }
+
         return ListView.builder(
-          padding: const EdgeInsets.all(AppSpacing.page),
+          padding: const EdgeInsets.all(
+            AppSpacing.page,
+          ),
           itemCount: entries.length,
           itemBuilder: (_, index) => ProviderCard(
             entry: entries[index],

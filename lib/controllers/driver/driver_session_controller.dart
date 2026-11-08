@@ -13,6 +13,7 @@ import '../../data/models/masar/masar_models.dart';
 import '../../data/services/customer/app_config_service.dart';
 import '../../data/services/driver/driver_auth_service.dart';
 import '../../data/services/driver/driver_profile_service.dart';
+import '../shared/push_controller.dart';
 
 /// Driver session, fully separate from the customer one (designs 01–03).
 class DriverSessionController extends GetxController {
@@ -21,14 +22,16 @@ class DriverSessionController extends GetxController {
     this._auth,
     this._profile,
     this._configService,
-    this._events,
-  );
+    this._events, {
+    PushController? push,
+  }) : _push = push;
 
   final SecureTokenStorage _tokens;
   final DriverAuthService _auth;
   final DriverProfileService _profile;
   final AppConfigService _configService;
   final SessionEvents _events;
+  final PushController? _push;
 
   final Rxn<Driver> driver = Rxn<Driver>();
   final Rxn<AppConfig> config = Rxn<AppConfig>();
@@ -62,9 +65,12 @@ class DriverSessionController extends GetxController {
     try {
       driver.value = await _profile.me();
       unawaited(loadConfig());
+      unawaited(_push?.register(SessionRole.driver));
       return true;
     } on ApiFailure catch (e) {
-      return e.code != ApiErrorCodes.unauthenticated && e.isConnectivity;
+      final keep = e.code != ApiErrorCodes.unauthenticated && e.isConnectivity;
+      if (keep) unawaited(_push?.register(SessionRole.driver));
+      return keep;
     }
   }
 
@@ -81,6 +87,7 @@ class DriverSessionController extends GetxController {
       await _tokens.write(SessionRole.driver, result.token);
       driver.value = result.driver;
       await loadConfig();
+      unawaited(_push?.register(SessionRole.driver));
       return true;
     } on ApiFailure catch (e) {
       failure.value = e;
@@ -93,6 +100,8 @@ class DriverSessionController extends GetxController {
   void updateDriver(Driver value) => driver.value = value;
 
   Future<void> logout() async {
+    // Before logout, while the token still authenticates.
+    await _push?.unregister(SessionRole.driver);
     try {
       await _auth.logout();
     } on ApiFailure {
@@ -108,6 +117,7 @@ class DriverSessionController extends GetxController {
   }
 
   Future<void> _clear() async {
+    _push?.forget(SessionRole.driver);
     await _tokens.clear(SessionRole.driver);
     driver.value = null;
   }
