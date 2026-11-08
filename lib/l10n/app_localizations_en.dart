@@ -1624,6 +1624,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get driverNoHistory => 'No past jobs';
 
   @override
+  String get driverHistoryTotal => 'Order total';
+
+  @override
   String get driverOrderTitle => 'Job details';
 
   @override

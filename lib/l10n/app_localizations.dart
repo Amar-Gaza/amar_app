@@ -3080,6 +3080,12 @@ abstract class AppLocalizations {
   /// **'لا توجد طلبات سابقة'**
   String get driverNoHistory;
 
+  /// No description provided for @driverHistoryTotal.
+  ///
+  /// In ar, this message translates to:
+  /// **'إجمالي الطلب'**
+  String get driverHistoryTotal;
+
   /// No description provided for @driverOrderTitle.
   ///
   /// In ar, this message translates to:

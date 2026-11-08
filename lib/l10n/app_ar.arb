@@ -1000,6 +1000,7 @@
   "driverHistory": "السجل",
   "driverNoAvailable": "لا توجد طلبات متاحة حالياً",
   "driverNoHistory": "لا توجد طلبات سابقة",
+  "driverHistoryTotal": "إجمالي الطلب",
   "driverOrderTitle": "تفاصيل الطلب",
   "driverReject": "رفض",
   "driverRejectConfirm": "هل تريد رفض هذا الطلب؟",

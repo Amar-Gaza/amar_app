@@ -1609,6 +1609,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get driverNoHistory => 'لا توجد طلبات سابقة';
 
   @override
+  String get driverHistoryTotal => 'إجمالي الطلب';
+
+  @override
   String get driverOrderTitle => 'تفاصيل الطلب';
 
   @override
