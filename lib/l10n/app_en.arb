@@ -709,6 +709,7 @@
   "driverHistory": "History",
   "driverNoAvailable": "No jobs available right now",
   "driverNoHistory": "No past jobs",
+  "driverHistoryTotal": "Order total",
   "driverOrderTitle": "Job details",
   "driverReject": "Reject",
   "driverRejectConfirm": "Reject this job?",

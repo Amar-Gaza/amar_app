@@ -15,6 +15,7 @@ import '../../widgets/common/empty_view.dart';
 import '../../widgets/common/error_view.dart';
 import '../../widgets/common/group_label.dart';
 import '../../widgets/common/skeleton_list.dart';
+import '../../widgets/driver/history_order_sheet.dart';
 import '../../widgets/driver/history_order_tile.dart';
 import '../../widgets/driver/summary_tile.dart';
 
@@ -57,8 +58,17 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
       o.status.key == StatusKeys.delivered ||
       o.status.key == StatusKeys.serviceCompleted;
 
-  Future<void> _open(int id) async {
-    await Get.toNamed<void>(AppRoutes.driverOrder, arguments: id);
+  /// Finished jobs open a summary sheet: the server returns an order to a
+  /// driver only while it is active (not_found afterwards).
+  Future<void> _open(OrderSummary order) async {
+    if (_isCompleted(order) || _isCancelled(order)) {
+      return HistoryOrderSheet.show(
+        context,
+        order: order,
+        cancelled: _isCancelled(order),
+      );
+    }
+    await Get.toNamed<void>(AppRoutes.driverOrder, arguments: order.id);
     await _orders.loadHistory();
   }
 
@@ -171,7 +181,7 @@ class _DriverOrdersTabState extends State<DriverOrdersTab> {
                   child: HistoryOrderTile(
                     order: order,
                     cancelled: _isCancelled(order),
-                    onTap: () => _open(order.id),
+                    onTap: () => _open(order),
                   ),
                 ),
             ],
