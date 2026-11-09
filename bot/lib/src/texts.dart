@@ -79,4 +79,31 @@ abstract final class T {
   static const failed = 'صار خطأ، جرب كمان شوي.';
   static String error(String? message) =>
       message == null || message.isEmpty ? failed : '⚠️ $message';
+
+  // ---- AI assistant ----
+  static const analyzing = '📸 وصلت الصورة! لحظة، عم نحللها...';
+  static const analyzingMany = '📸 وصلت الصور! لحظة، عم نحللها مع بعض...';
+  static const aiOff = 'تحليل الصور مش مفعّل هلأ، جرب بعد شوي.';
+  static const aiFailed = 'معلش، ما قدرت أرد هلأ 😕 جرب كمان مرة بعد لحظة.';
+  static const imageTooBig =
+      'الصورة كبيرة كتير. ابعتها كصورة عادية (مش ملف) وبحللها فوراً.';
+  static const noVoice =
+      'ما بقدر أسمع الرسائل الصوتية هلأ 🙏 اكتبلي سؤالك أو ابعت صورة للمشكلة.';
+  static const noVideo =
+      'ما بقدر أشوف الفيديو 🙏 ابعت صورة واضحة للمشكلة وبحللها فوراً.';
+  static const noDocument =
+      'ما بقدر أفتح هاد الملف 🙏 ابعت صورة أو اكتبلي شو بدك.';
+  static const sticker =
+      '😄 حلو! احكيلي كيف بقدر أساعدك، أو ابعت صورة لأي مشكلة بالبيت.';
+  static const locationNoFlow =
+      'وصلني موقعك 👍 إذا بدك تطلب، اضغط «🛒 طلب جديد» وببعتلك الخطوات.';
+  static const bookInspection = '📅 اطلب معاينة';
+  static const anotherPhoto = '📸 أبعت صورة ثانية';
+  static const sendPhoto = 'تمام، ابعت الصورة هون 👇';
+  static const pickProvider = 'ممتاز! اختار مزوّد الخدمة، وهو بيتواصل معك '
+      'ليحدد موعد المعاينة والسعر:';
+  static const inspectionLogin =
+      'عشان نحجزلك معاينة لازم تسجل دخول أول، ابعت /start';
+  static const photoHint = '💬 جديد: اسألني أي سؤال، أو ابعتلي صورة لأي مشكلة '
+      'بالبيت (شادر، خيمة، تسريب مي، كهربا...) وبحكيلك مين الفني المناسب.';
 }

@@ -10,6 +10,8 @@ class BotConfig {
     required this.devMember,
     required this.baseUrl,
     required this.dataDir,
+    this.aiKey = '',
+    this.aiModel = defaultAiModel,
   });
 
   final String telegramToken;
@@ -17,6 +19,10 @@ class BotConfig {
   final String devMember;
   final String baseUrl;
   final String dataDir;
+  final String aiKey;
+  final String aiModel;
+
+  static const String defaultAiModel = 'anthropic/claude-opus-5.5';
 
   static const String defaultBaseUrl = 'https://masar.toldpath.com/api';
 
@@ -39,6 +45,8 @@ class BotConfig {
       devMember: read('AMAR_DEV_MEMBER'),
       baseUrl: read('AMAR_BASE_URL', defaultBaseUrl),
       dataDir: read('BOT_DATA_DIR', 'data'),
+      aiKey: read('OPENROUTER_API_KEY'),
+      aiModel: read('AI_MODEL', defaultAiModel),
     );
     if (config.telegramToken.isEmpty || config.projectKey.isEmpty) {
       throw StateError(

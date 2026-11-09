@@ -133,7 +133,19 @@ class SessionStore {
     });
   }
 
-  Future<void> save() async {
+  Future<void> _saving = Future<void>.value();
+
+  /// Saves run one after another (chats are handled in parallel), and a
+  /// failed write is logged instead of stopping the bot.
+  Future<void> save() => _saving = _saving.then((_) async {
+        try {
+          await _write();
+        } on Object catch (e) {
+          stderr.writeln('save sessions: $e');
+        }
+      });
+
+  Future<void> _write() async {
     await _file.parent.create(recursive: true);
     final tmp = File('${_file.path}.tmp');
     await tmp.writeAsString(jsonEncode({

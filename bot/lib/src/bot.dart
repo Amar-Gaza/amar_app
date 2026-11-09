@@ -7,14 +7,24 @@ import 'masar.dart';
 import 'store.dart';
 import 'telegram.dart';
 import 'texts.dart';
+import 'vision.dart';
 
 /// Order flow over Telegram:
 /// /start → share contact → OTP → vendor → product → qty → cart →
 /// address or location → quote → confirm → status updates.
 class AmarBot {
-  AmarBot(this._tg, this._api, this._store, this._geocoder);
+  AmarBot(
+    this._tg,
+    this._api,
+    this._store,
+    this._geocoder,
+    this._ai,
+    this._token,
+  );
 
   final Geocoder _geocoder;
+  final Assistant _ai;
+  final String _token;
 
   final Telegram _tg;
   final Masar _api;
@@ -36,7 +46,10 @@ class AmarBot {
 
   Future<void> run() async {
     _store.load();
-    Timer.periodic(_orderPoll, (_) => _pollOrders());
+    Timer.periodic(
+      _orderPoll,
+      (_) => _pollOrders().catchError((Object e) => stderr.writeln('poll: $e')),
+    );
     stdout.writeln('AMAR bot is running.');
     var offset = 0;
     while (true) {
@@ -44,7 +57,7 @@ class AmarBot {
         final updates = await _tg.getUpdates(offset);
         for (final update in updates) {
           offset = (update['update_id'] as int) + 1;
-          await _handle(update);
+          _enqueue(update);
         }
       } catch (e) {
         stderr.writeln('getUpdates: $e');
@@ -54,6 +67,43 @@ class AmarBot {
   }
 
   // ---------------- dispatch ----------------
+
+  /// One queue per chat: a slow AI reply never blocks other customers,
+  /// and a customer's own messages still run in order.
+  final Map<int, Future<void>> _chains = {};
+  final Map<String, List<Map>> _albums = {};
+  static const Duration _albumWait = Duration(milliseconds: 1500);
+
+  void _enqueue(Map<String, dynamic> update) {
+    final message = update['message'] as Map?;
+    final callback = update['callback_query'] as Map?;
+    final chat = (message ?? callback?['message'] as Map?)?['chat'] as Map?;
+    final chatId = chat?['id'] as int?;
+    if (chatId == null) return;
+
+    // Photos sent together arrive one by one: answer them as one case.
+    final group = message?['media_group_id'] as String?;
+    if (message != null && group != null) {
+      final first = !_albums.containsKey(group);
+      _albums.putIfAbsent(group, () => []).add(message);
+      if (!first) return;
+      Future<void>.delayed(_albumWait, () {
+        final parts = _albums.remove(group) ?? [message];
+        _chain(chatId, {
+          'update_id': update['update_id'],
+          'message': {...message, '_album': parts},
+        });
+      });
+      return;
+    }
+    _chain(chatId, update);
+  }
+
+  void _chain(int chatId, Map<String, dynamic> update) {
+    _chains[chatId] = (_chains[chatId] ?? Future<void>.value())
+        .then((_) => _handle(update))
+        .catchError((Object e) => stderr.writeln('chain $chatId: $e'));
+  }
 
   Future<void> _handle(Map<String, dynamic> update) async {
     final message = update['message'] as Map?;
@@ -90,6 +140,7 @@ class AmarBot {
   Future<void> _onMessage(int chatId, Session s, Map message) async {
     final text = (message['text'] as String?)?.trim();
     final from = message['from'] as Map?;
+    final name = from?['first_name'] as String?;
 
     if (text == '/start') return _start(chatId, s);
     if (message['contact'] is Map) {
@@ -98,52 +149,192 @@ class AmarBot {
     if (s.step == Step.otp && text != null) {
       return _onOtp(chatId, s, text, from);
     }
-    if (!s.signedIn) return _tg.send(chatId, T.loginFirst);
+
+    final album = (message['_album'] as List?)?.cast<Map>() ?? [message];
+    final photos = [
+      for (final m in album)
+        if (_photoId(m) case final id?) id,
+    ];
+    if (photos.isNotEmpty) {
+      final caption = album
+          .map((m) => (m['caption'] as String?)?.trim() ?? '')
+          .where((c) => c.isNotEmpty)
+          .join('\n');
+      return _onPhotos(chatId, s, photos, caption, name);
+    }
+    final other = _otherMedia(message);
+    if (other != null) return _tg.send(chatId, other);
+
     if (message['location'] is Map) {
-      return _onLocation(chatId, s, message['location'] as Map);
-    }
-
-    switch (text) {
-      case T.newOrder:
-        s.step = Step.idle;
-        return _showVendors(chatId);
-      case T.myCart:
-        s.step = Step.idle;
-        return _showCart(chatId, s);
-      case T.myOrders:
-        s.step = Step.idle;
-        return _showOrders(chatId, s);
-      case T.logout:
-        return _logout(chatId, s);
-      case T.back:
-        s
-          ..step = Step.idle
-          ..clearCheckout();
-        return _tg.send(chatId, T.welcomeBack, markup: _menu);
-    }
-
-    if (s.step == Step.details && text != null) {
-      return _onDetails(chatId, s, text == T.skip ? null : text);
-    }
-    if (s.step == Step.location) {
-      final point = text == null ? null : parseCoordinates(text);
-      if (point != null) {
-        return _onLocation(
-            chatId, s, {'latitude': point.$1, 'longitude': point.$2});
+      if (s.signedIn && s.step == Step.location) {
+        return _onLocation(chatId, s, message['location'] as Map);
       }
-      return _tg.send(chatId, T.askLocation);
+      return _tg.send(chatId, T.locationNoFlow);
     }
-    return _tg.send(chatId, T.unknown, markup: _menu);
+    if (text == null || text.isEmpty) {
+      return _tg.send(chatId, T.unknown, markup: s.signedIn ? _menu : null);
+    }
+
+    const menuButtons = [T.newOrder, T.myCart, T.myOrders, T.logout, T.back];
+    if (!s.signedIn && menuButtons.contains(text)) {
+      return _tg.send(chatId, T.loginFirst);
+    }
+    if (s.signedIn) {
+      switch (text) {
+        case T.newOrder:
+          s.step = Step.idle;
+          return _showVendors(chatId);
+        case T.myCart:
+          s.step = Step.idle;
+          return _showCart(chatId, s);
+        case T.myOrders:
+          s.step = Step.idle;
+          return _showOrders(chatId, s);
+        case T.logout:
+          _ai.forget(chatId);
+          return _logout(chatId, s);
+        case T.back:
+          s
+            ..step = Step.idle
+            ..clearCheckout();
+          return _tg.send(chatId, T.welcomeBack, markup: _menu);
+      }
+      if (s.step == Step.details) {
+        return _onDetails(chatId, s, text == T.skip ? null : text);
+      }
+      if (s.step == Step.location) {
+        final point = parseCoordinates(text);
+        if (point != null) {
+          return _onLocation(
+              chatId, s, {'latitude': point.$1, 'longitude': point.$2});
+        }
+        return _tg.send(chatId, T.askLocation);
+      }
+    }
+    return _askAi(chatId, s, text: text, name: name);
+  }
+
+  // ---------------- AI assistant ----------------
+
+  /// Largest size of a photo, or an image sent as a file.
+  static String? _photoId(Map message) {
+    final sizes = message['photo'] as List?;
+    if (sizes != null && sizes.isNotEmpty) {
+      return (sizes.last as Map)['file_id'] as String?;
+    }
+    final doc = message['document'] as Map?;
+    final mime = doc?['mime_type'] as String? ?? '';
+    return mime.startsWith('image/') ? doc!['file_id'] as String? : null;
+  }
+
+  /// A friendly answer for media the assistant cannot read.
+  static String? _otherMedia(Map m) {
+    if (m['voice'] != null || m['audio'] != null) return T.noVoice;
+    if (m['video'] != null || m['video_note'] != null) return T.noVideo;
+    if (m['animation'] != null || m['sticker'] != null) return T.sticker;
+    if (m['document'] != null) return T.noDocument;
+    if (m['poll'] != null || m['dice'] != null || m['game'] != null) {
+      return T.unknown;
+    }
+    return null;
+  }
+
+  Future<void> _onPhotos(
+    int chatId,
+    Session s,
+    List<String> fileIds,
+    String caption,
+    String? name,
+  ) async {
+    if (!_ai.enabled) return _tg.send(chatId, T.aiOff);
+    await _tg.send(chatId, fileIds.length == 1 ? T.analyzing : T.analyzingMany);
+    final images = <List<int>>[];
+    for (final id in fileIds.take(5)) {
+      final bytes = await _ai.telegramFile(_token, id);
+      if (bytes == null) return _tg.send(chatId, T.imageTooBig);
+      images.add(bytes);
+    }
+    return _askAi(chatId, s, text: caption, images: images, name: name);
+  }
+
+  Future<void> _askAi(
+    int chatId,
+    Session s, {
+    String? text,
+    List<List<int>> images = const [],
+    String? name,
+  }) async {
+    if (!_ai.enabled) {
+      return _tg.send(chatId, T.unknown, markup: s.signedIn ? _menu : null);
+    }
+    await _tg.typing(chatId);
+    final AiReply reply;
+    try {
+      reply = await _ai.reply(
+        chatId,
+        text: text,
+        images: images,
+        signedIn: s.signedIn,
+        name: name,
+      );
+    } on Object catch (e) {
+      stderr.writeln('ai: $e');
+      return _tg.send(chatId, T.aiFailed, markup: s.signedIn ? _menu : null);
+    }
+    final buttons = <List<(String, String)>>[
+      if (reply.action == AiAction.inspection) [(T.bookInspection, 'insp')],
+      if (reply.action == AiAction.browse) [(T.newOrder, 'browse')],
+      if (reply.action == AiAction.orders) [(T.myOrders, 'orders')],
+      if (reply.action == AiAction.cart) [(T.myCart, 'cart')],
+      if (images.isNotEmpty) [(T.anotherPhoto, 'photo')],
+    ];
+    final chunks = _split(reply.text);
+    for (var i = 0; i < chunks.length; i++) {
+      final last = i == chunks.length - 1;
+      await _tg.send(chatId, chunks[i],
+          markup: last && buttons.isNotEmpty ? Telegram.inline(buttons) : null);
+    }
+  }
+
+  /// Telegram caps a message at 4096 characters.
+  static List<String> _split(String text, [int size = 3900]) {
+    final parts = <String>[];
+    var rest = text;
+    while (rest.length > size) {
+      var cut = rest.lastIndexOf('\n', size);
+      if (cut < size ~/ 2) cut = size;
+      parts.add(rest.substring(0, cut).trim());
+      rest = rest.substring(cut).trim();
+    }
+    if (rest.isNotEmpty) parts.add(rest);
+    return parts;
   }
 
   Future<void> _onCallback(int chatId, Session s, Map callback) async {
     await _tg.answer(callback['id'] as String);
+    final parts = (callback['data'] as String? ?? '').split(':');
+    // Photo help works before login; everything else needs a session.
+    if (parts.first == 'photo') return _tg.send(chatId, T.sendPhoto);
+    if (parts.first == 'insp' && !s.signedIn) {
+      return _tg.send(chatId, T.inspectionLogin);
+    }
     if (!s.signedIn) return _tg.send(chatId, T.loginFirst);
 
-    final parts = (callback['data'] as String? ?? '').split(':');
     int? arg(int i) => parts.length > i ? int.tryParse(parts[i]) : null;
 
     switch (parts.first) {
+      case 'insp':
+        await _tg.send(chatId, T.pickProvider);
+        return _showVendors(chatId);
+      case 'browse':
+        s.step = Step.idle;
+        return _showVendors(chatId);
+      case 'orders':
+        s.step = Step.idle;
+        return _showOrders(chatId, s);
+      case 'cart':
+        s.step = Step.idle;
+        return _showCart(chatId, s);
       case 'v':
         return _pickVendor(chatId, s, arg(1)!);
       case 'p':
@@ -185,7 +376,8 @@ class AmarBot {
   Future<void> _start(int chatId, Session s) async {
     if (s.signedIn) {
       s.step = Step.idle;
-      return _tg.send(chatId, T.welcomeBack, markup: _menu);
+      return _tg.send(chatId, '${T.welcomeBack}\n\n${T.photoHint}',
+          markup: _menu);
     }
     s.step = Step.contact;
     await _tg.send(chatId, T.welcome,
@@ -223,7 +415,7 @@ class AmarBot {
       return _tg.send(chatId, '${T.otpWrong}\n${T.error(e.message)}');
     }
     s.step = Step.idle;
-    await _tg.send(chatId, T.signedIn, markup: _menu);
+    await _tg.send(chatId, '${T.signedIn}\n\n${T.photoHint}', markup: _menu);
   }
 
   Future<void> _logout(int chatId, Session s) async {

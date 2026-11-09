@@ -5,6 +5,7 @@ import 'package:amar_bot/src/http_json.dart';
 import 'package:amar_bot/src/masar.dart';
 import 'package:amar_bot/src/store.dart';
 import 'package:amar_bot/src/telegram.dart';
+import 'package:amar_bot/src/vision.dart';
 
 /// Usage: dart run bin/amar_bot.dart [env/bot.json]
 Future<void> main(List<String> args) async {
@@ -15,6 +16,8 @@ Future<void> main(List<String> args) async {
     Masar(config, http),
     SessionStore(config.dataDir),
     Geocoder(http),
+    Assistant(config.aiKey, config.aiModel, http),
+    config.telegramToken,
   );
   await bot.run();
 }
