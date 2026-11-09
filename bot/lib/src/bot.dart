@@ -7,14 +7,24 @@ import 'masar.dart';
 import 'store.dart';
 import 'telegram.dart';
 import 'texts.dart';
+import 'vision.dart';
 
 /// Order flow over Telegram:
 /// /start → share contact → OTP → vendor → product → qty → cart →
 /// address or location → quote → confirm → status updates.
 class AmarBot {
-  AmarBot(this._tg, this._api, this._store, this._geocoder);
+  AmarBot(
+    this._tg,
+    this._api,
+    this._store,
+    this._geocoder,
+    this._vision,
+    this._token,
+  );
 
   final Geocoder _geocoder;
+  final Vision _vision;
+  final String _token;
 
   final Telegram _tg;
   final Masar _api;
@@ -92,6 +102,10 @@ class AmarBot {
     final from = message['from'] as Map?;
 
     if (text == '/start') return _start(chatId, s);
+    final photo = _photoId(message);
+    if (photo != null) {
+      return _onPhoto(chatId, photo, message['caption'] as String?);
+    }
     if (message['contact'] is Map) {
       return _onContact(chatId, s, message['contact'] as Map, from);
     }
@@ -136,14 +150,57 @@ class AmarBot {
     return _tg.send(chatId, T.unknown, markup: _menu);
   }
 
+  // ---------------- photo diagnosis ----------------
+
+  /// Largest size of a photo, or an image sent as a file.
+  static String? _photoId(Map message) {
+    final sizes = message['photo'] as List?;
+    if (sizes != null && sizes.isNotEmpty) {
+      return (sizes.last as Map)['file_id'] as String?;
+    }
+    final doc = message['document'] as Map?;
+    final mime = doc?['mime_type'] as String? ?? '';
+    return mime.startsWith('image/') ? doc!['file_id'] as String? : null;
+  }
+
+  Future<void> _onPhoto(int chatId, String fileId, String? caption) async {
+    if (!_vision.enabled) return _tg.send(chatId, T.visionOff);
+    await _tg.send(chatId, T.analyzing);
+    final Diagnosis d;
+    try {
+      final bytes = await _vision.telegramFile(_token, fileId);
+      d = await _vision.analyze(bytes, caption: caption?.trim());
+    } on Object catch (e) {
+      stderr.writeln('vision: $e');
+      return _tg.send(chatId, T.visionFailed);
+    }
+    if (!d.relevant) return _tg.send(chatId, T.notAJob(d.seen));
+    await _tg.send(
+      chatId,
+      T.diagnosis(d),
+      markup: Telegram.inline([
+        [(T.bookInspection, 'insp')],
+        [(T.anotherPhoto, 'photo')],
+      ]),
+    );
+  }
+
   Future<void> _onCallback(int chatId, Session s, Map callback) async {
     await _tg.answer(callback['id'] as String);
+    final parts = (callback['data'] as String? ?? '').split(':');
+    // Photo help works before login; everything else needs a session.
+    if (parts.first == 'photo') return _tg.send(chatId, T.sendPhoto);
+    if (parts.first == 'insp' && !s.signedIn) {
+      return _tg.send(chatId, T.inspectionLogin);
+    }
     if (!s.signedIn) return _tg.send(chatId, T.loginFirst);
 
-    final parts = (callback['data'] as String? ?? '').split(':');
     int? arg(int i) => parts.length > i ? int.tryParse(parts[i]) : null;
 
     switch (parts.first) {
+      case 'insp':
+        await _tg.send(chatId, T.pickProvider);
+        return _showVendors(chatId);
       case 'v':
         return _pickVendor(chatId, s, arg(1)!);
       case 'p':
@@ -185,7 +242,8 @@ class AmarBot {
   Future<void> _start(int chatId, Session s) async {
     if (s.signedIn) {
       s.step = Step.idle;
-      return _tg.send(chatId, T.welcomeBack, markup: _menu);
+      return _tg.send(chatId, '${T.welcomeBack}\n\n${T.photoHint}',
+          markup: _menu);
     }
     s.step = Step.contact;
     await _tg.send(chatId, T.welcome,
@@ -223,7 +281,7 @@ class AmarBot {
       return _tg.send(chatId, '${T.otpWrong}\n${T.error(e.message)}');
     }
     s.step = Step.idle;
-    await _tg.send(chatId, T.signedIn, markup: _menu);
+    await _tg.send(chatId, '${T.signedIn}\n\n${T.photoHint}', markup: _menu);
   }
 
   Future<void> _logout(int chatId, Session s) async {

@@ -1,3 +1,5 @@
+import 'vision.dart';
+
 /// Every message the customer sees, in one place.
 abstract final class T {
   // Menu buttons (also matched as incoming text).
@@ -79,4 +81,45 @@ abstract final class T {
   static const failed = 'صار خطأ، جرب كمان شوي.';
   static String error(String? message) =>
       message == null || message.isEmpty ? failed : '⚠️ $message';
+
+  // ---- photo diagnosis ----
+  static const analyzing = '📸 وصلت الصورة! لحظة، عم نحللها...';
+  static const visionOff = 'تحليل الصور مش مفعّل هلأ، جرب بعد شوي.';
+  static const visionFailed = 'ما قدرنا نحلل الصورة هلأ 😕 جرب تبعتها كمان '
+      'مرة، ويفضل تكون واضحة وقريبة.';
+  static String notAJob(String seen) => '${seen.isEmpty ? '' : '👀 $seen\n\n'}'
+      'هاي الصورة ما بتبين مشكلة أو شغلة بالبيت. '
+      'صوّر المكان أو الشي يلي بدك تصلحه أو تركبه وابعته هون.';
+  static const bookInspection = '📅 اطلب معاينة';
+  static const anotherPhoto = '📸 أبعت صورة ثانية';
+  static const sendPhoto = 'تمام، ابعت الصورة هون 👇';
+  static const pickProvider = 'ممتاز! اختار مزوّد الخدمة، وهو بيتواصل معك '
+      'ليحدد موعد المعاينة والسعر:';
+  static const inspectionLogin =
+      'عشان نحجزلك معاينة لازم تسجل دخول أول، ابعت /start';
+  static const photoHint = '📸 جديد: ابعتلنا صورة لأي مشكلة بالبيت (شادر، '
+      'خيمة، تسريب مي، كهربا...) وبنحللها وبنحكيلك مين الفني المناسب.';
+
+  static String diagnosis(Diagnosis d) {
+    String bullets(List<String> items) => items.map((e) => '• $e').join('\n');
+    final icon = switch (d.severity) {
+      'عاجل' => '🔴',
+      'متوسط' => '🟠',
+      _ => '🟢',
+    };
+    final reason = d.inspectionReason.isEmpty ? '' : ' — ${d.inspectionReason}';
+    return [
+      '🔍 تحليل الصورة',
+      if (d.category.isNotEmpty) '🏷 الخدمة: ${d.category}',
+      if (d.seen.isNotEmpty) '👀 ${d.seen}',
+      if (d.problem.isNotEmpty) '\n🛠 المشكلة:\n${d.problem}',
+      if (d.severity.isNotEmpty) '$icon الأولوية: ${d.severity}',
+      if (d.technician.isNotEmpty) '\n👷 الفني المناسب: ${d.technician}',
+      if (d.materials.isNotEmpty) '🧰 مواد متوقعة:\n${bullets(d.materials)}',
+      if (d.tips.isNotEmpty) '\n💡 لحد ما يوصل الفني:\n${bullets(d.tips)}',
+      if (d.questions.isNotEmpty)
+        '\n❓ عشان نجهّز الفني صح:\n${bullets(d.questions)}',
+      '\n💰 السعر: بيتحدد بعد المعاينة$reason',
+    ].join('\n');
+  }
 }

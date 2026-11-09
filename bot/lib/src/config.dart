@@ -10,6 +10,8 @@ class BotConfig {
     required this.devMember,
     required this.baseUrl,
     required this.dataDir,
+    this.geminiKey = '',
+    this.geminiModel = defaultGeminiModel,
   });
 
   final String telegramToken;
@@ -17,6 +19,10 @@ class BotConfig {
   final String devMember;
   final String baseUrl;
   final String dataDir;
+  final String geminiKey;
+  final String geminiModel;
+
+  static const String defaultGeminiModel = 'gemini-2.5-flash';
 
   static const String defaultBaseUrl = 'https://masar.toldpath.com/api';
 
@@ -39,6 +45,8 @@ class BotConfig {
       devMember: read('AMAR_DEV_MEMBER'),
       baseUrl: read('AMAR_BASE_URL', defaultBaseUrl),
       dataDir: read('BOT_DATA_DIR', 'data'),
+      geminiKey: read('GEMINI_API_KEY'),
+      geminiModel: read('GEMINI_MODEL', defaultGeminiModel),
     );
     if (config.telegramToken.isEmpty || config.projectKey.isEmpty) {
       throw StateError(
