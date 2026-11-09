@@ -46,7 +46,10 @@ class AmarBot {
 
   Future<void> run() async {
     _store.load();
-    Timer.periodic(_orderPoll, (_) => _pollOrders());
+    Timer.periodic(
+      _orderPoll,
+      (_) => _pollOrders().catchError((Object e) => stderr.writeln('poll: $e')),
+    );
     stdout.writeln('AMAR bot is running.');
     var offset = 0;
     while (true) {
