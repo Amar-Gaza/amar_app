@@ -40,6 +40,11 @@ class Telegram {
         if (markup != null) 'reply_markup': markup,
       });
 
+  Future<void> typing(int chatId) => _call('sendChatAction', {
+        'chat_id': chatId,
+        'action': 'typing',
+      }).then((_) {}, onError: (_) {});
+
   Future<void> answer(String callbackId, [String? text]) =>
       _call('answerCallbackQuery', {
         'callback_query_id': callbackId,

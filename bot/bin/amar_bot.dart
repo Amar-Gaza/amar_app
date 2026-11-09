@@ -16,7 +16,7 @@ Future<void> main(List<String> args) async {
     Masar(config, http),
     SessionStore(config.dataDir),
     Geocoder(http),
-    Vision(config.geminiKey, config.geminiModel, http),
+    Assistant(config.aiKey, config.aiModel, http),
     config.telegramToken,
   );
   await bot.run();

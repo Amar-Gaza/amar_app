@@ -1,5 +1,3 @@
-import 'vision.dart';
-
 /// Every message the customer sees, in one place.
 abstract final class T {
   // Menu buttons (also matched as incoming text).
@@ -82,14 +80,23 @@ abstract final class T {
   static String error(String? message) =>
       message == null || message.isEmpty ? failed : '⚠️ $message';
 
-  // ---- photo diagnosis ----
+  // ---- AI assistant ----
   static const analyzing = '📸 وصلت الصورة! لحظة، عم نحللها...';
-  static const visionOff = 'تحليل الصور مش مفعّل هلأ، جرب بعد شوي.';
-  static const visionFailed = 'ما قدرنا نحلل الصورة هلأ 😕 جرب تبعتها كمان '
-      'مرة، ويفضل تكون واضحة وقريبة.';
-  static String notAJob(String seen) => '${seen.isEmpty ? '' : '👀 $seen\n\n'}'
-      'هاي الصورة ما بتبين مشكلة أو شغلة بالبيت. '
-      'صوّر المكان أو الشي يلي بدك تصلحه أو تركبه وابعته هون.';
+  static const analyzingMany = '📸 وصلت الصور! لحظة، عم نحللها مع بعض...';
+  static const aiOff = 'تحليل الصور مش مفعّل هلأ، جرب بعد شوي.';
+  static const aiFailed = 'معلش، ما قدرت أرد هلأ 😕 جرب كمان مرة بعد لحظة.';
+  static const imageTooBig =
+      'الصورة كبيرة كتير. ابعتها كصورة عادية (مش ملف) وبحللها فوراً.';
+  static const noVoice =
+      'ما بقدر أسمع الرسائل الصوتية هلأ 🙏 اكتبلي سؤالك أو ابعت صورة للمشكلة.';
+  static const noVideo =
+      'ما بقدر أشوف الفيديو 🙏 ابعت صورة واضحة للمشكلة وبحللها فوراً.';
+  static const noDocument =
+      'ما بقدر أفتح هاد الملف 🙏 ابعت صورة أو اكتبلي شو بدك.';
+  static const sticker =
+      '😄 حلو! احكيلي كيف بقدر أساعدك، أو ابعت صورة لأي مشكلة بالبيت.';
+  static const locationNoFlow =
+      'وصلني موقعك 👍 إذا بدك تطلب، اضغط «🛒 طلب جديد» وببعتلك الخطوات.';
   static const bookInspection = '📅 اطلب معاينة';
   static const anotherPhoto = '📸 أبعت صورة ثانية';
   static const sendPhoto = 'تمام، ابعت الصورة هون 👇';
@@ -97,29 +104,6 @@ abstract final class T {
       'ليحدد موعد المعاينة والسعر:';
   static const inspectionLogin =
       'عشان نحجزلك معاينة لازم تسجل دخول أول، ابعت /start';
-  static const photoHint = '📸 جديد: ابعتلنا صورة لأي مشكلة بالبيت (شادر، '
-      'خيمة، تسريب مي، كهربا...) وبنحللها وبنحكيلك مين الفني المناسب.';
-
-  static String diagnosis(Diagnosis d) {
-    String bullets(List<String> items) => items.map((e) => '• $e').join('\n');
-    final icon = switch (d.severity) {
-      'عاجل' => '🔴',
-      'متوسط' => '🟠',
-      _ => '🟢',
-    };
-    final reason = d.inspectionReason.isEmpty ? '' : ' — ${d.inspectionReason}';
-    return [
-      '🔍 تحليل الصورة',
-      if (d.category.isNotEmpty) '🏷 الخدمة: ${d.category}',
-      if (d.seen.isNotEmpty) '👀 ${d.seen}',
-      if (d.problem.isNotEmpty) '\n🛠 المشكلة:\n${d.problem}',
-      if (d.severity.isNotEmpty) '$icon الأولوية: ${d.severity}',
-      if (d.technician.isNotEmpty) '\n👷 الفني المناسب: ${d.technician}',
-      if (d.materials.isNotEmpty) '🧰 مواد متوقعة:\n${bullets(d.materials)}',
-      if (d.tips.isNotEmpty) '\n💡 لحد ما يوصل الفني:\n${bullets(d.tips)}',
-      if (d.questions.isNotEmpty)
-        '\n❓ عشان نجهّز الفني صح:\n${bullets(d.questions)}',
-      '\n💰 السعر: بيتحدد بعد المعاينة$reason',
-    ].join('\n');
-  }
+  static const photoHint = '💬 جديد: اسألني أي سؤال، أو ابعتلي صورة لأي مشكلة '
+      'بالبيت (شادر، خيمة، تسريب مي، كهربا...) وبحكيلك مين الفني المناسب.';
 }
